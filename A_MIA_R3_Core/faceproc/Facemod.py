@@ -6,6 +6,21 @@ class Facemod:
         self.filename=filename
         self.frames=frames
         self.splitframe=splitkun
+        model_path = './FACE/models/5face_emotions_100ep.hdf5'
+        self.emotions_XCEPTION = load_model(model_path, compile=False)
+
+        self.timeemos=[]
+
+        # 動画画像保存フォルダを作成
+        self.imgDIR_NAME = './FACE/temp_img/img_'+self.video_path_ONLY
+        if not os.path.exists(self.imgDIR_NAME):
+            os.mkdir(self.imgDIR_NAME)
+
+        if not os.path.exists('./FACE/facepointmemo/'):
+            os.makedirs('./FACE/facepointmemo/')
+
+        if not os.path.exists('./FACE/emomemo/'):
+            os.makedirs('./FACE/emomemo/')
     def process(self):
         capture = cv2.VideoCapture(self.filename)
         fps = capture.get(cv2.CAP_PROP_FPS)
