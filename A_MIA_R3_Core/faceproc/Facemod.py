@@ -12,6 +12,7 @@ import tkinter as tk
 from PIL import Image, ImageTk
 from PySide2 import QtCore, QtGui
 from tensorflow.python.keras.models import load_model
+from matplotlib import pyplot as plt
 
 def path_cutext(pathkun):
     pathkun22, extkun = os.path.splitext(os.path.basename(pathkun))
@@ -95,7 +96,7 @@ class Facemod:
 
         win_width = 10 + (120 * self.i)
         win_height = 180
-
+        self.frame=frame.copy()
         self.showwin = tk.Tk()
         self.showwin.title('Select target image')
         self.showwin.geometry('{}x{}+{}+{}'.format(win_width, win_height,
@@ -108,6 +109,7 @@ class Facemod:
         self.rdo_var_target.set(self.i + 1)
         rdo_txt = []
         load_img_list = []
+        load_img_list_origcv=[]
         j=0
         for(x,y,w,h) in self.front_face_list:
         #for j in range(self.i):
@@ -121,7 +123,9 @@ class Facemod:
 
             # jpg画像ファイルを読み込む
             #pil_img = Image.open(self.imgDIR_NAME + '/temp' + str(j) + '.jpg')
-            pil_img=Image.fromarray(cv2.cvtColor(frame[y: y + h, x: x + w].copy(),cv2.COLOR_BGR2RGB))
+            img=frame[y: y + h, x: x + w].copy()
+            load_img_list_origcv.append(img.copy())
+            pil_img=Image.fromarray(cv2.cvtColor(img,cv2.COLOR_BGR2RGB))
             pil_img_resize = pil_img.resize(size=(100, 100))
             photo_img = ImageTk.PhotoImage(image=pil_img_resize, master=self.showwin)
             load_img_list.append(photo_img)
@@ -144,9 +148,9 @@ class Facemod:
         self.showwin.focus_set()  # フォーカスを移 # サブウィンドウをタスクバーに表示しない
 
         self.showwin.mainloop()
-        self.showwin_close(frame)
+        self.showwin_close(load_img_list_origcv)
 
-    def showwin_close(self,frame):
+    def showwin_close(self,load_img_list_origcv):
         ##### showwinを消した時の処理 #####
         rdo_which = self.rdo_var_target.get()
         print(rdo_which)
@@ -155,7 +159,13 @@ class Facemod:
             #old = self.imgDIR_NAME + '/temp' + str(rdo_which - 1) + '.jpg'
             #new = self.imgDIR_NAME + '/target.jpg'
             #shutil.copy(old, new)
-            print(frame)
-            self.targetimage=frame[(self.front_face_list[rdo_which-1][0]+self.front_face_list[rdo_which-1][2]),(self.front_face_list[rdo_which-1][1]+self.front_face_list[rdo_which-1][3])].copy()
+            self.targetimage=load_img_list_origcv[rdo_which-1].copy()
         else:
             return
+    def showtargetimage(self):
+        if self.targetimage is None:
+            pass
+        else:
+            cvimage = cv2.cvtColor(self.targetimage,cv2.COLOR_BGR2RGB)
+            plt.imshow(cvimage)
+            plt.show()

@@ -16,3 +16,4 @@ class Face_Process:
         fm=Facemod(self.filename,self.total_frames,self.split_frames)
         fm.target_img_select()
         #fm.process()
+        fm.showtargetimage()
