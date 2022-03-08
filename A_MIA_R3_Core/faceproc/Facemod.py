@@ -1,7 +1,11 @@
 import os
 
 import cv2
+from tensorflow.python.keras.models import load_model
 
+def path_cutext(pathkun):
+    pathkun22, extkun = os.path.splitext(os.path.basename(pathkun))
+    return pathkun22
 
 class Facemod:
     def __init__(self,filename,frames,splitkun):
@@ -12,11 +16,11 @@ class Facemod:
         self.emotions_XCEPTION = load_model(model_path, compile=False)
 
         self.timeemos=[]
-
+        self.video_path_ONLY=path_cutext(self.filename)
         # 動画画像保存フォルダを作成
         self.imgDIR_NAME = './FACE/temp_img/img_'+self.video_path_ONLY
         if not os.path.exists(self.imgDIR_NAME):
-            os.mkdir(self.imgDIR_NAME)
+            os.makedirs(self.imgDIR_NAME)
 
         if not os.path.exists('./FACE/facepointmemo/'):
             os.makedirs('./FACE/facepointmemo/')
