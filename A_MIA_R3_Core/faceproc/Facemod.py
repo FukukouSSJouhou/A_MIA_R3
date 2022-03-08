@@ -53,21 +53,20 @@ class Facemod:
         cascade=cv2.CascadeClassifier(cascade_path)
         self.hantei = 0
         while counterfps <= self.frames:
-            capture.set(cv2.CAP_PROP_POS_FRAMES, counterfps)
-            ret,frame=capture.read()
-            if(ret == False):
-                counterfps+=self.splitframe
-                continue
-            gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
-            self.front_face_list = cascade.detectMultiScale(gray)
-            print("{} {}".format(counterfps, self.front_face_list))
-            if len(self.front_face_list) == 0:
-                counterfps+=self.splitframe
-                continue
-            else:
-                self.select_target_img_window(frame)
-
-
+            if self.targetimage is None:
+                capture.set(cv2.CAP_PROP_POS_FRAMES, counterfps)
+                ret,frame=capture.read()
+                if(ret == False):
+                    counterfps+=self.splitframe
+                    continue
+                gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+                self.front_face_list = cascade.detectMultiScale(gray)
+                print("{} {}".format(counterfps, self.front_face_list))
+                if len(self.front_face_list) == 0:
+                    counterfps+=self.splitframe
+                    continue
+                else:
+                    self.select_target_img_window(frame)
             counterfps+=self.splitframe
     def process(self):
         capture = cv2.VideoCapture(self.filename)
