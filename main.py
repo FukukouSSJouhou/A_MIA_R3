@@ -1,6 +1,10 @@
 #!/usr/bin/env python3
 from A_MIA_R3_Core.Face_Process import Face_Process
-
+import ctypes
+try:
+    ctypes.windll.shcore.SetProcessDpiAwareness(True)
+except:
+    pass
 
 def main():
     fp=Face_Process("koizumi_7_30.mp4",30)
