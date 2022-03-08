@@ -134,16 +134,18 @@ class Facemod:
         self.showwin.focus_set()  # フォーカスを移 # サブウィンドウをタスクバーに表示しない
 
         self.showwin.mainloop()
-        self.showwin_close()
+        self.showwin_close(frame)
 
-    def showwin_close(self):
+    def showwin_close(self,frame):
         ##### showwinを消した時の処理 #####
         rdo_which = self.rdo_var_target.get()
         print(rdo_which)
         # 'target画像がない'を選択していない場合、処理
         if rdo_which - 1 != self.i:
-            old = self.imgDIR_NAME + '/temp' + str(rdo_which - 1) + '.jpg'
-            new = self.imgDIR_NAME + '/target.jpg'
-            shutil.copy(old, new)
+            #old = self.imgDIR_NAME + '/temp' + str(rdo_which - 1) + '.jpg'
+            #new = self.imgDIR_NAME + '/target.jpg'
+            #shutil.copy(old, new)
+            self.targetimage=frame[y:self.front_face_list[rdo_which-1][1]+self.front_face_list[rdo_which-1][3],
+                             x:self.front_face_list[rdo_which-1][0]+self.front_face_list[rdo_which-1][2]]
         else:
             return
