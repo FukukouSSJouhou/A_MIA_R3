@@ -1,12 +1,16 @@
+import math
 import os
 import shutil
-from tkinter import ttk
+import subprocess
+import sys
+import wave
+from tkinter import Image, ttk
 
 import cv2
-import tk as tk
-from PySide2 import QtGui
+import tkinter as tk
 
 from PIL import Image, ImageTk
+from PySide2 import QtCore, QtGui
 from tensorflow.python.keras.models import load_model
 
 def path_cutext(pathkun):
@@ -22,7 +26,7 @@ class Facemod:
         self.emotions_XCEPTION = load_model(model_path, compile=False)
 
         self.timeemos=[]
-        self.targetimage=[]
+        self.targetimage=None
         self.video_path_ONLY=path_cutext(self.filename)
         # 動画画像保存フォルダを作成
         self.imgDIR_NAME = './FACE/temp_img/img_'+self.video_path_ONLY
@@ -86,23 +90,28 @@ class Facemod:
             counterfps+=self.splitframe
 
     def select_target_img_window(self,frame):
+        self.i=0
+        for(x,y,w,h) in self.front_face_list:
+            self.i+=1
+
         win_width = 10 + (120 * self.i)
         win_height = 180
 
         self.showwin = tk.Tk()
         self.showwin.title('Select target image')
         self.showwin.geometry('{}x{}+{}+{}'.format(win_width, win_height,
-                                                   int(QtGui.QGuiApplication.primaryScreen().size().width() / 2 - win_width / 2),
-                                                   int(QtGui.QGuiApplication.primaryScreen().size().height() / 2 - win_height / 2)))
-
+        #                                           int(QtGui.QGuiApplication.primaryScreen().size().width() / 2 - win_width / 2),
+        #                                           int(QtGui.QGuiApplication.primaryScreen().size().height() / 2 - win_height / 2)))
+        320,320))
         # 選択用のラジオボタンを配置
         # 画像それぞれのサイズを取得してshowwinのサイズを決める
         self.rdo_var_target = tk.IntVar()
         self.rdo_var_target.set(self.i + 1)
         rdo_txt = []
         load_img_list = []
-
-        for j in range(self.i):
+        j=0
+        for(x,y,w,h) in self.front_face_list:
+        #for j in range(self.i):
             # print(j)
             # ラジオボタンに表示するテキストをリストに追加
             rdo_txt.append('img-' + str(j + 1))
@@ -112,10 +121,12 @@ class Facemod:
             rdo_target_select.place(x=10 + 25 + (100 * j), y=120)
 
             # jpg画像ファイルを読み込む
-            pil_img = Image.open(self.imgDIR_NAME + '/temp' + str(j) + '.jpg')
+            #pil_img = Image.open(self.imgDIR_NAME + '/temp' + str(j) + '.jpg')
+            pil_img=Image.fromarray(cv2.cvtColor(frame[y: y + h, x: x + w].copy(),cv2.COLOR_BGR2RGB))
             pil_img_resize = pil_img.resize(size=(100, 100))
             photo_img = ImageTk.PhotoImage(image=pil_img_resize, master=self.showwin)
             load_img_list.append(photo_img)
+            j+=1
 
         # 一番最後に、target画像が無かった場合に選択するラジオボタンを配置
         rdo_target_select = ttk.Radiobutton(self.showwin, variable=self.rdo_var_target, value=self.i + 1,
@@ -145,7 +156,7 @@ class Facemod:
             #old = self.imgDIR_NAME + '/temp' + str(rdo_which - 1) + '.jpg'
             #new = self.imgDIR_NAME + '/target.jpg'
             #shutil.copy(old, new)
-            self.targetimage=frame[y:self.front_face_list[rdo_which-1][1]+self.front_face_list[rdo_which-1][3],
-                             x:self.front_face_list[rdo_which-1][0]+self.front_face_list[rdo_which-1][2]]
+            print(frame)
+            self.targetimage=frame[(self.front_face_list[rdo_which-1][0]+self.front_face_list[rdo_which-1][2]),(self.front_face_list[rdo_which-1][1]+self.front_face_list[rdo_which-1][3])].copy()
         else:
             return

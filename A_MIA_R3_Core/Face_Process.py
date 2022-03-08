@@ -14,4 +14,5 @@ class Face_Process:
         self.total_frames = container.streams.video[0].frames
     def process(self):
         fm=Facemod(self.filename,self.total_frames,self.split_frames)
-        fm.process()
+        fm.target_img_select()
+        #fm.process()
