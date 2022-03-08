@@ -1,7 +1,12 @@
 import os
+import shutil
+from tkinter import ttk
 
 import cv2
 import tk as tk
+from PySide2 import QtGui
+
+from PIL import Image, ImageTk
 from tensorflow.python.keras.models import load_model
 
 def path_cutext(pathkun):
@@ -56,7 +61,8 @@ class Facemod:
                 counterfps+=self.splitframe
                 continue
             else:
-                for(x,y,w,h) in self.front_face_list:
+                self.select_target_img_window(frame)
+
 
             counterfps+=self.splitframe
     def process(self):
@@ -79,7 +85,7 @@ class Facemod:
             print("{} {}".format(counterfps, self.front_face_list))
             counterfps+=self.splitframe
 
-    def select_target_img_window(self):
+    def select_target_img_window(self,frame):
         win_width = 10 + (120 * self.i)
         win_height = 180
 
