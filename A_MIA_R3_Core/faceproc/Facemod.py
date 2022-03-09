@@ -6,11 +6,13 @@ import sys
 import wave
 from tkinter import Image, ttk
 
+import numpy as np
 import cv2
 import tkinter as tk
 
 from PIL import Image, ImageTk
 from PySide2 import QtCore, QtGui
+from keras_preprocessing import image
 from tensorflow.python.keras.models import load_model
 from matplotlib import pyplot as plt
 
@@ -99,9 +101,28 @@ class Facemod:
             #    plt.show()
             similarface=self.similarity(faces_list_cut)
             if similarface is not None:
-                plt.imshow(similarface)
-                plt.show()
+                self.detect_emotion(similarface)
             counterfps+=self.splitframe
+    def detect_emotion(self,imgobj):
+        if imgobj is not None:
+            img_array=image.img_to_array(cv2.resize(imgobj,(48,48)))
+            pImg=np.delete(img_array,1,axis=2)
+            pImg = np.delete(pImg, 1, axis=2)
+            pImg=np.expand_dims(pImg, 0) / 255
+            #plt.imshow(np.array(img_array,np.int32))
+            #plt.show()
+
+            prediction = self.emotions_XCEPTION.predict(pImg)[0]
+
+            emos=[]
+            for predict_i in range(len(prediction)):
+                emos.append(prediction[predict_i])
+            self.timeemos.append(emos)
+        else:
+            emos = [0, 0, 0, 0, 0]
+            self.timeemos.append(emos)
+
+
     def similarity(self,images):
 
 
