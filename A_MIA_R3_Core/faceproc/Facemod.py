@@ -109,9 +109,6 @@ class Facemod:
             pImg=np.delete(img_array,1,axis=2)
             pImg = np.delete(pImg, 1, axis=2)
             pImg=np.expand_dims(pImg, 0) / 255
-            #plt.imshow(np.array(img_array,np.int32))
-            #plt.show()
-
             prediction = self.emotions_XCEPTION.predict(pImg)[0]
 
             emos=[]
