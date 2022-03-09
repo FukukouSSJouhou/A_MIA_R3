@@ -87,7 +87,46 @@ class Facemod:
             gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
             self.front_face_list = cascade.detectMultiScale(gray)
             print("{} {}".format(counterfps, self.front_face_list))
+            faces_list_orig=[]
+            faces_list_cut=[]
+
+            for(x,y,w,h) in self.front_face_list:
+                faces_list_orig.append(frame[y: y + h, x: x + w].copy())
+            for facekun in faces_list_orig:
+                faces_list_cut.append(cv2.resize(cv2.cvtColor(cv2.cvtColor(facekun,cv2.COLOR_BGR2GRAY),cv2.COLOR_BGR2RGB),(200,200)))
+            #for facekun2 in faces_list_cut:
+            #    plt.imshow(facekun2)
+            #    plt.show()
+            similarface=self.similarity(faces_list_cut)
+            if similarface is not None:
+                plt.imshow(similarface)
+                plt.show()
             counterfps+=self.splitframe
+    def similarity(self,images):
+
+
+        # BFMatcherオブジェクトの生成
+        bf = cv2.BFMatcher(cv2.NORM_HAMMING)
+        # 特徴点を検出
+        detector = cv2.AKAZE_create()
+        #detector = cv2.ORB_create()
+        (target_kp, target_des) = detector.detectAndCompute(self.targetimage, None)
+
+        similarity_list=[]
+        for comparing_img in images:
+            try:
+                (comparing_kp, comparing_des) = detector.detectAndCompute(comparing_img, None)
+                matches = bf.match(target_des, comparing_des)
+                dist = [m.distance for m in matches]
+                ret_simi = sum(dist) / len(dist)
+            except cv2.error:
+                # cv2がエラーを吐いた場合の処理
+                ret_simi = 100000
+            print(ret_simi)
+            similarity_list.append(ret_simi)
+        if similarity_list == []:
+            return None
+        return images[similarity_list.index(min(similarity_list))]
 
     def select_target_img_window(self,frame):
         self.i=0
