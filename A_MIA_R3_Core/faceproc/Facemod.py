@@ -159,7 +159,8 @@ class Facemod:
             #old = self.imgDIR_NAME + '/temp' + str(rdo_which - 1) + '.jpg'
             #new = self.imgDIR_NAME + '/target.jpg'
             #shutil.copy(old, new)
-            self.targetimage=load_img_list_origcv[rdo_which-1].copy()
+            #gray and cut
+            self.targetimage=cv2.resize(cv2.cvtColor(load_img_list_origcv[rdo_which-1].copy(),cv2.IMREAD_GRAYSCALE),(200,200))
         else:
             return
     def showtargetimage(self):
