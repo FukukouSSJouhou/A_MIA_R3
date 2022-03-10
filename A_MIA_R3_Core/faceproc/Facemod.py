@@ -291,7 +291,7 @@ class Facemod:
     def Write_to_textfile(self):
         """
         感情データをjsonにエクスポートするッピ!
-        
+
         :return:
         """
         txtfile = './FACE/emomemo/' + self.video_path_ONLY + '.json'
@@ -299,4 +299,9 @@ class Facemod:
             json.dump(self.timeemos, f, indent=4, cls=Numkunencoder)
 
     def get_timeemos(self):
+        """
+        感情データ配列を返すッピ!
+
+        :return: 感情データ配列
+        """
         return self.timeemos.copy()
