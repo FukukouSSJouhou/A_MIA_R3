@@ -6,7 +6,7 @@ from A_MIA_R3_Core.Face_Process import Face_Process
 import ctypes
 
 from A_MIA_R3_Core.Graph_Process import Graph_Process
-from A_MIA_R3_Core.Loggingkun.Loggingkun import MIALogger
+from A_MIA_R3_Core.Loggingkun.Loggerkun import MIALogger
 
 try:
     ctypes.windll.shcore.SetProcessDpiAwareness(True)

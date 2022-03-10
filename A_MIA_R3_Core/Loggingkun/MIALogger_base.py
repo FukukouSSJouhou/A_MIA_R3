@@ -1,5 +1,5 @@
 import inspect
-class MIALogger:
+class MIALogger_base:
     """
     カラー出力ができるLogger
     """
