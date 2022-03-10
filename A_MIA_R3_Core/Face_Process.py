@@ -37,5 +37,7 @@ class Face_Process:
         self.Loggingobj.normalout("Starting target selector...")
         fm.target_img_select()
         # fm.showtargetimage()
+        self.Loggingobj.normalout("Start detecting emotions...")
         fm.process()
+        self.Loggingobj.successout("Success! Generated emos data!")
         return fm.get_timeemos()
