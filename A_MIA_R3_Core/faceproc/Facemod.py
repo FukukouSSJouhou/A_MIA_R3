@@ -17,7 +17,7 @@ from keras_preprocessing import image
 from tensorflow.python.keras.models import load_model
 from matplotlib import pyplot as plt
 
-from A_MIA_R3_Core.Loggingkun.Loggingkun import MIALogger
+from A_MIA_R3_Core.Loggingkun.Loggerkun import MIALogger
 from A_MIA_R3_Core.jsonencoder.Numkunencoder import Numkunencoder
 
 
@@ -120,7 +120,7 @@ class Facemod:
                 continue
             gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
             self.front_face_list = cascade.detectMultiScale(gray)
-            print("{} {}".format(counterfps, self.front_face_list))
+            self.Loggingobj.debugout("{} {}".format(counterfps, self.front_face_list))
             faces_list_orig = []
             faces_list_cut = []
 

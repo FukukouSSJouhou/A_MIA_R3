@@ -1,5 +1,4 @@
-import inspect
-class MIALogger:
+class MIALogger_base:
     """
     カラー出力ができるLogger
     """
@@ -55,7 +54,7 @@ class MIALogger:
         :return:
         """
         self.logginkun("#FFFF00",strkun)
-    def debugout_none(self,strkun):
+    def debugout(self,strkun):
         """
         デバッグ出力(紫色)
 
@@ -64,15 +63,6 @@ class MIALogger:
         """
         if self.enabledebug == True:
             self.logginkun("#FF00FF",strkun)
-    def debugout(self,strkun):
-        """
-        デバッグ出力(紫色) シンボル名付き
-
-        :param strkun: 出力させたい文字列
-        :return:
-        """
-        if self.enabledebug == True:
-            self.logginkun("#FF00FF","[{} -> {} ]\n{}".format(inspect.stack()[1].filename,inspect.stack()[1].function,strkun))
     def blueout(self,strkun):
         """
         青色の出力

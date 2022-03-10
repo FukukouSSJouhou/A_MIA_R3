@@ -6,7 +6,7 @@ from A_MIA_R3_Core.Face_Process import Face_Process
 import ctypes
 
 from A_MIA_R3_Core.Graph_Process import Graph_Process
-from A_MIA_R3_Core.Loggingkun.Loggingkun import MIALogger
+from A_MIA_R3_Core.Loggingkun.Loggerkun import MIALogger
 
 try:
     ctypes.windll.shcore.SetProcessDpiAwareness(True)
@@ -23,13 +23,14 @@ def main():
     Loggingobj.successout("<< A_MIA_R3 Core System>>")
     Loggingobj.debugout("Creating Face_Process Obj")
     fp=Face_Process(filenamekun,29,Loggingobj)
-    Loggingobj.debugout("get Video info")
+    Loggingobj.normalout("get Video info")
     fp.get_videoinfo()
-    Loggingobj.debugout("Processing...")
+    Loggingobj.normalout("Processing...")
     timeemoskun=fp.process()
-    Loggingobj.debugout("Generating Graph...")
+    Loggingobj.normalout("Generating Graph...")
     gp=Graph_Process(filenamekun)
     imgkun=gp.process(timeemoskun)
+    Loggingobj.successout("Success! Generated graph...")
     #img=Image.fromarray(imgkun)
     imgcv=cv2.cvtColor(imgkun,cv2.COLOR_RGB2BGR)
     cv2.imshow("tdn",imgcv)
