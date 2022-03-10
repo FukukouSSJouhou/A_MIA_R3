@@ -189,9 +189,10 @@ class Facemod:
 
     def select_target_img_window(self, frame):
         """
+        検出された画像からターゲットを選出するためにダイアログを表示するッピ!
         
-        :param frame:
-        :return:
+        :param frame: 現在のフレームッピ!
+        :return: 何も返さないッピ!
         """
         self.i = 0
         for (x, y, w, h) in self.front_face_list:
