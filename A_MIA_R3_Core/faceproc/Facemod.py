@@ -17,6 +17,7 @@ from keras_preprocessing import image
 from tensorflow.python.keras.models import load_model
 from matplotlib import pyplot as plt
 
+from A_MIA_R3_Core.Loggingkun.Loggingkun import MIALogger
 from A_MIA_R3_Core.jsonencoder.Numkunencoder import Numkunencoder
 
 
@@ -25,13 +26,13 @@ def path_cutext(pathkun):
     return pathkun22
 
 class Facemod:
-    def __init__(self,filename,frames,splitkun):
+    def __init__(self,filename,frames,splitkun,Loggingobj:MIALogger):
         self.filename=filename
         self.frames=frames
         self.splitframe=splitkun
         model_path = './FACE/models/5face_emotions_100ep.hdf5'
         self.emotions_XCEPTION = load_model(model_path, compile=False)
-
+        self.Loggingobj=Loggingobj
         self.timeemos=[]
         self.targetimage=None
         self.video_path_ONLY=path_cutext(self.filename)

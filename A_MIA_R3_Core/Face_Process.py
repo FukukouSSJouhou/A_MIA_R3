@@ -1,12 +1,14 @@
 import av
 
+from A_MIA_R3_Core.Loggingkun.Loggingkun import MIALogger
 from A_MIA_R3_Core.faceproc.Facemod import Facemod
 
 
 class Face_Process:
 
-    def __init__(self,filename:str,split_frames:int):
+    def __init__(self,filename:str,split_frames:int,loggerobj:MIALogger):
         self.filename=filename
+        self.Loggingobj=loggerobj
         self.total_frames=0
         self.split_frames=split_frames
     def get_videoinfo(self):
