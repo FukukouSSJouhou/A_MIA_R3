@@ -25,19 +25,33 @@ def path_cutext(pathkun):
     pathkun22, extkun = os.path.splitext(os.path.basename(pathkun))
     return pathkun22
 
+
 class Facemod:
-    def __init__(self,filename,frames,splitkun,Loggingobj:MIALogger):
-        self.filename=filename
-        self.frames=frames
-        self.splitframe=splitkun
+    """
+    内部で呼ばれる奴だよ。
+    実際に処理してるッピ！
+    """
+
+    def __init__(self, filename: str, frames, splitkun, Loggingobj: MIALogger):
+        """
+        コンストラクタだよ～
+
+        :param filename: ファイル名ッピ！
+        :param frames: 総合フレーム数ッピ！
+        :param splitkun: 分割フレーム数ッピ！
+        :param Loggingobj: Logger!!
+        """
+        self.filename = filename
+        self.frames = frames
+        self.splitframe = splitkun
         model_path = './FACE/models/5face_emotions_100ep.hdf5'
         self.emotions_XCEPTION = load_model(model_path, compile=False)
-        self.Loggingobj=Loggingobj
-        self.timeemos=[]
-        self.targetimage=None
-        self.video_path_ONLY=path_cutext(self.filename)
+        self.Loggingobj = Loggingobj
+        self.timeemos = []
+        self.targetimage = None
+        self.video_path_ONLY = path_cutext(self.filename)
         # 動画画像保存フォルダを作成
-        self.imgDIR_NAME = './FACE/temp_img/img_'+self.video_path_ONLY
+        self.imgDIR_NAME = './FACE/temp_img/img_' + self.video_path_ONLY
         if not os.path.exists(self.imgDIR_NAME):
             os.makedirs(self.imgDIR_NAME)
 
@@ -46,77 +60,96 @@ class Facemod:
 
         if not os.path.exists('./FACE/emomemo/'):
             os.makedirs('./FACE/emomemo/')
-    def target_img_select(self):
 
+    def target_img_select(self):
+        """
+        ターゲットを選択するッピ！
+
+        :return: 梨
+        """
         self.imgDIR_NAME = './FACE/temp_img/img_' + self.video_path_ONLY
         if not os.path.exists(self.imgDIR_NAME):
             os.makedirs(self.imgDIR_NAME)
-        #self.loggingobj.debugout(self.filename)
+        # self.loggingobj.debugout(self.filename)
         capture = cv2.VideoCapture(self.filename)
         fps = capture.get(cv2.CAP_PROP_FPS)
-        counterfps=1
-        self.facepoint=[]
+        counterfps = 1
+        self.facepoint = []
         # LOAD CASCADE
-        cascade_path='./FACE/models/haarcascade_frontalface_default.xml'
-        cascade=cv2.CascadeClassifier(cascade_path)
+        cascade_path = './FACE/models/haarcascade_frontalface_default.xml'
+        cascade = cv2.CascadeClassifier(cascade_path)
         self.hantei = 0
         while counterfps <= self.frames:
             if self.targetimage is None:
                 capture.set(cv2.CAP_PROP_POS_FRAMES, counterfps)
-                ret,frame=capture.read()
-                if(ret == False):
-                    counterfps+=self.splitframe
+                ret, frame = capture.read()
+                if (ret == False):
+                    counterfps += self.splitframe
                     continue
                 gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
                 self.front_face_list = cascade.detectMultiScale(gray)
                 print("{} {}".format(counterfps, self.front_face_list))
                 if len(self.front_face_list) == 0:
-                    counterfps+=self.splitframe
+                    counterfps += self.splitframe
                     continue
                 else:
                     self.select_target_img_window(frame)
-            counterfps+=self.splitframe
+            counterfps += self.splitframe
+
     def process(self):
+        """
+        顔を検出して類似判定呼び出して感情分析を呼び出すッピ!
+
+        :return: 何も返ってこないッピ! get_timeemosでも呼ぶといいッピ!
+        """
         capture = cv2.VideoCapture(self.filename)
         fps = capture.get(cv2.CAP_PROP_FPS)
-        counterfps=1
-        self.facepoint=[]
+        counterfps = 1
+        self.facepoint = []
         # LOAD CASCADE
-        cascade_path='./FACE/models/haarcascade_frontalface_default.xml'
-        cascade=cv2.CascadeClassifier(cascade_path)
+        cascade_path = './FACE/models/haarcascade_frontalface_default.xml'
+        cascade = cv2.CascadeClassifier(cascade_path)
         self.hantei = 0
         while counterfps <= self.frames:
             capture.set(cv2.CAP_PROP_POS_FRAMES, counterfps)
-            ret,frame=capture.read()
-            if(ret == False):
-                counterfps+=self.splitframe
+            ret, frame = capture.read()
+            if (ret == False):
+                counterfps += self.splitframe
                 continue
             gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
             self.front_face_list = cascade.detectMultiScale(gray)
             print("{} {}".format(counterfps, self.front_face_list))
-            faces_list_orig=[]
-            faces_list_cut=[]
+            faces_list_orig = []
+            faces_list_cut = []
 
-            for(x,y,w,h) in self.front_face_list:
+            for (x, y, w, h) in self.front_face_list:
                 faces_list_orig.append(frame[y: y + h, x: x + w].copy())
             for facekun in faces_list_orig:
-                faces_list_cut.append(cv2.resize(cv2.cvtColor(cv2.cvtColor(facekun,cv2.COLOR_BGR2GRAY),cv2.COLOR_BGR2RGB),(200,200)))
-            #for facekun2 in faces_list_cut:
+                faces_list_cut.append(
+                    cv2.resize(cv2.cvtColor(cv2.cvtColor(facekun, cv2.COLOR_BGR2GRAY), cv2.COLOR_BGR2RGB), (200, 200)))
+            # for facekun2 in faces_list_cut:
             #    plt.imshow(facekun2)
             #    plt.show()
-            similarface=self.similarity(faces_list_cut)
+            similarface = self.similarity(faces_list_cut)
             if similarface is not None:
                 self.detect_emotion(similarface)
-            counterfps+=self.splitframe
-    def detect_emotion(self,imgobj):
+            counterfps += self.splitframe
+
+    def detect_emotion(self, imgobj):
+        """
+        実際に感情分析をするッピ!
+
+        :param imgobj: 類似度が一番高い画像が入るッピ!
+        :return: 何も返しませんよ
+        """
         if imgobj is not None:
-            img_array=image.img_to_array(cv2.resize(imgobj,(48,48)))
-            pImg=np.delete(img_array,1,axis=2)
+            img_array = image.img_to_array(cv2.resize(imgobj, (48, 48)))
+            pImg = np.delete(img_array, 1, axis=2)
             pImg = np.delete(pImg, 1, axis=2)
-            pImg=np.expand_dims(pImg, 0) / 255
+            pImg = np.expand_dims(pImg, 0) / 255
             prediction = self.emotions_XCEPTION.predict(pImg)[0]
 
-            emos=[]
+            emos = []
             for predict_i in range(len(prediction)):
                 emos.append(prediction[predict_i])
             self.timeemos.append(emos)
@@ -124,18 +157,21 @@ class Facemod:
             emos = [0, 0, 0, 0, 0]
             self.timeemos.append(emos)
 
+    def similarity(self, images):
+        """
+        入力された画像とターゲットの類似度を計算して最大のものを返すっピ!
 
-    def similarity(self,images):
-
-
+        :param images: 検出された画像たち
+        :return: 類似度が最も高い画像
+        """
         # BFMatcherオブジェクトの生成
         bf = cv2.BFMatcher(cv2.NORM_HAMMING)
         # 特徴点を検出
         detector = cv2.AKAZE_create()
-        #detector = cv2.ORB_create()
+        # detector = cv2.ORB_create()
         (target_kp, target_des) = detector.detectAndCompute(self.targetimage, None)
 
-        similarity_list=[]
+        similarity_list = []
         for comparing_img in images:
             try:
                 (comparing_kp, comparing_des) = detector.detectAndCompute(comparing_img, None)
@@ -151,30 +187,36 @@ class Facemod:
             return None
         return images[similarity_list.index(min(similarity_list))]
 
-    def select_target_img_window(self,frame):
-        self.i=0
-        for(x,y,w,h) in self.front_face_list:
-            self.i+=1
+    def select_target_img_window(self, frame):
+        """
+        検出された画像からターゲットを選出するためにダイアログを表示するッピ!
+
+        :param frame: 現在のフレームッピ!
+        :return: 何も返さないッピ!
+        """
+        self.i = 0
+        for (x, y, w, h) in self.front_face_list:
+            self.i += 1
 
         win_width = 10 + (120 * self.i)
         win_height = 180
-        self.frame=frame.copy()
+        self.frame = frame.copy()
         self.showwin = tk.Tk()
         self.showwin.title('Select target image')
         self.showwin.geometry('{}x{}+{}+{}'.format(win_width, win_height,
-        #                                           int(QtGui.QGuiApplication.primaryScreen().size().width() / 2 - win_width / 2),
-        #                                           int(QtGui.QGuiApplication.primaryScreen().size().height() / 2 - win_height / 2)))
-        320,320))
+                                                   #                                           int(QtGui.QGuiApplication.primaryScreen().size().width() / 2 - win_width / 2),
+                                                   #                                           int(QtGui.QGuiApplication.primaryScreen().size().height() / 2 - win_height / 2)))
+                                                   320, 320))
         # 選択用のラジオボタンを配置
         # 画像それぞれのサイズを取得してshowwinのサイズを決める
         self.rdo_var_target = tk.IntVar()
         self.rdo_var_target.set(self.i + 1)
         rdo_txt = []
         load_img_list = []
-        load_img_list_origcv=[]
-        j=0
-        for(x,y,w,h) in self.front_face_list:
-        #for j in range(self.i):
+        load_img_list_origcv = []
+        j = 0
+        for (x, y, w, h) in self.front_face_list:
+            # for j in range(self.i):
             # print(j)
             # ラジオボタンに表示するテキストをリストに追加
             rdo_txt.append('img-' + str(j + 1))
@@ -184,14 +226,14 @@ class Facemod:
             rdo_target_select.place(x=10 + 25 + (100 * j), y=120)
 
             # jpg画像ファイルを読み込む
-            #pil_img = Image.open(self.imgDIR_NAME + '/temp' + str(j) + '.jpg')
-            img=frame[y: y + h, x: x + w].copy()
+            # pil_img = Image.open(self.imgDIR_NAME + '/temp' + str(j) + '.jpg')
+            img = frame[y: y + h, x: x + w].copy()
             load_img_list_origcv.append(img.copy())
-            pil_img=Image.fromarray(cv2.cvtColor(img,cv2.COLOR_BGR2RGB))
+            pil_img = Image.fromarray(cv2.cvtColor(img, cv2.COLOR_BGR2RGB))
             pil_img_resize = pil_img.resize(size=(100, 100))
             photo_img = ImageTk.PhotoImage(image=pil_img_resize, master=self.showwin)
             load_img_list.append(photo_img)
-            j+=1
+            j += 1
 
         # 一番最後に、target画像が無かった場合に選択するラジオボタンを配置
         rdo_target_select = ttk.Radiobutton(self.showwin, variable=self.rdo_var_target, value=self.i + 1,
@@ -212,29 +254,54 @@ class Facemod:
         self.showwin.mainloop()
         self.showwin_close(load_img_list_origcv)
 
-    def showwin_close(self,load_img_list_origcv):
+    def showwin_close(self, load_img_list_origcv):
+        """
+        選択ダイアログを閉じると呼び出されるっピ!
+
+        :param load_img_list_origcv: オリジナルサイズの候補画像ッピ!
+        :return: 何も返さないッピ!
+        """
         ##### showwinを消した時の処理 #####
         rdo_which = self.rdo_var_target.get()
         print(rdo_which)
         # 'target画像がない'を選択していない場合、処理
         if rdo_which - 1 != self.i:
-            #old = self.imgDIR_NAME + '/temp' + str(rdo_which - 1) + '.jpg'
-            #new = self.imgDIR_NAME + '/target.jpg'
-            #shutil.copy(old, new)
-            #gray and cut
-            self.targetimage=cv2.resize(cv2.cvtColor(load_img_list_origcv[rdo_which-1].copy(),cv2.COLOR_BGR2GRAY),(200,200))
+            # old = self.imgDIR_NAME + '/temp' + str(rdo_which - 1) + '.jpg'
+            # new = self.imgDIR_NAME + '/target.jpg'
+            # shutil.copy(old, new)
+            # gray and cut
+            self.targetimage = cv2.resize(cv2.cvtColor(load_img_list_origcv[rdo_which - 1].copy(), cv2.COLOR_BGR2GRAY),
+                                          (200, 200))
         else:
             return
+
     def showtargetimage(self):
+        """
+        開発時に使用したものッピ!
+
+        :return: 何も返さないッピ!
+        """
         if self.targetimage is None:
             pass
         else:
-            cvimage = cv2.cvtColor(self.targetimage,cv2.COLOR_BGR2RGB)
+            cvimage = cv2.cvtColor(self.targetimage, cv2.COLOR_BGR2RGB)
             plt.imshow(cvimage)
             plt.show()
+
     def Write_to_textfile(self):
-        txtfile='./FACE/emomemo/'+self.video_path_ONLY+'.json'
-        with open(txtfile,'w') as f:
-            json.dump(self.timeemos,f,indent=4,cls=Numkunencoder)
+        """
+        感情データをjsonにエクスポートするッピ!
+
+        :return:
+        """
+        txtfile = './FACE/emomemo/' + self.video_path_ONLY + '.json'
+        with open(txtfile, 'w') as f:
+            json.dump(self.timeemos, f, indent=4, cls=Numkunencoder)
+
     def get_timeemos(self):
+        """
+        感情データ配列を返すッピ!
+
+        :return: 感情データ配列
+        """
         return self.timeemos.copy()
