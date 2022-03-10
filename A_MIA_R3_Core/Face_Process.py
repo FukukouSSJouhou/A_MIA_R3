@@ -1,6 +1,6 @@
 import av
 
-from A_MIA_R3_Core.Loggingkun.Loggingkun import MIALogger
+from A_MIA_R3_Core.Loggingkun.Loggerkun import MIALogger
 from A_MIA_R3_Core.faceproc.Facemod import Facemod
 
 
@@ -22,7 +22,9 @@ class Face_Process:
         """
         ビデオ情報取得
         """
+        self.Loggingobj.debugout("Opening video file")
         container = av.open(self.filename)
+        self.Loggingobj.debugout("getting frames")
         self.total_frames = container.streams.video[0].frames
 
     def process(self):
@@ -32,6 +34,7 @@ class Face_Process:
         :return: 一定フレーム当たりの感情データ
         """
         fm = Facemod(self.filename, self.total_frames, self.split_frames, self.Loggingobj)
+        self.Loggingobj.normalout("Starting target selector...")
         fm.target_img_select()
         # fm.showtargetimage()
         fm.process()

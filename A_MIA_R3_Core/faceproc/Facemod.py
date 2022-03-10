@@ -17,7 +17,7 @@ from keras_preprocessing import image
 from tensorflow.python.keras.models import load_model
 from matplotlib import pyplot as plt
 
-from A_MIA_R3_Core.Loggingkun.Loggingkun import MIALogger
+from A_MIA_R3_Core.Loggingkun.Loggerkun import MIALogger
 from A_MIA_R3_Core.jsonencoder.Numkunencoder import Numkunencoder
 
 
@@ -44,9 +44,10 @@ class Facemod:
         self.filename = filename
         self.frames = frames
         self.splitframe = splitkun
+        self.Loggingobj=Loggingobj
         model_path = './FACE/models/5face_emotions_100ep.hdf5'
+        self.Loggingobj.normalout("Loading model...")
         self.emotions_XCEPTION = load_model(model_path, compile=False)
-        self.Loggingobj = Loggingobj
         self.timeemos = []
         self.targetimage = None
         self.video_path_ONLY = path_cutext(self.filename)
@@ -71,6 +72,7 @@ class Facemod:
         if not os.path.exists(self.imgDIR_NAME):
             os.makedirs(self.imgDIR_NAME)
         # self.loggingobj.debugout(self.filename)
+
         capture = cv2.VideoCapture(self.filename)
         fps = capture.get(cv2.CAP_PROP_FPS)
         counterfps = 1
@@ -118,7 +120,7 @@ class Facemod:
                 continue
             gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
             self.front_face_list = cascade.detectMultiScale(gray)
-            print("{} {}".format(counterfps, self.front_face_list))
+            self.Loggingobj.debugout("{} {}".format(counterfps, self.front_face_list))
             faces_list_orig = []
             faces_list_cut = []
 
@@ -181,7 +183,7 @@ class Facemod:
             except cv2.error:
                 # cv2がエラーを吐いた場合の処理
                 ret_simi = 100000
-            print(ret_simi)
+            self.Loggingobj.debugout(ret_simi)
             similarity_list.append(ret_simi)
         if similarity_list == []:
             return None
