@@ -44,9 +44,10 @@ class Facemod:
         self.filename = filename
         self.frames = frames
         self.splitframe = splitkun
+        self.Loggingobj=Loggingobj
         model_path = './FACE/models/5face_emotions_100ep.hdf5'
+        self.Loggingobj.normalout("Loading model...")
         self.emotions_XCEPTION = load_model(model_path, compile=False)
-        self.Loggingobj = Loggingobj
         self.timeemos = []
         self.targetimage = None
         self.video_path_ONLY = path_cutext(self.filename)
@@ -71,6 +72,7 @@ class Facemod:
         if not os.path.exists(self.imgDIR_NAME):
             os.makedirs(self.imgDIR_NAME)
         # self.loggingobj.debugout(self.filename)
+
         capture = cv2.VideoCapture(self.filename)
         fps = capture.get(cv2.CAP_PROP_FPS)
         counterfps = 1
@@ -181,7 +183,7 @@ class Facemod:
             except cv2.error:
                 # cv2がエラーを吐いた場合の処理
                 ret_simi = 100000
-            print(ret_simi)
+            self.Loggingobj.debugout(ret_simi)
             similarity_list.append(ret_simi)
         if similarity_list == []:
             return None
