@@ -90,7 +90,7 @@ class Facemod:
                     continue
                 gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
                 self.front_face_list = cascade.detectMultiScale(gray)
-                print("{} {}".format(counterfps, self.front_face_list))
+                self.Loggingobj.debugout("{} {}".format(counterfps, self.front_face_list))
                 if len(self.front_face_list) == 0:
                     counterfps += self.splitframe
                     continue
@@ -144,6 +144,7 @@ class Facemod:
         :param imgobj: 類似度が一番高い画像が入るッピ!
         :return: 何も返しませんよ
         """
+
         if imgobj is not None:
             img_array = image.img_to_array(cv2.resize(imgobj, (48, 48)))
             pImg = np.delete(img_array, 1, axis=2)
@@ -152,6 +153,7 @@ class Facemod:
             prediction = self.emotions_XCEPTION.predict(pImg)[0]
 
             emos = []
+            self.Loggingobj.debugout("{}".format(prediction))
             for predict_i in range(len(prediction)):
                 emos.append(prediction[predict_i])
             self.timeemos.append(emos)

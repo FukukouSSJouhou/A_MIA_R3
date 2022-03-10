@@ -3,10 +3,13 @@ import os
 import numpy as np
 from matplotlib import pyplot as plt
 
+from A_MIA_R3_Core.Loggingkun.Loggerkun import MIALogger
+
 
 class DrawGraphs:
-    def __init__(self,path_ONLY):
+    def __init__(self,path_ONLY,Loggingkun:MIALogger):
         self.path_ONLY=path_ONLY
+        self.Loggingkun=Loggingkun
         if not os.path.exists("./MakeGraph/graphs/"):
             os.makedirs("./MakeGraph/graphs/")
 
@@ -17,7 +20,7 @@ class DrawGraphs:
             for j in range(len(emotiondataarray)):
                 ylist[i].append(emotiondataarray[j][i])
         x=list(range(len(emotiondataarray)))
-        print(x)
+        self.Loggingkun.debugout(x)
         fig=plt.figure()
         ax = fig.add_subplot(1, 1, 1)
         linetype='-'
