@@ -27,7 +27,7 @@ class DrawGraphs:
 
         # 汎用要素
         ax.grid(True)
-        ax.set_xlabel('time [sec]')
+        ax.set_xlabel('frame [?]')
         ax.set_ylabel('exist rate')
         ax.set_title(title)
         ax.legend(['angry','happy','neutral','sad','surprise'])
