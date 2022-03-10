@@ -158,7 +158,12 @@ class Facemod:
             self.timeemos.append(emos)
 
     def similarity(self, images):
+        """
+        入力された画像とターゲットの類似度を計算して最大のものを返すっピ!
 
+        :param images: 検出された画像たち
+        :return: 類似度が最も高い画像
+        """
         # BFMatcherオブジェクトの生成
         bf = cv2.BFMatcher(cv2.NORM_HAMMING)
         # 特徴点を検出
@@ -183,6 +188,11 @@ class Facemod:
         return images[similarity_list.index(min(similarity_list))]
 
     def select_target_img_window(self, frame):
+        """
+        
+        :param frame:
+        :return:
+        """
         self.i = 0
         for (x, y, w, h) in self.front_face_list:
             self.i += 1
