@@ -15,7 +15,7 @@ class Face_Process:
         container=av.open(self.filename)
         self.total_frames = container.streams.video[0].frames
     def process(self):
-        fm=Facemod(self.filename,self.total_frames,self.split_frames)
+        fm=Facemod(self.filename,self.total_frames,self.split_frames,self.Loggingobj)
         fm.target_img_select()
         #fm.showtargetimage()
         fm.process()
