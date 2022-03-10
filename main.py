@@ -20,7 +20,7 @@ def logout_color(colorcode,txt):
 def main():
     Loggingobj=MIALogger(logout_color,print)
     filenamekun="koizumi_7_30.mp4"
-    Loggingobj.normalout("<< A_MIA_R3 >>")
+    Loggingobj.successout("<< A_MIA_R3 >>")
     Loggingobj.debugout("Creating Face_Process Obj")
     fp=Face_Process(filenamekun,29,Loggingobj)
     Loggingobj.debugout("Getting Video info")
