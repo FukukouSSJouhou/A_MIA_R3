@@ -13,7 +13,7 @@ except:
 
 def main():
     filenamekun="koizumi_7_30.mp4"
-    fp=Face_Process(filenamekun,90)
+    fp=Face_Process(filenamekun,29)
     fp.get_videoinfo()
     timeemoskun=fp.process()
     gp=Graph_Process(filenamekun)
