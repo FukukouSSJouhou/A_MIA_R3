@@ -190,7 +190,7 @@ class Facemod:
     def select_target_img_window(self, frame):
         """
         検出された画像からターゲットを選出するためにダイアログを表示するッピ!
-        
+
         :param frame: 現在のフレームッピ!
         :return: 何も返さないッピ!
         """
@@ -255,6 +255,12 @@ class Facemod:
         self.showwin_close(load_img_list_origcv)
 
     def showwin_close(self, load_img_list_origcv):
+        """
+        選択ダイアログを閉じると呼び出されるっピ!
+
+        :param load_img_list_origcv: オリジナルサイズの候補画像ッピ!
+        :return: 何も返さないッピ!
+        """
         ##### showwinを消した時の処理 #####
         rdo_which = self.rdo_var_target.get()
         print(rdo_which)
@@ -270,6 +276,11 @@ class Facemod:
             return
 
     def showtargetimage(self):
+        """
+        開発時に使用したものッピ!
+
+        :return: 何も返さないッピ!
+        """
         if self.targetimage is None:
             pass
         else:
@@ -278,6 +289,11 @@ class Facemod:
             plt.show()
 
     def Write_to_textfile(self):
+        """
+        感情データをjsonにエクスポートするッピ!
+        
+        :return:
+        """
         txtfile = './FACE/emomemo/' + self.video_path_ONLY + '.json'
         with open(txtfile, 'w') as f:
             json.dump(self.timeemos, f, indent=4, cls=Numkunencoder)
