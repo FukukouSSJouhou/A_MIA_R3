@@ -1,3 +1,4 @@
+import json
 import math
 import os
 import shutil
@@ -15,6 +16,9 @@ from PySide2 import QtCore, QtGui
 from keras_preprocessing import image
 from tensorflow.python.keras.models import load_model
 from matplotlib import pyplot as plt
+
+from A_MIA_R3_Core.jsonencoder.Numkunencoder import Numkunencoder
+
 
 def path_cutext(pathkun):
     pathkun22, extkun = os.path.splitext(os.path.basename(pathkun))
@@ -227,3 +231,7 @@ class Facemod:
             cvimage = cv2.cvtColor(self.targetimage,cv2.COLOR_BGR2RGB)
             plt.imshow(cvimage)
             plt.show()
+    def Write_to_textfile(self):
+        txtfile='./FACE/emomemo/'+self.video_path_ONLY+'.json'
+        with open(txtfile,'w') as f:
+            json.dump(self.timeemos,f,indent=4,cls=Numkunencoder)

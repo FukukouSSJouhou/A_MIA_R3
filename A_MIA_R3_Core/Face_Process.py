@@ -15,5 +15,6 @@ class Face_Process:
     def process(self):
         fm=Facemod(self.filename,self.total_frames,self.split_frames)
         fm.target_img_select()
-        fm.showtargetimage()
+        #fm.showtargetimage()
         fm.process()
+        fm.Write_to_textfile()
