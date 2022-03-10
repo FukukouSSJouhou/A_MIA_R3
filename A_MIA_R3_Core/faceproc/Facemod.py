@@ -26,7 +26,19 @@ def path_cutext(pathkun):
     return pathkun22
 
 class Facemod:
-    def __init__(self,filename,frames,splitkun,Loggingobj:MIALogger):
+    """
+    内部で呼ばれる奴だよ。
+    実際に処理してるッピ！
+    """
+    def __init__(self,filename:str,frames,splitkun,Loggingobj:MIALogger):
+        """
+        コンストラクタだよ～
+
+        :param filename: ファイル名ッピ！
+        :param frames: 総合フレーム数ッピ！
+        :param splitkun: 分割フレーム数ッピ！
+        :param Loggingobj: Logger!!
+        """
         self.filename=filename
         self.frames=frames
         self.splitframe=splitkun
