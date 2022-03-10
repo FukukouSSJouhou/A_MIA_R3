@@ -17,4 +17,4 @@ class Face_Process:
         fm.target_img_select()
         #fm.showtargetimage()
         fm.process()
-        fm.Write_to_textfile()
+        return fm.get_timeemos()

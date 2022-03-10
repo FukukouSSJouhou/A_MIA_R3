@@ -235,3 +235,5 @@ class Facemod:
         txtfile='./FACE/emomemo/'+self.video_path_ONLY+'.json'
         with open(txtfile,'w') as f:
             json.dump(self.timeemos,f,indent=4,cls=Numkunencoder)
+    def get_timeemos(self):
+        return self.timeemos.copy()
