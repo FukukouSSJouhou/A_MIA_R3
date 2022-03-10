@@ -24,6 +24,7 @@ class MIALogger():
     def colorout(self,color,strkun):
         """
         カラーコードで色を指定した出力
+        
         :param color: カラーコード
         :param strkun: 出力させたい文字列
         :return:
