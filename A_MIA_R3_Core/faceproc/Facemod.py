@@ -120,7 +120,7 @@ class Facemod:
                 continue
             gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
             self.front_face_list = cascade.detectMultiScale(gray)
-            print("{} {}".format(counterfps, self.front_face_list))
+            self.Loggingobj.debugout("{} {}".format(counterfps, self.front_face_list))
             faces_list_orig = []
             faces_list_cut = []
 
