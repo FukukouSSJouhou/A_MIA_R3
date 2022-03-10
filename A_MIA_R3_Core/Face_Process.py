@@ -8,6 +8,7 @@ class Face_Process:
     def __init__(self, filename: str, split_frames: int, loggerobj: MIALogger):
         """
         コンストラクタだよ～
+        
         :param filename: ビデオファイル名
         :param split_frames: 一回当たりのフレーム数
         :param loggerobj: Logger object
