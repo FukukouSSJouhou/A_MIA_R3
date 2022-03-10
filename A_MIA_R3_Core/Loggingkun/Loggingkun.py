@@ -66,7 +66,7 @@ class MIALogger:
             self.logginkun("#FF00FF",strkun)
     def debugout(self,strkun):
         """
-        デバッグ出力(紫色)
+        デバッグ出力(紫色) シンボル名付き
 
         :param strkun: 出力させたい文字列
         :return:
