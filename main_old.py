@@ -10,6 +10,7 @@ from PIL import Image, ImageTk
 import tkinter as tk
 from A_MIA_R3_Core.Graph_Process import Graph_Process
 from A_MIA_R3_Core.Loggingkun.Loggerkun import MIALogger
+from A_MIA_R3_Core.faceproc.FPCallbackFaceSelector import FPCallbackFaceSelected, FPCallbackFaceSelector
 
 try:
     ctypes.windll.shcore.SetProcessDpiAwareness(True)
@@ -131,8 +132,11 @@ def main():
     Loggingobj=MIALogger(logout_color,print)
     filenamekun="koizumi_7_30.mp4"
     Loggingobj.successout("<< A_MIA_R3 Core System>>")
+    Loggingobj.debugout("Creating callback object")
+    callbackobj_func=mainold_selectwin()
+    callbackobj=FPCallbackFaceSelector(callbackobj_func.select_target_img_window)
     Loggingobj.debugout("Creating Face_Process Obj")
-    fp=Face_Process(filenamekun,29,Loggingobj)
+    fp=Face_Process(filenamekun,29,Loggingobj,callbackobj)
     Loggingobj.normalout("get Video info")
     fp.get_videoinfo()
     Loggingobj.normalout("Processing...")
