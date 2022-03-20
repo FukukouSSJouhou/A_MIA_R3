@@ -6,6 +6,7 @@ import subprocess
 import sys
 import wave
 from tkinter import Image, ttk
+from typing import ClassVar
 
 import numpy as np
 import cv2
@@ -18,6 +19,7 @@ from tensorflow.python.keras.models import load_model
 from matplotlib import pyplot as plt
 
 from A_MIA_R3_Core.Loggingkun.Loggerkun import MIALogger
+from A_MIA_R3_Core.faceproc.FPCallbackFaceSelector import FPCallbackFaceSelector
 from A_MIA_R3_Core.jsonencoder.Numkunencoder import Numkunencoder
 
 
@@ -32,7 +34,7 @@ class Facemod:
     実際に処理してるッピ！
     """
 
-    def __init__(self, filename: str, frames, splitkun, Loggingobj: MIALogger):
+    def __init__(self, filename: str, frames, splitkun, Loggingobj: MIALogger, callbackobj: FPCallbackFaceSelector):
         """
         コンストラクタだよ～
 
@@ -40,11 +42,13 @@ class Facemod:
         :param frames: 総合フレーム数ッピ！
         :param splitkun: 分割フレーム数ッピ！
         :param Loggingobj: Logger!!
+        :param callbackobj: Callback Object
         """
         self.filename = filename
         self.frames = frames
         self.splitframe = splitkun
-        self.Loggingobj=Loggingobj
+        self.Loggingobj = Loggingobj
+        self.callbackobj:FPCallbackFaceSelector = callbackobj
         model_path = './FACE/models/5face_emotions_100ep.hdf5'
         self.Loggingobj.normalout("Loading model...")
         self.emotions_XCEPTION = load_model(model_path, compile=False)
@@ -96,6 +100,7 @@ class Facemod:
                     continue
                 else:
                     self.select_target_img_window(frame)
+                    #self.callbackobj.execute(frame,self.front_face_list,self.targetimage)
             counterfps += self.splitframe
 
     def process(self):

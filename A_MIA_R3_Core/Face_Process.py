@@ -1,6 +1,7 @@
 import av
 
 from A_MIA_R3_Core.Loggingkun.Loggerkun import MIALogger
+from A_MIA_R3_Core.faceproc.FPCallbackFaceSelector import FPCallbackFaceSelector
 from A_MIA_R3_Core.faceproc.Facemod import Facemod
 
 

@@ -7,12 +7,12 @@ class FPCallbackFaceSelector:
         """
         self.callback = callback
 
-    def execute(self, frame, front_face_list):
+    def execute(self, frame, front_face_list,target_image):
         """
         execute callback
 
         :param frame: frame object
         :param front_face_list: facelist
-        :return: similar value?
+        :param target_image: target image
         """
-        return self.callback(frame, front_face_list)
+        self.callback(frame, front_face_list,target_image)
