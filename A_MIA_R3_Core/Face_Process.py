@@ -1,22 +1,27 @@
-import av
+from tkinter import ttk
 
+import av
 from A_MIA_R3_Core.Loggingkun.Loggerkun import MIALogger
+from A_MIA_R3_Core.faceproc.FPCallbackFaceSelector import FPCallbackFaceSelector, FPCallbackFaceSelected
 from A_MIA_R3_Core.faceproc.Facemod import Facemod
 
 
 class Face_Process:
-    def __init__(self, filename: str, split_frames: int, loggerobj: MIALogger):
+    def __init__(self, filename: str, split_frames: int, loggerobj: MIALogger,callbackkun:FPCallbackFaceSelector):
         """
         コンストラクタだよ～
 
         :param filename: ビデオファイル名
         :param split_frames: 一回当たりのフレーム数
         :param loggerobj: Logger object
+        :param callbackkun: Callback Object
         """
         self.filename = filename
         self.Loggingobj = loggerobj
         self.total_frames = 0
         self.split_frames = split_frames
+        self.callbackkun=callbackkun
+
 
     def get_videoinfo(self):
         """
@@ -33,7 +38,7 @@ class Face_Process:
 
         :return: 一定フレーム当たりの感情データ
         """
-        fm = Facemod(self.filename, self.total_frames, self.split_frames, self.Loggingobj)
+        fm = Facemod(self.filename, self.total_frames, self.split_frames, self.Loggingobj,self.callbackkun)
         self.Loggingobj.normalout("Starting target selector...")
         fm.target_img_select()
         # fm.showtargetimage()
@@ -41,3 +46,4 @@ class Face_Process:
         fm.process()
         self.Loggingobj.successout("Success! Generated emos data!")
         return fm.get_timeemos()
+
