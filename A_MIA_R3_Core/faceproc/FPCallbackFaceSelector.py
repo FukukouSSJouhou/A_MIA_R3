@@ -25,6 +25,13 @@ class FPCallbackFaceSelected:
         """
         self.callback=callback
     def execute(self,target_img):
+        """
+        execute callback
+
+        :param target_img: target image!!
+        :return:none
+        """
+
         self.callback(target_img)
 
 

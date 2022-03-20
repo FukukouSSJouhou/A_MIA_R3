@@ -19,7 +19,7 @@ from tensorflow.python.keras.models import load_model
 from matplotlib import pyplot as plt
 
 from A_MIA_R3_Core.Loggingkun.Loggerkun import MIALogger
-from A_MIA_R3_Core.faceproc.FPCallbackFaceSelector import FPCallbackFaceSelector
+from A_MIA_R3_Core.faceproc.FPCallbackFaceSelector import FPCallbackFaceSelector, FPCallbackFaceSelected
 from A_MIA_R3_Core.jsonencoder.Numkunencoder import Numkunencoder
 
 
@@ -49,6 +49,7 @@ class Facemod:
         self.splitframe = splitkun
         self.Loggingobj = Loggingobj
         self.callbackobj:FPCallbackFaceSelector = callbackobj
+        self.fpfsselectedkun:FPCallbackFaceSelected=FPCallbackFaceSelected(self.image_selected_cnbexecute)
         model_path = './FACE/models/5face_emotions_100ep.hdf5'
         self.Loggingobj.normalout("Loading model...")
         self.emotions_XCEPTION = load_model(model_path, compile=False)
@@ -262,7 +263,8 @@ class Facemod:
 
         self.showwin.mainloop()
         self.showwin_close(load_img_list_origcv)
-
+    def image_selected_cnbexecute(self,target_image):
+        self.targetimage=target_image
     def showwin_close(self, load_img_list_origcv):
         """
         選択ダイアログを閉じると呼び出されるっピ!
