@@ -101,7 +101,7 @@ class Facemod:
                     continue
                 else:
                     self.select_target_img_window(frame)
-                    #self.callbackobj.execute(frame,self.front_face_list,self.targetimage)
+                    #self.callbackobj.execute(frame,self.front_face_list,self.fpfsselectedkun)
             counterfps += self.splitframe
 
     def process(self):
