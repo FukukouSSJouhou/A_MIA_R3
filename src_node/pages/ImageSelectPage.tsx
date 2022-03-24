@@ -8,7 +8,17 @@ const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
     return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
   });
 export default function ImageSelectPage(): React.ReactElement {
-    let image_list: Array<string> = [
+    let ws=React.useRef<WebSocket>(null!);
+    React.useEffect(()=>{
+        ws.current=new WebSocket('ws://localhost:5001');
+        ws.current.onmessage=(e)=>{
+            console.log(e.data);
+        }
+        return ()=>{
+            ws.current.close();
+        }
+    },[]);
+    /*let image_list: Array<string> = [
         "https://via.placeholder.com/300x300",
         
         "https://via.placeholder.com/300x300",
@@ -18,10 +28,19 @@ export default function ImageSelectPage(): React.ReactElement {
         "https://via.placeholder.com/300x300",
         
         "https://via.placeholder.com/300x300"
-    ]
+    ]*/
+    const [image_list,setImageList]=React.useState<Array<string>>([]);
     const [openSnackbar, setOpenSnackbar] = React.useState(false);
     const [selectedIndex,setselectedIndex]=React.useState(0);
 
+    React.useEffect(()=>{
+        if(!ws.current) return;
+        ws.current.onmessage=e=>{
+            const message = JSON.parse(e.data);
+            //console.log("e", message.data);
+            setImageList(message.data);
+        }
+    },[]);
     const clicked_btkun=(index:number)=>{
         setselectedIndex(index);
         setOpenSnackbar(true);
