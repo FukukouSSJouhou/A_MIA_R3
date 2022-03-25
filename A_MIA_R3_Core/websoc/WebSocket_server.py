@@ -1,3 +1,4 @@
+import asyncio
 import json
 import logging
 
@@ -22,4 +23,9 @@ class WebSocket_server():
         if(commandkun=="selectedimg"):
             dataindex=jd['indexid']
             self.callback.execute(dataindex)
-        
+    def run(self):
+        self.server.set_fn_new_client(self.new_client)
+        self.server.set_fn_client_left(self.client_left)
+        self.server.set_fn_message_received(self.message_received)
+        asyncio.get_event_loop().run_until_complete(self.server)
+        asyncio.get_event_loop().run_in_executor(self.server)

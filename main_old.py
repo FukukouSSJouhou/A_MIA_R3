@@ -122,7 +122,7 @@ def logout_color(colorcode,txt):
     g = int(colorcode[3:5], 16)
     b = int(colorcode[5:7], 16)
     print("\033[38;2;{};{};{}m{}\033[0m".format(r, g, b, txt))
-def main():
+async def main():
     """
     メインコードだよ
 
@@ -132,6 +132,7 @@ def main():
     Loggingobj=MIALogger(logout_color,print)
     filenamekun="koizumi_7_30.mp4"
     Loggingobj.successout("<< A_MIA_R3 Core System>>")
+    Web 
     Loggingobj.debugout("Creating callback object")
     callbackobj_func=mainold_selectwin()
     callbackobj=FPCallbackFaceSelector(callbackobj_func.select_target_img_window)
