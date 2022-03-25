@@ -6,4 +6,5 @@ declare global{
 export interface IMIA_ELECTRON_API{
     sendsample:(data:string) => void;
     onSample:(callback:(event:any,argv:any)=>void)=>()=>void;
+    openVideoFileDialog:(title:string)=>Promise<void>;
 }
