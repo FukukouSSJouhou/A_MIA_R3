@@ -8,7 +8,7 @@ class App extends React.Component{
             <>
             <BrowserRouter>
                 <Routes>
-                    <Route path="/" element={<ImageSelectPage />}/>
+                    <Route path="/" element={<IndexPage />}/>
                     <Route path="/index.html" element={<IndexPage />}/>
                 </Routes>
             </BrowserRouter>

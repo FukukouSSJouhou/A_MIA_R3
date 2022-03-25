@@ -2,6 +2,7 @@
   "name": "A_MIA_R3",
   "version": "1.0.0",
   "author": "jouhouhan",
+  "main": "./public/electron.js",
   "license": "MIT",
   "devDependencies": {
     "@types/react": "^17.0.41",
@@ -20,7 +21,8 @@
   },
   "scripts": {
     "build": "webpack",
-    "start": "webpack-dev-server"
+    "start-react": "webpack-dev-server",
+    "start": "concurrently \"cross-env BROWSER=none yarn start-react\" \"wait-on http://localhost:3000 && electron .\""
   },
   "dependencies": {
     "@emotion/react": "^11.8.2",
