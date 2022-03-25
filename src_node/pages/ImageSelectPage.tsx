@@ -51,6 +51,7 @@ export default function ImageSelectPage(): React.ReactElement {
         setselectedIndex(index);
         setOpenSnackbar(true);
         ws.current.send(JSON.stringify(sendobject));
+        setcanselect(false);
     }
     const handleClose=(event?:React.SyntheticEvent|Event,reason?:string)=>{
         if(reason==="clickaway"){
@@ -86,6 +87,11 @@ export default function ImageSelectPage(): React.ReactElement {
         return (
             <>
             Waiting...
+          <Snackbar open={openSnackbar} autoHideDuration={6000} onClose={handleClose}>
+            <Alert onClose={handleClose} severity="success" sx={{ width: '100%' }}>
+              Selected {selectedIndex}!
+            </Alert>
+          </Snackbar>
             </>
         );
     }
