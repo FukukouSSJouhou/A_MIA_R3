@@ -32,6 +32,7 @@ export default function ImageSelectPage(): React.ReactElement {
     const [image_list,setImageList]=React.useState<Array<string>>([]);
     const [openSnackbar, setOpenSnackbar] = React.useState(false);
     const [selectedIndex,setselectedIndex]=React.useState(0);
+    const [canselect,setcanselect]=React.useState(false);
 
     React.useEffect(()=>{
         if(!ws.current) return;
@@ -39,6 +40,7 @@ export default function ImageSelectPage(): React.ReactElement {
             const message = JSON.parse(e.data);
             //console.log("e", message.data);
             setImageList(message.data);
+            setcanselect(true);
         }
     },[]);
     const clicked_btkun=(index:number)=>{
@@ -56,26 +58,35 @@ export default function ImageSelectPage(): React.ReactElement {
         }
         setOpenSnackbar(false);
     }
-    return (
-        <>
-            <Grid container rowSpacing={1} columnSpacing={{ xs: 2, sm: 2, md: 3 }}>
-                {image_list.map((image_url: string, index: number) => {
-                    return (
-                        <Grid item xs={3}>
-                            <Button onClick={()=>{clicked_btkun(index)}}>
-                                <Paper elevation={3} >
-                                    <img src={image_url} alt="" />
-                                </Paper></Button>
-                        </Grid>
-                    );
-                }
-                )}
-            </Grid>
-      <Snackbar open={openSnackbar} autoHideDuration={6000} onClose={handleClose}>
-        <Alert onClose={handleClose} severity="success" sx={{ width: '100%' }}>
-          Selected {selectedIndex}!
-        </Alert>
-      </Snackbar>
-        </>
-    );
+    if(canselect){
+
+        return (
+            <>
+                <Grid container rowSpacing={1} columnSpacing={{ xs: 2, sm: 2, md: 3 }}>
+                    {image_list.map((image_url: string, index: number) => {
+                        return (
+                            <Grid item xs={3}>
+                                <Button onClick={()=>{clicked_btkun(index)}}>
+                                    <Paper elevation={3} >
+                                        <img src={image_url} alt="" />
+                                    </Paper></Button>
+                            </Grid>
+                        );
+                    }
+                    )}
+                </Grid>
+          <Snackbar open={openSnackbar} autoHideDuration={6000} onClose={handleClose}>
+            <Alert onClose={handleClose} severity="success" sx={{ width: '100%' }}>
+              Selected {selectedIndex}!
+            </Alert>
+          </Snackbar>
+            </>
+        );
+    }else{
+        return (
+            <>
+            Waiting...
+            </>
+        );
+    }
 }

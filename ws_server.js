@@ -30,7 +30,10 @@ ws.on("connection",(ws)=>{
                 }
                 broadcast(JSON.stringify(objkun));
                 break;
+            case "selectedimg":
+                console.log("selected ! %d",objtdn.indexid);
+                break;
         }
-        console.log("recieved: %s",JSON.stringify(objtdn))  
+        //console.log("recieved: %s",JSON.stringify(objtdn))  
     })
 });
