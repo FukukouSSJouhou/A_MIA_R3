@@ -1,9 +1,7 @@
 const electron = require("electron");
-const app = electron.app;
-const BrowserWindow = electron.BrowserWindow;
 const path = require("path");
 const isDev = require("electron-is-dev");
-const { ipcMain } = require("electron");
+const { ipcMain ,dialog,BrowserWindow,app } = require("electron");
 let mainWindow;
 function createWindow() {
     mainWindow = new BrowserWindow(
@@ -19,6 +17,24 @@ function createWindow() {
     );
     ipcMain.handle("sendsample",(event,data)=>{
         console.log(data)
+    })
+    ipcMain.handle("openVideoFileDialog",async(event,title)=>{
+        const paths=dialog.showOpenDialogSync(mainWindow,
+            {
+                buttonLabel:"Open",
+                filters:[
+                        {name:"Video files",extensions:["mp4","mkv","avi","wmv","webm"]},
+                        {name:"All files",extensions:["*"]}
+                ],
+                properties:[
+                    "openFile"
+                ]
+            });
+            if(paths===undefined)return({status:undefined,path:""});
+            return({
+                status:true,
+                path:paths[0]
+            })
     })
     setInterval(()=>{
         const date = new Date();
