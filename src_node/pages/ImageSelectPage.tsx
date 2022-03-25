@@ -42,8 +42,13 @@ export default function ImageSelectPage(): React.ReactElement {
         }
     },[]);
     const clicked_btkun=(index:number)=>{
+        let sendobject={
+            command:"selectedimg",
+            indexid:index
+        };
         setselectedIndex(index);
         setOpenSnackbar(true);
+        ws.current.send(JSON.stringify(sendobject));
     }
     const handleClose=(event?:React.SyntheticEvent|Event,reason?:string)=>{
         if(reason==="clickaway"){
