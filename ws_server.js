@@ -14,7 +14,8 @@ ws.on("connection",(ws)=>{
         });
     });
     ws.on("message",(message)=>{
-        console.log("recieved: %s",message)
+        let objtdn=JSON.parse(message);
+        console.log("recieved: %s",JSON.stringify(objtdn))  
         let objkun={
             "command":"selectimg",
             "data":[
