@@ -15,17 +15,22 @@ ws.on("connection",(ws)=>{
     });
     ws.on("message",(message)=>{
         let objtdn=JSON.parse(message);
-        console.log("recieved: %s",JSON.stringify(objtdn))  
-        let objkun={
-            "command":"selectimg",
-            "data":[
-                "https://via.placeholder.com/300x300",
-                "https://via.placeholder.com/300x300",
-                "https://via.placeholder.com/300x300",
-                "https://via.placeholder.com/300x300",
-                "https://via.placeholder.com/300x300"
-            ]
+        switch(objtdn.command){
+            case "test":
+
+                let objkun={
+                    "command":"selectimg",
+                    "data":[
+                        "https://via.placeholder.com/300x300",
+                        "https://via.placeholder.com/300x300",
+                        "https://via.placeholder.com/300x300",
+                        "https://via.placeholder.com/300x300",
+                        "https://via.placeholder.com/300x300"
+                    ]
+                }
+                broadcast(JSON.stringify(objkun));
+                break;
         }
-        broadcast(JSON.stringify(objkun));
+        console.log("recieved: %s",JSON.stringify(objtdn))  
     })
 });
