@@ -35,18 +35,6 @@ module.exports = {
         new HtmlWebpackPlugin({
             template: './src_node/index.html',
         }),
-        new HtmlWebpackPlugin({
-            template: './src_node/index.html',
-            filename: '404.html'
-        }),
-        new HtmlWebpackPlugin({
-            template: './src_node/index.html',
-            filename: 'apps.html'
-        }),
-        new HtmlWebpackPlugin({
-            template: './src_node/index.html',
-            filename: 'plamar.html'
-        }),
         new CopyWebpackPlugin(
             {
                 patterns:[

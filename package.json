@@ -29,7 +29,8 @@
     "appId": "io.github.fukukoussjouhou.amiar3electron",
     "productName": "A_MIA_R3_E",
     "files": [
-      "build/**/*"
+      "build/**/*",
+      "src_electron/**/*"
     ]
   },
   "dependencies": {
