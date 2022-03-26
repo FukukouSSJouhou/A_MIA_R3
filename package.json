@@ -1,7 +1,7 @@
 {
   "name": "A_MIA_R3",
   "version": "1.0.0",
-  "author": "jouhouhan",
+  "author": "jouhouhan <fukukoussjouhou@gmail.com>",
   "main": "./src_electron/electron.js",
   "license": "MIT",
   "devDependencies": {
