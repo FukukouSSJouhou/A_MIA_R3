@@ -20,9 +20,17 @@
     "webpack-dev-server": "^4.7.4"
   },
   "scripts": {
-    "build": "webpack",
+    "build-react": "webpack",
     "start-react": "webpack-dev-server",
+    "build-electron":"yarn build-react && electron-builder --win --x64 --dir",
     "start": "concurrently \"cross-env BROWSER=none yarn start-react\" \"wait-on http://localhost:3000 && electron .\""
+  },
+  "build": {
+    "appId": "io.github.fukukoussjouhou.amiar3electron",
+    "productName": "A_MIA_R3_E",
+    "files": [
+      "build/**/*"
+    ]
   },
   "dependencies": {
     "@emotion/react": "^11.8.2",
