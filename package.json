@@ -2,7 +2,7 @@
   "name": "A_MIA_R3",
   "version": "1.0.0",
   "author": "jouhouhan <fukukoussjouhou@gmail.com>",
-  "main": "./src_electron/electron.js",
+  "main": "./build/electron.js",
   "license": "MIT",
   "devDependencies": {
     "@types/react": "^17.0.41",
@@ -20,8 +20,14 @@
     "webpack-dev-server": "^4.7.4"
   },
   "scripts": {
-    "build-react": "webpack",
-    "start-react": "webpack-dev-server",
+    "predev": "rimraf build",
+    "dev": "run-p dev:tsc dev:webpack dev:electron",
+    "dev:tsc": "tsc -w -p tsconfig.main.json",
+    "dev:webpack": "cross-env NODE_ENV=\"development\" webpack-dev-server",
+    "dev:webpack-react": "cross-env NODE_ENV=\"development\" REACT_DEVENV=\"devreactonly\" webpack-dev-server",
+    "dev:electron": "wait-on http://localhost:3000 && cross-env NODE_ENV=\"development\" electron .",
+    "build-react": "cross-env NODE_ENV=\"production\" webpack --progress",
+    "start-react": "run-p dev:tsc dev:webpack-react",
     "build-electron": "yarn build-react && electron-builder --win --x64 --dir",
     "start": "concurrently \"cross-env BROWSER=none yarn start-react\" \"wait-on http://localhost:3000 && electron .\""
   },
@@ -40,12 +46,14 @@
     "@mui/material": "^5.5.2",
     "cross-env": "^7.0.3",
     "electron-is-dev": "^2.0.0",
+    "electron-reload": "^2.0.0-alpha.1",
     "npm-run-all": "^4.1.5",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-router": "^6.2.2",
     "react-router-dom": "^6.2.2",
     "ts-node": "^10.7.0",
+    "webpack-merge": "^5.8.0",
     "ws": "^8.5.0"
   }
 }

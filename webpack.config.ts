@@ -1,22 +1,20 @@
-const path = require('path');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
-const CopyWebpackPlugin = require('copy-webpack-plugin');
+import path from 'path';
+import * as wdevpack from 'webpack-dev-server';
+import { Configuration } from 'webpack';
+import  HtmlWebpackPlugin from 'html-webpack-plugin';
+import CopyWebpackPlugin from 'copy-webpack-plugin';
 const isDev = process.env.NODE_ENV === 'development';
-module.exports = {
-    mode: "development",
-    entry: "./src_node/index.tsx",
+const isReactOnly=process.env.REACT_DEVENV==="devreactonly"
+const common:Configuration={
+    mode: isDev ? 'development' : 'production',
+
+    resolve: {
+        extensions: ['.js', '.jsx','.json', '.ts', '.tsx']
+    },
+    
     output: {
         path: path.resolve(__dirname, 'build'),
-        filename: "index.js"
-    },
-    resolve: {
-        extensions: ['.js', '.json', '.ts', '.tsx']
-    },
-    devtool: 'source-map',
-    devServer: {
-        port: 3000,
-        historyApiFallback: true,
-        static: { directory: path.join(__dirname, 'public'), }
+        filename: '[name].js'
     },
     module: {
         rules: [
@@ -32,6 +30,36 @@ module.exports = {
             },
         ]
     },
+    watch: isDev,
+    devtool: isDev ? 'inline-source-map' : undefined,
+}
+const main:Configuration={
+    ...common,
+    target:"electron-main",
+    entry:{
+        main:"./src_electron/electron.ts"
+    }
+
+};
+const preload:Configuration={
+    ...common,
+    target:"electron-preload",
+    entry:{
+        preload:"./src_electron/preload.ts"
+    }
+}
+const renderer:Configuration={
+    ...common,
+    target:"web",
+    
+    entry: "./src_node/index.tsx",
+    
+    devServer: {
+        port: 3000,
+        historyApiFallback: true,
+        static: { directory: path.join(__dirname, 'public'), }
+    },
+    
     plugins: [
         new HtmlWebpackPlugin({
             template: './src_node/index.html',
@@ -44,4 +72,34 @@ module.exports = {
             }
         )
     ],
-}
+
+};
+const config=isDev?[renderer]:[main,preload,renderer];
+export default config;
+/*
+module.exports = {
+    mode: "development",
+    entry: "./src_node/index.tsx",
+    output: {
+        path: path.resolve(__dirname, 'build'),
+        filename: "index.js"
+    },
+    devtool: 'source-map',
+    devServer: {
+        port: 3000,
+        historyApiFallback: true,
+        static: { directory: path.join(__dirname, 'public'), }
+    },
+    plugins: [
+        new HtmlWebpackPlugin({
+            template: './src_node/index.html',
+        }),
+        new CopyWebpackPlugin(
+            {
+                patterns:[
+                    {from:"public",to:"./"}
+                ]
+            }
+        )
+    ],
+}*/

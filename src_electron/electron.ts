@@ -1,9 +1,18 @@
-const electron = require("electron");
-const path = require("path");
-const isDev = require("electron-is-dev");
-const { ipcMain ,dialog,BrowserWindow,app } = require("electron");
-let mainWindow;
-function createWindow() {
+import path from "path";
+import { ipcMain ,dialog,BrowserWindow,app } from "electron";
+if (process.env.NODE_ENV === 'development') {
+  const execPath =
+    process.platform === 'win32'
+      ? '../node_modules/electron/dist/electron.exe'
+      : '../node_modules/.bin/electron';
+
+  require('electron-reload')(__dirname, {
+    electron: path.resolve(__dirname, execPath),
+  });
+}
+
+let mainWindow:BrowserWindow;
+const createWindow=()=> {
     mainWindow = new BrowserWindow(
         {
             width: 900, 
@@ -40,7 +49,7 @@ function createWindow() {
         const date = new Date();
         const currentTime = formattedDateTime(date);
         mainWindow.webContents.send("onSample",currentTime)
-        function formattedDateTime(date) {
+        function formattedDateTime(date:Date) {
           const y = date.getFullYear();
           const m = ('0' + (date.getMonth() + 1)).slice(-2);
           const d = ('0' + date.getDate()).slice(-2);
@@ -52,21 +61,11 @@ function createWindow() {
         }
     },2000);
     mainWindow.loadURL(
-        isDev
+        process.env.NODE_ENV === 'development'
             ? "http://localhost:3000"
             : `file://${path.join(__dirname, "../build/index.html")}`
     );
-    mainWindow.on("closed", () => (mainWindow = null));
 
 }
-app.on("ready", createWindow);
-app.on("window-all-closed", () => {
-    if (process.platform !== "darwin") {
-        app.quit();
-    }
-});
-app.on("activate", () => {
-    if (mainWindow === null) {
-        createWindow();
-    }
-})
+app.whenReady().then(createWindow);
+app.once("window-all-closed",()=>app.quit());
