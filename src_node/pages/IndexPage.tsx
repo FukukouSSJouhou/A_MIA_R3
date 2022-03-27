@@ -66,7 +66,17 @@ export default function IndexPage():React.ReactElement{
     const naibuyouso=()=>{
         switch(activeStep){
             case 0:
-                return "Zero!";
+                return (
+                  <>
+                  
+        {vfilename}
+        <br />
+        <Button onClick={button_clicked}>
+            Click me!
+        </Button>
+        <br />
+                  </>
+                );
             case 1:
                 return "One!";
             default:
@@ -132,12 +142,6 @@ export default function IndexPage():React.ReactElement{
       )}
     </Box>
     <br />
-        {vfilename}
-        <br />
-        <Button onClick={button_clicked}>
-            Click me!
-        </Button>
-        <br />
         </>
     )
 }
