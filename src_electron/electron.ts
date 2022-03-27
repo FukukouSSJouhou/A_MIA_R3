@@ -27,7 +27,7 @@ const createWindow=()=> {
     ipcMain.handle("sendsample",(event,data)=>{
         console.log(data)
     })
-    ipcMain.handle("openVideoFileDialog",async(event,title)=>{
+    ipcMain.handle("openVideoFileDialog",async(event,title:string)=>{
         const paths=dialog.showOpenDialogSync(mainWindow,
             {
                 buttonLabel:"Open",
@@ -49,7 +49,7 @@ const createWindow=()=> {
         const date = new Date();
         const currentTime = formattedDateTime(date);
         mainWindow.webContents.send("onSample",currentTime)
-        function formattedDateTime(date:Date) {
+        function formattedDateTime(date:Date):string {
           const y = date.getFullYear();
           const m = ('0' + (date.getMonth() + 1)).slice(-2);
           const d = ('0' + date.getDate()).slice(-2);
