@@ -1,7 +1,7 @@
 import path from "path";
-import { ipcMain ,dialog,BrowserWindow,app } from "electron";
+import { ipcMain ,dialog,BrowserWindow,app, IpcMainInvokeEvent } from "electron";
 if (process.env.NODE_ENV === 'development') {
-  const execPath =
+  const execPath:string =
     process.platform === 'win32'
       ? '../node_modules/electron/dist/electron.exe'
       : '../node_modules/.bin/electron';
@@ -27,7 +27,7 @@ const createWindow=()=> {
     ipcMain.handle("sendsample",(event,data)=>{
         console.log(data)
     })
-    ipcMain.handle("openVideoFileDialog",async(event,title:string)=>{
+    ipcMain.handle("openVideoFileDialog",async(event:IpcMainInvokeEvent,title:string)=>{
         const paths=dialog.showOpenDialogSync(mainWindow,
             {
                 buttonLabel:"Open",
