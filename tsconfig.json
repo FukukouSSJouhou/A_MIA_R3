@@ -11,5 +11,10 @@
       "sourceMap": true,
       "outDir": "./build",
       "sourceRoot": "./src_node",
+    },
+    "ts-node": {
+      "compilerOptions": {
+        "module": "CommonJS"
+      }
     }
 }
