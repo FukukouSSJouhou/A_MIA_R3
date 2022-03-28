@@ -1,5 +1,6 @@
 import path from "path";
 import { ipcMain ,dialog,BrowserWindow,app, IpcMainInvokeEvent } from "electron";
+import fs from "fs";
 if (process.env.NODE_ENV === 'development') {
   const execPath:string =
     process.platform === 'win32'
@@ -45,6 +46,13 @@ const createWindow=()=> {
                 path:paths[0]
             })
     })
+    ipcMain.handle("fileExistsAsync",async(event:IpcMainInvokeEvent,filename:string)=>{
+        try{
+            return !!(await fs.promises.lstat(filename));
+        }catch(e){
+            return false;
+        }
+    });
     setInterval(()=>{
         const date = new Date();
         const currentTime = formattedDateTime(date);
