@@ -28,7 +28,8 @@ export default function IndexPage(): React.ReactElement {
         if (pathobj.status === true) {
           setvfilename(pathobj.path);
         } else {
-          setvfilename("");
+          //setvfilename("");
+          //no work!
         }
       });
   };
