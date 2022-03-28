@@ -38,7 +38,11 @@ const main:Configuration={
     target:"electron-main",
     entry:{
         main:"./src_electron/electron.ts"
-    }
+    },
+    output:{
+        path: path.resolve(__dirname, 'build'),
+        filename: 'electron.js'
+    },
 
 };
 const preload:Configuration={
@@ -53,7 +57,10 @@ const renderer:Configuration={
     target:"web",
     
     entry: "./src_node/index.tsx",
-    
+    output:{
+        path: path.resolve(__dirname, 'build'),
+        filename: 'index.js'
+    },
     devServer: {
         port: 3000,
         historyApiFallback: true,
