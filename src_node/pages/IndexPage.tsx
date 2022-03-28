@@ -27,9 +27,25 @@ export default function IndexPage(): React.ReactElement {
       });
   };
   const handleNext = () => {
-    switch (activeStep){
+    switch (activeStep) {
       case 0:
         console.log("Zero");
+        window.mia_electron_api.fileExistsAsync(vfilename).then((result) => {
+          if (result) {
+
+            let newSkipped = skipped;
+            if (isStepSkipped(activeStep)) {
+              newSkipped = new Set(newSkipped.values());
+              newSkipped.delete(activeStep);
+            }
+
+            setActiveStep((prevActiveStep) => prevActiveStep + 1);
+            setSkipped(newSkipped);
+          }else{
+            console.log("You can't");
+          }
+        }
+        );
         return;
     }
     console.log(activeStep);
