@@ -1,7 +1,7 @@
 import { Box, Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Step, StepLabel, Stepper, Typography } from '@mui/material';
 import React, * as react from 'react';
 
-const steps = ['Select File Name', 'Create an ad group', 'Create an ad'];
+const steps = ['Select File Name', 'Select target face', 'Wait for generating img..'];
 export default function IndexPage(): React.ReactElement {
   const [vfilename, setvfilename] = React.useState<string>(null!);
   const [activeStep, setActiveStep] = React.useState(0);
@@ -102,13 +102,17 @@ export default function IndexPage(): React.ReactElement {
             {vfilename}
             <br />
             <Button onClick={button_clicked}>
-              Click me!
+              Select video file
             </Button>
             <br />
           </>
         );
       case 1:
-        return "One!";
+        return (
+          <>
+            Please wait ....
+          </>
+        );
       default:
         return "Default!";
     }
