@@ -28,7 +28,7 @@ export default function IndexPage(): React.ReactElement {
         if (pathobj.status === true) {
           setvfilename(pathobj.path);
         } else {
-          setvfilename("none");
+          setvfilename("");
         }
       });
   };
@@ -113,7 +113,7 @@ export default function IndexPage(): React.ReactElement {
         return "Default!";
     }
   }
-  const DialogAlertkun=(openkun:boolean,handleClose:any)=>{
+  const DialogAlertkun=(openkun:boolean,handleClose:any,filenamekun:string)=>{
     return(
       
     <div>
@@ -124,11 +124,11 @@ export default function IndexPage(): React.ReactElement {
       aria-describedby="alert-dialog-description"
     >
       <DialogTitle id="alert-dialog-title">
-        {"The video file is not exist."}
+        {"Error !"}
       </DialogTitle>
       <DialogContent>
         <DialogContentText id="alert-dialog-description">
-          Oh!
+        The video file {filenamekun}is not exist.
         </DialogContentText>
       </DialogContent>
       <DialogActions>
@@ -144,7 +144,7 @@ export default function IndexPage(): React.ReactElement {
     <>
       <h1>Hello Work!</h1>
       <br />
-      {DialogAlertkun(filenotfoundialogopen,handlefilenotfoundialogclose)}
+      {DialogAlertkun(filenotfoundialogopen,handlefilenotfoundialogclose,vfilename)}
       <Box sx={{ width: '100%' }}>
         <Stepper activeStep={activeStep}>
           {steps.map((label, index) => {
