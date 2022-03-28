@@ -1,4 +1,4 @@
-import { Box, Button, Step, StepLabel, Stepper, Typography } from '@mui/material';
+import { Box, Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Step, StepLabel, Stepper, Typography } from '@mui/material';
 import React, * as react from 'react';
 
 const steps = ['Select File Name', 'Create an ad group', 'Create an ad'];
@@ -6,7 +6,13 @@ export default function IndexPage(): React.ReactElement {
   const [vfilename, setvfilename] = React.useState<string>(null!);
   const [activeStep, setActiveStep] = React.useState(0);
   const [skipped, setSkipped] = React.useState(new Set<number>());
-
+  const [filenotfoundialogopen,setfilenotfoundialogopen]=React.useState(false);
+  const handlefilenotfoundialogopen=()=>{
+    setfilenotfoundialogopen(true);
+  }
+  const handlefilenotfoundialogclose=()=>{
+    setfilenotfoundialogopen(false);
+  }
   const isStepOptional = (step: number) => {
     return step === 1;
   };
@@ -106,10 +112,40 @@ export default function IndexPage(): React.ReactElement {
         return "Default!";
     }
   }
+  const DialogAlertkun=(openkun:boolean,handleClose:any)=>{
+    return(
+      
+    <div>
+    <Dialog
+      open={openkun}
+      onClose={handleClose}
+      aria-labelledby="alert-dialog-title"
+      aria-describedby="alert-dialog-description"
+    >
+      <DialogTitle id="alert-dialog-title">
+        {"Use Google's location service?"}
+      </DialogTitle>
+      <DialogContent>
+        <DialogContentText id="alert-dialog-description">
+          Let Google help apps determine location. This means sending anonymous
+          location data to Google, even when no apps are running.
+        </DialogContentText>
+      </DialogContent>
+      <DialogActions>
+        <Button onClick={handleClose}>Disagree</Button>
+        <Button onClick={handleClose} autoFocus>
+          Agree
+        </Button>
+      </DialogActions>
+    </Dialog>
+  </div>
+    );
+  }
   return (
     <>
       <h1>Hello Work!</h1>
       <br />
+      {DialogAlertkun(filenotfoundialogopen,handlefilenotfoundialogclose)}
       <Box sx={{ width: '100%' }}>
         <Stepper activeStep={activeStep}>
           {steps.map((label, index) => {
