@@ -55,7 +55,7 @@ const createWindow=()=> {
     });
     ipcMain.handle("fileExistsAsync",async(event:IpcMainInvokeEvent,filename:string)=>{
         try{
-            return (await fs.promises.lstat(filename)).isDirectory();
+            return (await fs.promises.lstat(filename)).isFile();
         }catch(e){
             return false;
         }
