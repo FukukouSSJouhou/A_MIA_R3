@@ -4,6 +4,8 @@ contextBridge.exposeInMainWorld(
     {
         sendsample:(data:string)=>ipcRenderer.invoke("sendsample",data),
         onSample:(callback:any)=>ipcRenderer.on("onSample",(event,argv)=>callback(event,argv)),
-        openVideoFileDialog:async(title:string)=>await ipcRenderer.invoke("openVideoFileDialog",title)
+        openVideoFileDialog:async(title:string)=>await ipcRenderer.invoke("openVideoFileDialog",title),
+        fileExistsAsync:async(filename:string):Promise<boolean>=>
+            await ipcRenderer.invoke("fileExistsAsync",filename),
     }
 )
