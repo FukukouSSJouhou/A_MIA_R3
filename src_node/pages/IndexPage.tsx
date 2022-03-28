@@ -27,13 +27,16 @@ export default function IndexPage(): React.ReactElement {
       });
   };
   const handleNext = () => {
+    //次へボタンが押されたときの処理
     switch (activeStep) {
       case 0:
         console.log("Zero");
+        //ファイルの存在チェック
         window.mia_electron_api.fileExistsAsync(vfilename)
           .then((result) => {
+            //チェック完了後に呼び出される
             if (result) {
-
+              //存在するなら
               let newSkipped = skipped;
               if (isStepSkipped(activeStep)) {
                 newSkipped = new Set(newSkipped.values());
@@ -43,6 +46,7 @@ export default function IndexPage(): React.ReactElement {
               setActiveStep((prevActiveStep) => prevActiveStep + 1);
               setSkipped(newSkipped);
             } else {
+              //しないなら
               console.log("You can't");
             }
           }
