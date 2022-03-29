@@ -24,3 +24,4 @@ SENTENCE/times/
 build/
 
 dist/
+**/.DS_Store
