@@ -1,11 +1,10 @@
 const pynode = require('@fridgerator/pynode')
 
 
-// optionally pass a path to use as Python module search path
-pynode.startInterpreter()
 
 // add current path as Python module search path, so it finds our test.py
 pynode.appendSysPath('./')
+pynode.appendSysPath('./venv/Lib/site-packages')
 
 // open the python file (module)
 pynode.openFile('pynodetestmod')
