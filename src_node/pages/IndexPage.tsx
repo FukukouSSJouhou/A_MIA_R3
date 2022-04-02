@@ -8,6 +8,8 @@ export default function IndexPage(): React.ReactElement {
   const [skipped, setSkipped] = React.useState(new Set<number>());
   const [allimageselected,setAllimageselected]=React.useState(false);
   const [filenotfoundialogopen,setfilenotfoundialogopen]=React.useState(false);
+  
+  const [canselect,setcanselect]=React.useState(false);
   const handlefilenotfoundialogopen=()=>{
     setfilenotfoundialogopen(true);
   }
@@ -102,6 +104,20 @@ export default function IndexPage(): React.ReactElement {
   const handleReset = () => {
     setActiveStep(0);
   };
+  const SecondPage=()=>{
+    if(canselect){
+      return (
+        <>
+        select</>
+      )
+    }else{
+    return (
+      <>
+        Please wait ....
+      </>
+    ); 
+    }
+  }
   const naibuyouso = () => {
     switch (activeStep) {
       case 0:
@@ -117,11 +133,7 @@ export default function IndexPage(): React.ReactElement {
           </>
         );
       case 1:
-        return (
-          <>
-            Please wait ....
-          </>
-        );
+        return (<SecondPage />);
       default:
         return "Default!";
     }
