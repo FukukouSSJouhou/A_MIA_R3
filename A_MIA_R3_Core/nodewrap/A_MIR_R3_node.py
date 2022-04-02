@@ -1,10 +1,12 @@
+import asyncio
 import base64
 
 import cv2
 from PIL import Image
 
+from A_MIA_R3_Core.Face_Process import Face_Process
 from A_MIA_R3_Core.Loggingkun.Loggerkun import MIALogger
-from A_MIA_R3_Core.faceproc.FPCallbackFaceSelector import FPCallbackFaceSelected
+from A_MIA_R3_Core.faceproc.FPCallbackFaceSelector import FPCallbackFaceSelected, FPCallbackFaceSelector
 
 
 class A_MIR_R3_node2(object):
@@ -23,21 +25,32 @@ class A_MIR_R3_node2(object):
         self.frame = frame.copy()
 
         load_img_list_base64 = []
-        load_img_list_origcv = []
+        self.load_img_list_origcv = []
         j = 0
         load_img_list_base64.append("")
         for (x, y, w, h) in front_face_list:
 
             img = frame[y: y + h, x: x + w].copy()
-            load_img_list_origcv.append(img.copy())
+            self.load_img_list_origcv.append(img.copy())
             imgkundest=cv2.resize(img,dsize=(100,100))
             ret,dstdata=cv2.imencode(".jpg",imgkundest)
             load_img_list_base64.append(base64.b64encode(dstdata))
             j += 1
         senddt={"data":load_img_list_base64}
+        self.fpselected=fpselected
         self.imagelistsendcallback(senddt)
+        while True:
+            if self.selectimgended == True:
+                break
+            else:
+                pass
 
-
+    def recieve_selectimg(self,imageindex):
+        if imageindex == 0:
+            self.selectimgended=True
+            return
+        else:
+            self.fpselected.execute(self.load_img_list_origcv[imageindex-1])
     def logout_color(self,colorcode, txt):
         """
         色付きログ出力を行うコードだよ
@@ -57,13 +70,25 @@ class A_MIR_R3_node2(object):
         self.Loggingobj = MIALogger(self.logout_color, self.jslog)
         self.filenamekun=""
         self.imagelistsendcallback=None
+        self.selectimgended=False
+        self.fpselected=None
+        self.load_img_list_origcv = []
     def setFilename(self,filename):
         self.filenamekun=filename
         self.Loggingobj.successout("set Filename:{}".format(filename))
         return filename
     def run(self):
         self.Loggingobj.successout("Run!!")
-        self.Loggingobj.blueout(self.filenamekun)
+        self.Loggingobj.blueout(self.filenamekun)"
+        self.Loggingobj.successout("<< A_MIA_R3 Core System>>")
+        self.Loggingobj.debugout("Creating callback object")
+        callbackobj=FPCallbackFaceSelector(self.GenerateImageListsAndSend)
+        self.Loggingobj.debugout("Creating Face_Process Obj")
+        fp = Face_Process(self.filenamekun, 29, self.Loggingobj, callbackobj)
+        self.Loggingobj.normalout("get Video info")
+        fp.get_videoinfo()
+        self.Loggingobj.normalout("Processing...")
+        timeemoskun = fp.process()
         return 0
     def Setimagelistsendcallback(self,cb):
         self.imagelistsendcallback=cb
