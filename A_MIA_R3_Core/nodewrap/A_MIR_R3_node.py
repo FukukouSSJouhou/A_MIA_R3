@@ -101,4 +101,3 @@ class A_MIR_R3_node2(object):
         self.Loggingobj.blueout("Set Callback")
         self.imagelistsendcallback=cb
         return "aaaaaa"
-        return "aaaaaa"
