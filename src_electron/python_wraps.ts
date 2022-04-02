@@ -1,4 +1,7 @@
 import pynode from '@fukukoussjouhou/pynode';
+import path from "path";
+
+import {Worker} from "worker_threads"
 class A_MIA_R3_PythonWraps{
     pyinstance:any;
     pyclasskun:any;
