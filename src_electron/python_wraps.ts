@@ -9,7 +9,7 @@ class A_MIA_R3_PythonWraps{
         console.log(strkun);
     }
     constructor(){
-        pynode.openFile("A_MIA_R3_Core.nodewrap.A_MIR_R3_node")
+        pynode.openFile("A_MIA_R3_Core.nodewrap.supermodulekun")
         this.pyclasskun=pynode.pyimport("A_MIA_R3_Core.nodewrap.A_MIR_R3_node")
         this.pyinstance=this.pyclasskun.get("A_MIR_R3_node2").call(this.loggerobj);
         this.filename="";
@@ -26,7 +26,7 @@ class A_MIA_R3_PythonWraps{
         //return this.pyinstance.get("run").call();
         //let objkun22=this.pyinstance.get("get_objkun").call();
         return new Promise((resolve,reject)=>{
-            pynode.call("run_super","tdn",(err:any,results:number)=>{
+            pynode.call("run_super",this.filename,this.loggerobj,this.imagelistsendcallback,(err:any,results:number)=>{
                 if(err)reject(err);
                 else resolve(results);
             });
