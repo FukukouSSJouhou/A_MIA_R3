@@ -1,7 +1,7 @@
 import path from "path";
 import { ipcMain ,dialog,BrowserWindow,app, IpcMainInvokeEvent } from "electron";
 import fs from "fs";
-import pynode from '@fridgerator/pynode';
+import pynode from '@fukukoussjouhou/pynode';
 
 if (process.env.NODE_ENV === 'development') {
   const execPath:string =

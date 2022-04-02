@@ -215,10 +215,10 @@
   resolved "https://registry.yarnpkg.com/@emotion/weak-memoize/-/weak-memoize-0.2.5.tgz#8eed982e2ee6f7f4e44c253e12962980791efd46"
   integrity sha512-6U71C2Wp7r5XtFtQzYrW5iKFT67OixrSxjI4MptCHzdSVlgabczzqLe0ZSgnub/5Kp4hSbpDB1tMytZY9pwxxA==
 
-"@fukukoussjouhou/pynode@^0.5.2":
-  version "0.5.2"
-  resolved "https://registry.yarnpkg.com/@fukukoussjouhou/pynode/-/pynode-0.5.2.tgz#60b0f33ac438b3f18ddf2c4722dc1c4f6d69b06a"
-  integrity sha512-ccrtcSwlRHNy1sqPTfeVdx/pkRWgRQQlVVt30HWYplI/qUbCBU9vTUG8R+kJc0JaPDV+QpvDz+EAnSobKhrWfQ==
+"@fukukoussjouhou/pynode@^0.5.3":
+  version "0.5.3"
+  resolved "https://registry.yarnpkg.com/@fukukoussjouhou/pynode/-/pynode-0.5.3.tgz#63e3d9106710ddc64194a39f4fb47c205ef069c1"
+  integrity sha512-a6TaFuLlMvBjDF+ssG+5wjavH7u4GxYg3ucGcrsEnyZMH8qL65qBxmQ+5ax/eBqB66/Vy1StuGtXlz8QNbcj1Q==
   dependencies:
     node-addon-api "^1.7.1"
 

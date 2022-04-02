@@ -1,4 +1,4 @@
-import pynode from '@fridgerator/pynode';
+import pynode from '@fukukoussjouhou/pynode';
 class A_MIA_R3_PythonWraps{
     pyinstance:any;
     constructor(){
