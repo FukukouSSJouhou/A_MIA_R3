@@ -67,7 +67,7 @@ class Facemod:
         if not os.path.exists('./FACE/emomemo/'):
             os.makedirs('./FACE/emomemo/')
 
-    def target_img_select(self):
+    async def target_img_select(self):
         """
         ターゲットを選択するッピ！
 
@@ -101,10 +101,10 @@ class Facemod:
                     continue
                 else:
                     #self.select_target_img_window(frame)
-                    self.callbackobj.execute(frame,self.front_face_list,self.fpfsselectedkun)
+                    await self.callbackobj.execute(frame,self.front_face_list,self.fpfsselectedkun)
             counterfps += self.splitframe
 
-    def process(self):
+    async def process(self):
         """
         顔を検出して類似判定呼び出して感情分析を呼び出すッピ!
 
@@ -263,7 +263,7 @@ class Facemod:
 
         self.showwin.mainloop()
         self.showwin_close(load_img_list_origcv)
-    def image_selected_cnbexecute(self,target_image):
+    async def image_selected_cnbexecute(self,target_image):
         self.targetimage=target_image
     def showwin_close(self, load_img_list_origcv):
         """

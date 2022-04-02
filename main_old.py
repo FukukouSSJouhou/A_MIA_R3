@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+import asyncio
+
 import cv2
 from PIL import Image
 
@@ -12,14 +14,18 @@ from A_MIA_R3_Core.Graph_Process import Graph_Process
 from A_MIA_R3_Core.Loggingkun.Loggerkun import MIALogger
 from A_MIA_R3_Core.faceproc.FPCallbackFaceSelector import FPCallbackFaceSelected, FPCallbackFaceSelector
 
+loop = None
 try:
     ctypes.windll.shcore.SetProcessDpiAwareness(True)
 except:
     pass
+
+
 class mainold_selectwin:
     def __init__(self):
         pass
-    def select_target_img_window(self, frame,front_face_list,fpselected:FPCallbackFaceSelected):
+
+    async def select_target_img_window(self, frame, front_face_list, fpselected: FPCallbackFaceSelected):
         """
         検出された画像からターゲットを選出するためにダイアログを表示するッピ!
 
@@ -84,9 +90,9 @@ class mainold_selectwin:
         self.showwin.focus_set()  # フォーカスを移 # サブウィンドウをタスクバーに表示しない
 
         self.showwin.mainloop()
-        self.showwin_close(load_img_list_origcv,fpselected)
+        await self.showwin_close(load_img_list_origcv, fpselected)
 
-    def showwin_close(self, load_img_list_origcv,fpselected:FPCallbackFaceSelected):
+    async def showwin_close(self, load_img_list_origcv, fpselected: FPCallbackFaceSelected):
         """
         選択ダイアログを閉じると呼び出されるっピ!
 
@@ -102,15 +108,16 @@ class mainold_selectwin:
             # new = self.imgDIR_NAME + '/target.jpg'
             # shutil.copy(old, new)
             # gray and cut
-            #self.targetimage = cv2.resize(cv2.cvtColor(load_img_list_origcv[rdo_which - 1].copy(), cv2.COLOR_BGR2GRAY),
-             #                             (200, 200))
-            fpselected.execute(cv2.resize(cv2.cvtColor(load_img_list_origcv[rdo_which - 1].copy(), cv2.COLOR_BGR2GRAY),
-                                         (200, 200)))
+            # self.targetimage = cv2.resize(cv2.cvtColor(load_img_list_origcv[rdo_which - 1].copy(), cv2.COLOR_BGR2GRAY),
+            #                             (200, 200))
+            await fpselected.execute(cv2.resize(cv2.cvtColor(load_img_list_origcv[rdo_which - 1].copy(), cv2.COLOR_BGR2GRAY),
+                                          (200, 200)))
 
         else:
             return
 
-def logout_color(colorcode,txt):
+
+def logout_color(colorcode, txt):
     """
     色付きログ出力を行うコードだよ
 
@@ -122,35 +129,41 @@ def logout_color(colorcode,txt):
     g = int(colorcode[3:5], 16)
     b = int(colorcode[5:7], 16)
     print("\033[38;2;{};{};{}m{}\033[0m".format(r, g, b, txt))
+
+
 async def main():
     """
     メインコードだよ
 
     :return:
     """
-    #Logger Objectの作成
-    Loggingobj=MIALogger(logout_color,print)
-    filenamekun="koizumi_7_30.mp4"
+    # Logger Objectの作成
+    Loggingobj = MIALogger(logout_color, print)
+    filenamekun = "koizumi_7_30.mp4"
     Loggingobj.successout("<< A_MIA_R3 Core System>>")
     Loggingobj.debugout("Creating callback object")
-    callbackobj_func=mainold_selectwin()
-    callbackobj=FPCallbackFaceSelector(callbackobj_func.select_target_img_window)
+    callbackobj_func = mainold_selectwin()
+    callbackobj = FPCallbackFaceSelector(callbackobj_func.select_target_img_window)
     Loggingobj.debugout("Creating Face_Process Obj")
-    fp=Face_Process(filenamekun,29,Loggingobj,callbackobj)
+    fp = Face_Process(filenamekun, 29, Loggingobj, callbackobj)
     Loggingobj.normalout("get Video info")
-    fp.get_videoinfo()
+    await fp.get_videoinfo()
     Loggingobj.normalout("Processing...")
-    timeemoskun=fp.process()
+    timeemoskun =await fp.process()
     Loggingobj.normalout("Generating Graph...")
-    gp=Graph_Process(filenamekun,Loggingobj)
-    imgkun=gp.process(timeemoskun)
+    gp = Graph_Process(filenamekun, Loggingobj)
+    imgkun = gp.process(timeemoskun)
     Loggingobj.successout("Success! Generated graph...")
-    #img=Image.fromarray(imgkun)
-    imgcv=cv2.cvtColor(imgkun,cv2.COLOR_RGB2BGR)
-    cv2.imshow("tdn",imgcv)
+    # img=Image.fromarray(imgkun)
+    imgcv = cv2.cvtColor(imgkun, cv2.COLOR_RGB2BGR)
+    cv2.imshow("tdn", imgcv)
     cv2.waitKey(0)
     cv2.destroyAllWindows()
 
 
 if __name__ == '__main__':
-    main()
+    loop = asyncio.get_event_loop()
+    try:
+        loop.run_until_complete(main())
+    finally:
+        loop.close()
