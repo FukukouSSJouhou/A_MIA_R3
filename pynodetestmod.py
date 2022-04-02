@@ -1,15 +1,12 @@
+from subprocess import call
 
-import cv2
-from PIL import Image
 
-from A_MIA_R3_Core.Face_Process import Face_Process
-import ctypes
-from tkinter import Image, ttk
-from PIL import Image, ImageTk
-
-import tkinter as tk
-from A_MIA_R3_Core.Graph_Process import Graph_Process
-from A_MIA_R3_Core.Loggingkun.Loggerkun import MIALogger
-from A_MIA_R3_Core.faceproc.FPCallbackFaceSelector import FPCallbackFaceSelected, FPCallbackFaceSelector
-def tintin(a,b):
-    return a*b+1
+class pyclasstest(object):
+    def __init__(self,a,b):
+        self.a=a
+        self.b=b
+    def run(self,callback):
+        print("cb:",callback)
+        return callback(self.a,self.b,3)
+    def __repr__(self):
+        return 'pyclasstest(a=%r, b=%r)' % (self.a, self.b)
