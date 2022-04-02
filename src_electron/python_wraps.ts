@@ -23,6 +23,9 @@ class A_MIA_R3_PythonWraps{
     public Setimagelistsendcallback(callback:(datakun:string)=>void):string{
         return this.pyinstance.get("Setimagelistsendcallback").call(callback);
     }
+    public SetimagelistsendandwaitCallback(callback:(datakun:string)=>void):string{
+        return this.pyinstance.get("SetimagelistsendandwaitCallback").call(callback);
+    }
     public setselectimg(indexkun:number):void{
         console.log("called setselectimg");
         this.pyinstance.get("recieve_selectimg").call(indexkun);
