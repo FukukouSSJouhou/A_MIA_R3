@@ -1,7 +1,6 @@
 import path from "path";
 import { ipcMain ,dialog,BrowserWindow,app, IpcMainInvokeEvent } from "electron";
 import fs from "fs";
-import pysubprocwrap from "./pysubprocwrap";
 
 if (process.env.NODE_ENV === 'development') {
   const execPath:string =
@@ -15,14 +14,6 @@ if (process.env.NODE_ENV === 'development') {
 }
 
 let mainWindow:BrowserWindow;
-let classtest:pysubprocwrap;
-classtest=new pysubprocwrap();
-/*
-pynode.startInterpreter();
-pynode.appendSysPath('./');
-pynode.appendSysPath('./venv/Lib/site-packages');
-let classtest=new A_MIA_R3_PythonWraps();
-*/
 const createWindow=()=> {
     mainWindow = new BrowserWindow(
         {
@@ -70,24 +61,13 @@ const createWindow=()=> {
             return false;
         }
     });
-    ipcMain.handle("set_filename",async(event:IpcMainInvokeEvent,filename:string)=>{
-        return classtest.setFilename(filename);
-    });
     /*ipcMain.handle("Setimagelistsendcallback",async(event:IpcMainInvokeEvent,callback:(datakun:string)=>void)=>{
         return classtest.Setimagelistsendcallback(callback);
     });*/
 
-    ipcMain.handle("setselectimg",async(event:IpcMainInvokeEvent,indexkun:number)=>{
-        console.log("called ",indexkun);
-        classtest.setselectimg(indexkun);
-    });
-    ipcMain.handle("run",async(event:IpcMainInvokeEvent)=>{
-        classtest.run();
-    });
     const callback_MIA_R3_selectimage=(datakun:string)=>{
         mainWindow.webContents.send("onSetimagelistRecieved",datakun);
     }
-    classtest.Setimagelistsendcallback(callback_MIA_R3_selectimage);
     setInterval(()=>{
         const date = new Date();
         const currentTime = formattedDateTime(date);

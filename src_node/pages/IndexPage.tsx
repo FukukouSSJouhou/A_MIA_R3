@@ -48,7 +48,7 @@ export default function IndexPage(): React.ReactElement {
     setselectedIndex(index);
     setOpenSnackbar(true);
     console.log("clicked")
-    window.mia_electron_api.setselectimg(index)
+    //window.mia_electron_api.setselectimg(index)
     setcanselect(false);
   }
   const handleClose = (event?: React.SyntheticEvent | Event, reason?: string) => {
@@ -80,6 +80,7 @@ export default function IndexPage(): React.ReactElement {
             //チェック完了後に呼び出される
             if (result) {
               //存在するなら
+              /*
               window.mia_electron_api.set_filename(vfilename).then((resultkun334) => {
                 console.log(resultkun334);
                 let newSkipped = skipped;
@@ -91,7 +92,8 @@ export default function IndexPage(): React.ReactElement {
                 setActiveStep((prevActiveStep) => prevActiveStep + 1);
                 setSkipped(newSkipped);
                 window.mia_electron_api.run();
-              });
+              });*/
+
             } else {
               //しないなら
               console.log("You can't");
