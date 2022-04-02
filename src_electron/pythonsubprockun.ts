@@ -12,9 +12,11 @@ pywraps.Setimagelistsendcallback((datakun:string)=>{
         command:810,
         data:datakun
     }
-    if(process.send)
+    if(process.send){
+        //console.log(sendobj)
     process.send(sendobj);
-    
+    }
+
 });
 process.on("message",(msg:processinterface)=>{
     switch(msg.command){

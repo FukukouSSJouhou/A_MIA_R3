@@ -1,8 +1,8 @@
 import path from "path";
 import { ipcMain ,dialog,BrowserWindow,app, IpcMainInvokeEvent } from "electron";
 import fs from "fs";
-import 
-import A_MIA_R3_PythonWraps from "./python_wraps";
+import pysubprocwrap from "./pysubprocwrap";
+
 if (process.env.NODE_ENV === 'development') {
   const execPath:string =
     process.platform === 'win32'
@@ -15,6 +15,8 @@ if (process.env.NODE_ENV === 'development') {
 }
 
 let mainWindow:BrowserWindow;
+let classtest:pysubprocwrap;
+classtest=new pysubprocwrap();
 /*
 pynode.startInterpreter();
 pynode.appendSysPath('./');

@@ -25,9 +25,12 @@ export default class pysubprocwrap{
     public async Setimagelistsendcallback(callback:(datakun:string)=>void):Promise<string>{
         //return this.pyinstance.get("Setimagelistsendcallback").call(callback);
         this.childproc.on("message",(msg:processinterface)=>{
+            //console.log("Main Process Received:",msg);
             switch(msg.command){
                 case 810:
+                    console.log("Wow!");
                     callback(msg.data);
+                    break;
             }
         });
         return "";

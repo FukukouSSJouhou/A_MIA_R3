@@ -9,7 +9,7 @@ from A_MIA_R3_Core.faceproc.FPCallbackFaceSelector import FPCallbackFaceSelected
 
 class A_MIR_R3_node2(object):
     async def GenerateImageListsAndSend(self,frame,front_face_list,fpselected:FPCallbackFaceSelected):
-
+        self.Loggingobj.blueout("Called gen???")
         """
         検出された画像からターゲットを選出するためにダイアログを表示するッピ!
 
@@ -32,9 +32,10 @@ class A_MIR_R3_node2(object):
             self.load_img_list_origcv.append(img.copy())
             imgkundest=cv2.resize(img,dsize=(100,100))
             ret,dstdata=cv2.imencode(".jpg",imgkundest)
-            load_img_list_base64.append(base64.b64encode(dstdata))
+            load_img_list_base64.append("data:image/jpeg;base64,{}".format(base64.b64encode(dstdata).decode("ascii")))
             j += 1
         senddt={"data":load_img_list_base64}
+        #self.Loggingobj.debugout("senddatakun {}".format(senddt))
         self.fpselected=fpselected
         self.imagelistsendcallback(senddt)
         await self.selectimgendedEvent.wait()
