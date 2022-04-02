@@ -7,7 +7,6 @@ from A_MIA_R3_Core.Face_Process import Face_Process
 from A_MIA_R3_Core.Loggingkun.Loggerkun import MIALogger
 from A_MIA_R3_Core.faceproc.FPCallbackFaceSelector import FPCallbackFaceSelected, FPCallbackFaceSelector
 
-
 class A_MIR_R3_node2(object):
     async def GenerateImageListsAndSend(self,frame,front_face_list,fpselected:FPCallbackFaceSelected):
 
@@ -40,13 +39,13 @@ class A_MIR_R3_node2(object):
         self.imagelistsendcallback(senddt)
         await self.selectimgendedEvent.wait()
 
-    def recieve_selectimg(self,imageindex):
+    async def recieve_selectimg(self,imageindex):
         self.Loggingobj.blueout("Called recieve selectimg")
         if imageindex == 0:
             self.selectimgendedEvent.set()
             return
         else:
-            self.fpselected.execute(self.load_img_list_origcv[imageindex-1])
+            await self.fpselected.execute(self.load_img_list_origcv[imageindex-1])
             self.selectimgendedEvent.set()
     def logout_color(self,colorcode, txt):
         """
@@ -71,12 +70,20 @@ class A_MIR_R3_node2(object):
         self.selectimgendedEvent= asyncio.Event()
         self.fpselected=None
         self.load_img_list_origcv = []
+
+        self.loop = None
     def setFilename(self,filename):
         self.filenamekun=filename
         self.Loggingobj.successout("set Filename:{}".format(filename))
         return filename
     def run(self):
-        asyncio.run(self.runasync())
+        self.loop = asyncio.get_event_loop()
+        try:
+            self.loop.run_until_complete(self.runasync())
+        finally:
+            self.loop.close()
+    def get_objkun(self):
+        return self
     async def runasync(self):
         self.Loggingobj.successout("Run!!")
         self.Loggingobj.blueout(self.filenamekun)
@@ -86,11 +93,14 @@ class A_MIR_R3_node2(object):
         self.Loggingobj.debugout("Creating Face_Process Obj")
         fp = Face_Process(self.filenamekun, 29, self.Loggingobj, callbackobj)
         self.Loggingobj.normalout("get Video info")
-        fp.get_videoinfo()
+        await fp.get_videoinfo()
         self.Loggingobj.normalout("Processing...")
-        timeemoskun = fp.process()
+        timeemoskun = await fp.process()
         return 0
     def Setimagelistsendcallback(self,cb):
         self.Loggingobj.blueout("Set Callback")
         self.imagelistsendcallback=cb
         return "aaaaaa"
+def run_super(objkun):
+    print(objkun)
+    return 4

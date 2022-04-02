@@ -14,7 +14,7 @@ export interface IMIA_ELECTRON_API{
     set_filename:(filename:string)=>Promise<string>;
     onSetimagelistRecieved:(callback:(datakun:string)=>void)=>void;
     setselectimg:(indexkun:number)=>Promise<void>;
-    run:()=>Promise<void>;
+    run:()=>Promise<number>;
 }
 export interface IOPENVDIALOG_STATUS{
     status?:Boolean;

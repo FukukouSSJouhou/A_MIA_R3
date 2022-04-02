@@ -13,7 +13,7 @@ contextBridge.exposeInMainWorld(
             await ipcRenderer.invoke("set_filename",filename),
         setselectimg:async(indexkun:number):Promise<void>=>
             await ipcRenderer.invoke("setselectimg",indexkun),
-        run:async():Promise<void>=>
+        run:async():Promise<number>=>
             await ipcRenderer.invoke("run"),
         onSetimagelistRecieved:(callback:(datakun:string)=>void)=>
             ipcRenderer.on("onSetimagelistRecieved",(event,datakun22)=>callback(datakun22))
