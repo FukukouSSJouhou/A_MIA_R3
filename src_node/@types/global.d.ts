@@ -10,7 +10,7 @@ export interface IMIA_ELECTRON_API{
     pathExistsAsync:(filename:string)=>Promise<boolean>;
     fileExistsAsync:(filename:string)=>Promise<boolean>;
     set_filename:(filename:string)=>Promise<string>;
-    Setimagelistsendcallback:(callback:(datakun:string)=>void)=>void;
+    Setimagelistsendcallback:(callback:(datakun:string)=>void)=>Promise<string>;
     setselectimg:(indexkun:number)=>Promise<void>;
     run:()=>Promise<void>;
 }

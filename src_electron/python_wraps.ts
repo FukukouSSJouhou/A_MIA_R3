@@ -12,11 +12,11 @@ class A_MIA_R3_PythonWraps{
     public async setFilename(filename:string):Promise<string>{
         return this.pyinstance.get("setFilename").call(filename);
     }
-    public async run():Promise<number>{
+    public run():number{
         return this.pyinstance.get("run").call();
     }
-    public async Setimagelistsendcallback(callback:(datakun:string)=>void):Promise<void>{
-        this.pyinstance.get("Setimagelistsendcallback").call(callback);
+    public async Setimagelistsendcallback(callback:(datakun:string)=>void):Promise<string>{
+        return this.pyinstance.get("Setimagelistsendcallback").call(callback);
     }
     public async setselectimg(indexkun:number):Promise<void>{
         this.pyinstance.get("recieve_selectimg").call(indexkun);

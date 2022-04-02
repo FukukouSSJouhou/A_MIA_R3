@@ -72,7 +72,7 @@ const createWindow=()=> {
         return classtest.setFilename(filename);
     });
     ipcMain.handle("Setimagelistsendcallback",async(event:IpcMainInvokeEvent,callback:(datakun:string)=>void)=>{
-        classtest.Setimagelistsendcallback(callback);
+        return classtest.Setimagelistsendcallback(callback);
     });
     ipcMain.handle("setselectimg",async(event:IpcMainInvokeEvent,indexkun:number)=>{
         classtest.setselectimg(indexkun);

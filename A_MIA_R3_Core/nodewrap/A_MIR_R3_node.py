@@ -89,5 +89,6 @@ class A_MIR_R3_node2(object):
         timeemoskun = fp.process()
         return 0
     def Setimagelistsendcallback(self,cb):
+        self.Loggingobj.blueout("Set Callback")
         self.imagelistsendcallback=cb
-        return 0
+        return "aaaaaa"

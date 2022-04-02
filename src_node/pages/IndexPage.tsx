@@ -30,12 +30,8 @@ export default function IndexPage(): React.ReactElement {
   const isStepSkipped = (step: number) => {
     return skipped.has(step);
   };
-  React.useEffect(
-    ()=>{
-      window.mia_electron_api.Setimagelistsendcallback(callbacksetimagekun);
-    }
-  ,[])
   
+  window.mia_electron_api.Setimagelistsendcallback(callbacksetimagekun);
   const clicked_btkun=(index:number)=>{
     setselectedIndex(index);
     setOpenSnackbar(true);
