@@ -25,7 +25,7 @@ class mainold_selectwin:
     def __init__(self):
         pass
 
-    async def select_target_img_window(self, frame, front_face_list, fpselected: FPCallbackFaceSelected):
+    def select_target_img_window(self, frame, front_face_list, fpselected: FPCallbackFaceSelected):
         """
         検出された画像からターゲットを選出するためにダイアログを表示するッピ!
 
@@ -90,9 +90,9 @@ class mainold_selectwin:
         self.showwin.focus_set()  # フォーカスを移 # サブウィンドウをタスクバーに表示しない
 
         self.showwin.mainloop()
-        await self.showwin_close(load_img_list_origcv, fpselected)
+        self.showwin_close(load_img_list_origcv, fpselected)
 
-    async def showwin_close(self, load_img_list_origcv, fpselected: FPCallbackFaceSelected):
+    def showwin_close(self, load_img_list_origcv, fpselected: FPCallbackFaceSelected):
         """
         選択ダイアログを閉じると呼び出されるっピ!
 
@@ -110,7 +110,7 @@ class mainold_selectwin:
             # gray and cut
             # self.targetimage = cv2.resize(cv2.cvtColor(load_img_list_origcv[rdo_which - 1].copy(), cv2.COLOR_BGR2GRAY),
             #                             (200, 200))
-            await fpselected.execute(cv2.resize(cv2.cvtColor(load_img_list_origcv[rdo_which - 1].copy(), cv2.COLOR_BGR2GRAY),
+            fpselected.execute(cv2.resize(cv2.cvtColor(load_img_list_origcv[rdo_which - 1].copy(), cv2.COLOR_BGR2GRAY),
                                           (200, 200)))
 
         else:
@@ -131,7 +131,7 @@ def logout_color(colorcode, txt):
     print("\033[38;2;{};{};{}m{}\033[0m".format(r, g, b, txt))
 
 
-async def main():
+def main():
     """
     メインコードだよ
 
@@ -147,9 +147,9 @@ async def main():
     Loggingobj.debugout("Creating Face_Process Obj")
     fp = Face_Process(filenamekun, 29, Loggingobj, callbackobj)
     Loggingobj.normalout("get Video info")
-    await fp.get_videoinfo()
+    fp.get_videoinfo()
     Loggingobj.normalout("Processing...")
-    timeemoskun =await fp.process()
+    timeemoskun =fp.process()
     Loggingobj.normalout("Generating Graph...")
     gp = Graph_Process(filenamekun, Loggingobj)
     imgkun = gp.process(timeemoskun)
@@ -162,8 +162,4 @@ async def main():
 
 
 if __name__ == '__main__':
-    loop = asyncio.get_event_loop()
-    try:
-        loop.run_until_complete(main())
-    finally:
-        loop.close()
+    main()
