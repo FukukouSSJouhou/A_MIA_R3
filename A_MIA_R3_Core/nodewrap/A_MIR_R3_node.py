@@ -1,8 +1,6 @@
-import asyncio
 import base64
 
 import cv2
-from PIL import Image
 
 from A_MIA_R3_Core.Face_Process import Face_Process
 from A_MIA_R3_Core.Loggingkun.Loggerkun import MIALogger

@@ -1,4 +1,4 @@
-import { Box, Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Step, StepLabel, Stepper, Typography } from '@mui/material';
+import { Alert, Box, Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Grid, Paper, Snackbar, Step, StepLabel, Stepper, Typography } from '@mui/material';
 import React, * as react from 'react';
 
 const steps = ['Select File Name', 'Select target face', 'Wait for generating img..'];
@@ -11,6 +11,8 @@ export default function IndexPage(): React.ReactElement {
   
   const [image_list,setImageList]=React.useState<Array<string>>([]);
   const [canselect,setcanselect]=React.useState(false);
+  const [openSnackbar, setOpenSnackbar] = React.useState(false);
+  const [selectedIndex,setselectedIndex]=React.useState(0);
   const handlefilenotfoundialogopen=()=>{
     setfilenotfoundialogopen(true);
   }
@@ -32,7 +34,20 @@ export default function IndexPage(): React.ReactElement {
     ()=>{
       window.mia_electron_api.Setimagelistsendcallback(callbacksetimagekun);
     }
-  )
+  ,[])
+  
+  const clicked_btkun=(index:number)=>{
+    setselectedIndex(index);
+    setOpenSnackbar(true);
+    window.mia_electron_api.setselectimg(index)
+    setcanselect(false);
+}
+const handleClose=(event?:React.SyntheticEvent|Event,reason?:string)=>{
+    if(reason==="clickaway"){
+        return;
+    }
+    setOpenSnackbar(false);
+}
   const button_clicked = () => {
     //console.log("clicked");
     window.mia_electron_api.openVideoFileDialog("Open File").then(
@@ -66,6 +81,7 @@ export default function IndexPage(): React.ReactElement {
   
                 setActiveStep((prevActiveStep) => prevActiveStep + 1);
                 setSkipped(newSkipped);
+                window.mia_electron_api.run();
               });
             } else {
               //しないなら
@@ -115,14 +131,38 @@ export default function IndexPage(): React.ReactElement {
   };
   const SecondPage=()=>{
     if(canselect){
+      
       return (
         <>
-        select</>
-      )
+            <Grid container rowSpacing={1} columnSpacing={{ xs: 2, sm: 2, md: 3 }}>
+                {image_list.map((image_url: string, index: number) => {
+                    return (
+                        <Grid item xs={3}>
+                            <Button onClick={()=>{clicked_btkun(index)}}>
+                                <Paper elevation={3} >
+                                    <img src={image_url} alt="" />
+                                </Paper></Button>
+                        </Grid>
+                    );
+                }
+                )}
+            </Grid>
+      <Snackbar open={openSnackbar} autoHideDuration={6000} onClose={handleClose}>
+        <Alert onClose={handleClose} severity="success" sx={{ width: '100%' }}>
+          Selected {selectedIndex}!
+        </Alert>
+      </Snackbar>
+        </>
+    );
     }else{
     return (
       <>
-        Please wait ....
+      Waiting...
+    <Snackbar open={openSnackbar} autoHideDuration={6000} onClose={handleClose}>
+      <Alert onClose={handleClose} severity="success" sx={{ width: '100%' }}>
+        Selected {selectedIndex}!
+      </Alert>
+    </Snackbar>
       </>
     ); 
     }
