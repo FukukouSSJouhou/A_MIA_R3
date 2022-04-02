@@ -31,7 +31,9 @@ export default function IndexPage(): React.ReactElement {
     return skipped.has(step);
   };
   
-  window.mia_electron_api.Setimagelistsendcallback(callbacksetimagekun);
+  window.mia_electron_api.onSetimagelistRecieved((datakun:string)=>{
+    callbacksetimagekun(datakun);
+  });
   const clicked_btkun=(index:number)=>{
     setselectedIndex(index);
     setOpenSnackbar(true);

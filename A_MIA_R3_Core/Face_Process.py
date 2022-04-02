@@ -47,3 +47,43 @@ class Face_Process:
         self.Loggingobj.successout("Success! Generated emos data!")
         return fm.get_timeemos()
 
+class Face_ProcessAsync:
+    def __init__(self, filename: str, split_frames: int, loggerobj: MIALogger,callbackkun:FPCallbackFaceSelector):
+        """
+        コンストラクタだよ～
+
+        :param filename: ビデオファイル名
+        :param split_frames: 一回当たりのフレーム数
+        :param loggerobj: Logger object
+        :param callbackkun: Callback Object
+        """
+        self.filename = filename
+        self.Loggingobj = loggerobj
+        self.total_frames = 0
+        self.split_frames = split_frames
+        self.callbackkun=callbackkun
+
+
+    def get_videoinfo(self):
+        """
+        ビデオ情報取得
+        """
+        self.Loggingobj.debugout("Opening video file")
+        container = av.open(self.filename)
+        self.Loggingobj.debugout("getting frames")
+        self.total_frames = container.streams.video[0].frames
+
+    def process(self):
+        """
+        実際に感情分析の処理を呼び出す。
+
+        :return: 一定フレーム当たりの感情データ
+        """
+        fm = Facemod(self.filename, self.total_frames, self.split_frames, self.Loggingobj,self.callbackkun)
+        self.Loggingobj.normalout("Starting target selector...")
+        fm.target_img_select()
+        # fm.showtargetimage()
+        self.Loggingobj.normalout("Start detecting emotions...")
+        fm.process()
+        self.Loggingobj.successout("Success! Generated emos data!")
+        return fm.get_timeemos()

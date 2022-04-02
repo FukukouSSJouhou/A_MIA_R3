@@ -71,15 +71,20 @@ const createWindow=()=> {
     ipcMain.handle("set_filename",async(event:IpcMainInvokeEvent,filename:string)=>{
         return classtest.setFilename(filename);
     });
-    ipcMain.handle("Setimagelistsendcallback",async(event:IpcMainInvokeEvent,callback:(datakun:string)=>void)=>{
+    /*ipcMain.handle("Setimagelistsendcallback",async(event:IpcMainInvokeEvent,callback:(datakun:string)=>void)=>{
         return classtest.Setimagelistsendcallback(callback);
-    });
+    });*/
+
     ipcMain.handle("setselectimg",async(event:IpcMainInvokeEvent,indexkun:number)=>{
         classtest.setselectimg(indexkun);
     });
     ipcMain.handle("run",async(event:IpcMainInvokeEvent)=>{
         classtest.run();
     });
+    const callback_MIA_R3_selectimage=(datakun:string)=>{
+        mainWindow.webContents.send("onSetimagelistRecieved",datakun);
+    }
+    classtest.Setimagelistsendcallback(callback_MIA_R3_selectimage);
     setInterval(()=>{
         const date = new Date();
         const currentTime = formattedDateTime(date);

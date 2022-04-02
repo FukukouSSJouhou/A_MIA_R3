@@ -1,3 +1,4 @@
+import asyncio
 import base64
 
 import cv2
@@ -8,7 +9,7 @@ from A_MIA_R3_Core.faceproc.FPCallbackFaceSelector import FPCallbackFaceSelected
 
 
 class A_MIR_R3_node2(object):
-    def GenerateImageListsAndSend(self,frame,front_face_list,fpselected:FPCallbackFaceSelected):
+    async def GenerateImageListsAndSend(self,frame,front_face_list,fpselected:FPCallbackFaceSelected):
 
         """
         検出された画像からターゲットを選出するためにダイアログを表示するッピ!
@@ -37,18 +38,16 @@ class A_MIR_R3_node2(object):
         senddt={"data":load_img_list_base64}
         self.fpselected=fpselected
         self.imagelistsendcallback(senddt)
-        while True:
-            if self.selectimgended == True:
-                break
-            else:
-                pass
+        await self.selectimgendedEvent.wait()
 
     def recieve_selectimg(self,imageindex):
+        self.Loggingobj.blueout("Called recieve selectimg")
         if imageindex == 0:
-            self.selectimgended=True
+            self.selectimgendedEvent.set()
             return
         else:
             self.fpselected.execute(self.load_img_list_origcv[imageindex-1])
+            self.selectimgendedEvent.set()
     def logout_color(self,colorcode, txt):
         """
         色付きログ出力を行うコードだよ
@@ -69,6 +68,7 @@ class A_MIR_R3_node2(object):
         self.filenamekun=""
         self.imagelistsendcallback=None
         self.selectimgended=False
+        self.selectimgendedEvent= asyncio.Event()
         self.fpselected=None
         self.load_img_list_origcv = []
     def setFilename(self,filename):
@@ -76,6 +76,8 @@ class A_MIR_R3_node2(object):
         self.Loggingobj.successout("set Filename:{}".format(filename))
         return filename
     def run(self):
+        asyncio.run(self.runasync())
+    async def runasync(self):
         self.Loggingobj.successout("Run!!")
         self.Loggingobj.blueout(self.filenamekun)
         self.Loggingobj.successout("<< A_MIA_R3 Core System>>")
