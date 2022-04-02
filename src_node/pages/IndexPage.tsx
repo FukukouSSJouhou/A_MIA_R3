@@ -6,6 +6,7 @@ export default function IndexPage(): React.ReactElement {
   const [vfilename, setvfilename] = React.useState<string>(null!);
   const [activeStep, setActiveStep] = React.useState(0);
   const [skipped, setSkipped] = React.useState(new Set<number>());
+  const [allimageselected,setAllimageselected]=React.useState(false);
   const [filenotfoundialogopen,setfilenotfoundialogopen]=React.useState(false);
   const handlefilenotfoundialogopen=()=>{
     setfilenotfoundialogopen(true);
@@ -63,6 +64,8 @@ export default function IndexPage(): React.ReactElement {
           }
           );
         return;
+      case 1:
+
     }
     console.log(activeStep);
     let newSkipped = skipped;
