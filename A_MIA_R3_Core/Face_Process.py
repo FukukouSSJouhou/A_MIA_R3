@@ -23,7 +23,7 @@ class Face_Process:
         self.callbackkun=callbackkun
 
 
-    async def get_videoinfo(self):
+    def get_videoinfo(self):
         """
         ビデオ情報取得
         """
@@ -32,7 +32,7 @@ class Face_Process:
         self.Loggingobj.debugout("getting frames")
         self.total_frames = container.streams.video[0].frames
 
-    async def process(self):
+    def process(self):
         """
         実際に感情分析の処理を呼び出す。
 
@@ -40,9 +40,9 @@ class Face_Process:
         """
         fm = Facemod(self.filename, self.total_frames, self.split_frames, self.Loggingobj,self.callbackkun)
         self.Loggingobj.normalout("Starting target selector...")
-        await fm.target_img_select()
+        fm.target_img_select()
         # fm.showtargetimage()
         self.Loggingobj.normalout("Start detecting emotions...")
-        await fm.process()
+        fm.process()
         self.Loggingobj.successout("Success! Generated emos data!")
         return fm.get_timeemos()

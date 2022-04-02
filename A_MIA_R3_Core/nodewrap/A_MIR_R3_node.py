@@ -8,7 +8,7 @@ from A_MIA_R3_Core.Loggingkun.Loggerkun import MIALogger
 from A_MIA_R3_Core.faceproc.FPCallbackFaceSelector import FPCallbackFaceSelected, FPCallbackFaceSelector
 
 class A_MIR_R3_node2(object):
-    async def GenerateImageListsAndSend(self,frame,front_face_list,fpselected:FPCallbackFaceSelected):
+    def GenerateImageListsAndSend(self,frame,front_face_list,fpselected:FPCallbackFaceSelected):
         self.Loggingobj.blueout("Called gen???")
         """
         検出された画像からターゲットを選出するためにダイアログを表示するッピ!
@@ -40,15 +40,15 @@ class A_MIR_R3_node2(object):
         self.selectimgended=False
         #self.imagelistsendcallback(senddt)
         imageindex=self.imagelistsendandwaitCallback(senddt)
-        await self.fpselected.execute(self.load_img_list_origcv[imageindex - 1])
+        self.fpselected.execute(self.load_img_list_origcv[imageindex - 1])
 
-    async def recieve_selectimg(self,imageindex):
+    def recieve_selectimg(self,imageindex):
         self.Loggingobj.blueout("Called recieve selectimg")
         if imageindex == 0:
             self.selectimgended=True
             return
         else:
-            await self.fpselected.execute(self.load_img_list_origcv[imageindex-1])
+            self.fpselected.execute(self.load_img_list_origcv[imageindex-1])
             self.selectimgended=True
     def logout_color(self,colorcode, txt):
         """
@@ -62,9 +62,8 @@ class A_MIR_R3_node2(object):
         g = int(colorcode[3:5], 16)
         b = int(colorcode[5:7], 16)
         self.jslog("\033[38;2;{};{};{}m{}\033[0m".format(r, g, b, txt))
-    def __init__(self,jslog,nopsleep):
+    def __init__(self,jslog):
         self.jslog=jslog
-        self.nopsleep=nopsleep
         self.logout_color("#FF00FF","Python Class init..")
         # Create logger Object
         self.Loggingobj = MIALogger(self.logout_color, self.jslog)
@@ -72,7 +71,6 @@ class A_MIR_R3_node2(object):
         self.imagelistsendcallback=None
         self.imagelistsendandwaitCallback=None
         self.selectimgended=False
-        self.selectimgendedEvent= asyncio.Event()
         self.fpselected=None
         self.load_img_list_origcv = []
 
@@ -81,7 +79,7 @@ class A_MIR_R3_node2(object):
         self.filenamekun=filename
         self.Loggingobj.successout("set Filename:{}".format(filename))
         return filename
-    def run(self):
+    def arun(self):
         self.loop = asyncio.get_event_loop()
         try:
             self.loop.run_until_complete(self.runasync())
@@ -89,7 +87,7 @@ class A_MIR_R3_node2(object):
             self.loop.close()
     def get_objkun(self):
         return self
-    async def runasync(self):
+    def run(self):
         self.Loggingobj.successout("Run!!")
         self.Loggingobj.blueout(self.filenamekun)
         self.Loggingobj.successout("<< A_MIA_R3 Core System>>")
@@ -98,9 +96,9 @@ class A_MIR_R3_node2(object):
         self.Loggingobj.debugout("Creating Face_Process Obj")
         fp = Face_Process(self.filenamekun, 29, self.Loggingobj, callbackobj)
         self.Loggingobj.normalout("get Video info")
-        await fp.get_videoinfo()
+        fp.get_videoinfo()
         self.Loggingobj.normalout("Processing...")
-        timeemoskun = await fp.process()
+        timeemoskun = fp.process()
         return 0
     def Setimagelistsendcallback(self,cb):
         self.Loggingobj.blueout("Set Callback")

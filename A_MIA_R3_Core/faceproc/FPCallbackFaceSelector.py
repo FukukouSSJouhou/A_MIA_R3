@@ -7,7 +7,7 @@ class FPCallbackFaceSelector:
         """
         self.callback = callback
 
-    async def execute(self, frame, front_face_list,fp_selector):
+    def execute(self, frame, front_face_list,fp_selector):
         """
         execute callback
 
@@ -15,7 +15,7 @@ class FPCallbackFaceSelector:
         :param front_face_list: facelist
         :param fp_selector: target selector
         """
-        await self.callback(frame, front_face_list,fp_selector)
+        self.callback(frame, front_face_list,fp_selector)
 class FPCallbackFaceSelected:
     def __init__(self,callback):
         """
@@ -24,7 +24,7 @@ class FPCallbackFaceSelected:
         :param callback: callback obj
         """
         self.callback=callback
-    async def execute(self,target_img):
+    def execute(self,target_img):
         """
         execute callback
 
@@ -32,6 +32,6 @@ class FPCallbackFaceSelected:
         :return:none
         """
 
-        await self.callback(target_img)
+        self.callback(target_img)
 
 
