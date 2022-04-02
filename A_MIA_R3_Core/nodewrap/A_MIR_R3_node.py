@@ -101,6 +101,4 @@ class A_MIR_R3_node2(object):
         self.Loggingobj.blueout("Set Callback")
         self.imagelistsendcallback=cb
         return "aaaaaa"
-def run_super(objkun):
-    print(objkun)
-    return 4
+        return "aaaaaa"
