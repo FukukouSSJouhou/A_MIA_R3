@@ -5,7 +5,7 @@ const pynode = require('@fukukoussjouhou/pynode')
 pynode.startInterpreter()
 pynode.appendSysPath('./')
 pynode.appendSysPath('./venv/Lib/site-packages')
-const pyclasstest1 = pynode.pyimport('pynodetestmod');
+const pyclasstest1 = pynode.pyimport('A_MIA_R3_Core.nodewrap.A_MIR_R3_node');
 classi=pyclasstest1.get("pyclasstest").call('4','3');
 result=classi.get("run").call((a,b,c)=>{
   console.log(arguments);
