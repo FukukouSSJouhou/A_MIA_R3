@@ -79,7 +79,7 @@ class A_MIR_R3_node2(object):
         return filename
     def run(self):
         self.Loggingobj.successout("Run!!")
-        self.Loggingobj.blueout(self.filenamekun)"
+        self.Loggingobj.blueout(self.filenamekun)
         self.Loggingobj.successout("<< A_MIA_R3 Core System>>")
         self.Loggingobj.debugout("Creating callback object")
         callbackobj=FPCallbackFaceSelector(self.GenerateImageListsAndSend)

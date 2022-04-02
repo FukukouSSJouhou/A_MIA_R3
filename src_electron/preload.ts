@@ -10,6 +10,12 @@ contextBridge.exposeInMainWorld(
         fileExistsAsync:async(filename:string):Promise<boolean>=>
             await ipcRenderer.invoke("fileExistsAsync",filename),
         set_filename:async(filename:string):Promise<string>=>
-            await ipcRenderer.invoke("set_filename",filename)
+            await ipcRenderer.invoke("set_filename",filename),
+        Setimagelistsendcallback:async(callback:(datakun:string)=>void):Promise<void>=>
+            await ipcRenderer.invoke("Setimagelistsendcallback",callback),
+        setselectimg:async(indexkun:number):Promise<void>=>
+            await ipcRenderer.invoke("setselectimg",indexkun),
+        run:async():Promise<void>=>
+            await ipcRenderer.invoke("run")
     }
 )

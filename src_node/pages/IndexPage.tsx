@@ -9,9 +9,14 @@ export default function IndexPage(): React.ReactElement {
   const [allimageselected,setAllimageselected]=React.useState(false);
   const [filenotfoundialogopen,setfilenotfoundialogopen]=React.useState(false);
   
+  const [image_list,setImageList]=React.useState<Array<string>>([]);
   const [canselect,setcanselect]=React.useState(false);
   const handlefilenotfoundialogopen=()=>{
     setfilenotfoundialogopen(true);
+  }
+  const callbacksetimagekun=(datakun:string)=>{
+    const message = JSON.parse(datakun);
+    setImageList(message.data);
   }
   const handlefilenotfoundialogclose=()=>{
     setfilenotfoundialogopen(false);
@@ -23,7 +28,11 @@ export default function IndexPage(): React.ReactElement {
   const isStepSkipped = (step: number) => {
     return skipped.has(step);
   };
-
+  React.useEffect(
+    ()=>{
+      window.mia_electron_api.Setimagelistsendcallback(callbacksetimagekun);
+    }
+  )
   const button_clicked = () => {
     //console.log("clicked");
     window.mia_electron_api.openVideoFileDialog("Open File").then(
