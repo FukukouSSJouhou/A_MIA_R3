@@ -65,7 +65,9 @@ export default function IndexPage(): React.ReactElement {
           );
         return;
       case 1:
-
+          if(!allimageselected){
+            return;
+          }
     }
     console.log(activeStep);
     let newSkipped = skipped;
