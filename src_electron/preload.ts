@@ -8,6 +8,8 @@ contextBridge.exposeInMainWorld(
         pathExistsAsync:async(filename:string):Promise<boolean>=>
             await ipcRenderer.invoke("pathExistsAsync",filename),
         fileExistsAsync:async(filename:string):Promise<boolean>=>
-            await ipcRenderer.invoke("fileExistsAsync",filename)
+            await ipcRenderer.invoke("fileExistsAsync",filename),
+        set_filename:async(filename:string):Promise<string>=>
+            await ipcRenderer.invoke("set_filename",filename)
     }
 )

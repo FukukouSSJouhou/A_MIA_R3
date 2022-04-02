@@ -44,14 +44,17 @@ export default function IndexPage(): React.ReactElement {
             //チェック完了後に呼び出される
             if (result) {
               //存在するなら
-              let newSkipped = skipped;
-              if (isStepSkipped(activeStep)) {
-                newSkipped = new Set(newSkipped.values());
-                newSkipped.delete(activeStep);
-              }
-
-              setActiveStep((prevActiveStep) => prevActiveStep + 1);
-              setSkipped(newSkipped);
+              window.mia_electron_api.set_filename(vfilename).then((resultkun334)=>{
+                console.log(resultkun334);
+                let newSkipped = skipped;
+                if (isStepSkipped(activeStep)) {
+                  newSkipped = new Set(newSkipped.values());
+                  newSkipped.delete(activeStep);
+                }
+  
+                setActiveStep((prevActiveStep) => prevActiveStep + 1);
+                setSkipped(newSkipped);
+              });
             } else {
               //しないなら
               console.log("You can't");

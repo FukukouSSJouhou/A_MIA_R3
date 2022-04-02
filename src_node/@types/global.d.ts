@@ -9,6 +9,7 @@ export interface IMIA_ELECTRON_API{
     openVideoFileDialog:(title:string)=>Promise<IOPENVDIALOG_STATUS>;
     pathExistsAsync:(filename:string)=>Promise<boolean>;
     fileExistsAsync:(filename:string)=>Promise<boolean>;
+    set_filename:(filename:string)=>Promise<string>;
 }
 export interface IOPENVDIALOG_STATUS{
     status?:Boolean;

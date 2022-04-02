@@ -23,6 +23,7 @@ class A_MIR_R3_node2(object):
         self.filenamekun=""
     def setFilename(self,filename):
         self.filenamekun=filename
+        self.Loggingobj.successout("set Filename:{}".format(filename))
         return filename
     def run(self):
         self.Loggingobj.successout("Run!!")

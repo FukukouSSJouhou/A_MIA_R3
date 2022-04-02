@@ -68,6 +68,9 @@ const createWindow=()=> {
             return false;
         }
     });
+    ipcMain.handle("set_filename",async(event:IpcMainInvokeEvent,filename:string)=>{
+        return classtest.setFilename(filename);
+    });
     setInterval(()=>{
         const date = new Date();
         const currentTime = formattedDateTime(date);
