@@ -1,5 +1,6 @@
 from subprocess import call
 import sys
+import cv2
 
 class pyclasstest(object):
     def __init__(self,a,b):
