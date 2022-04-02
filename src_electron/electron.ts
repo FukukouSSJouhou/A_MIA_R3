@@ -1,6 +1,8 @@
 import path from "path";
 import { ipcMain ,dialog,BrowserWindow,app, IpcMainInvokeEvent } from "electron";
 import fs from "fs";
+import pynode from '@fridgerator/pynode';
+
 if (process.env.NODE_ENV === 'development') {
   const execPath:string =
     process.platform === 'win32'
@@ -13,6 +15,10 @@ if (process.env.NODE_ENV === 'development') {
 }
 
 let mainWindow:BrowserWindow;
+
+pynode.startInterpreter();
+pynode.appendSysPath('./');
+pynode.appendSysPath('./venv/Lib/site-packages');
 const createWindow=()=> {
     mainWindow = new BrowserWindow(
         {
