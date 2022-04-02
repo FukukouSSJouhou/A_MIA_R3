@@ -215,6 +215,13 @@
   resolved "https://registry.yarnpkg.com/@emotion/weak-memoize/-/weak-memoize-0.2.5.tgz#8eed982e2ee6f7f4e44c253e12962980791efd46"
   integrity sha512-6U71C2Wp7r5XtFtQzYrW5iKFT67OixrSxjI4MptCHzdSVlgabczzqLe0ZSgnub/5Kp4hSbpDB1tMytZY9pwxxA==
 
+"@fukukoussjouhou/pynode@^0.5.2":
+  version "0.5.2"
+  resolved "https://registry.yarnpkg.com/@fukukoussjouhou/pynode/-/pynode-0.5.2.tgz#60b0f33ac438b3f18ddf2c4722dc1c4f6d69b06a"
+  integrity sha512-ccrtcSwlRHNy1sqPTfeVdx/pkRWgRQQlVVt30HWYplI/qUbCBU9vTUG8R+kJc0JaPDV+QpvDz+EAnSobKhrWfQ==
+  dependencies:
+    node-addon-api "^1.7.1"
+
 "@hapi/hoek@^9.0.0":
   version "9.2.1"
   resolved "https://registry.yarnpkg.com/@hapi/hoek/-/hoek-9.2.1.tgz#9551142a1980503752536b5050fd99f4a7f13b17"
@@ -3466,7 +3473,7 @@ no-case@^3.0.4:
     lower-case "^2.0.2"
     tslib "^2.0.3"
 
-node-addon-api@^1.6.3:
+node-addon-api@^1.6.3, node-addon-api@^1.7.1:
   version "1.7.2"
   resolved "https://registry.yarnpkg.com/node-addon-api/-/node-addon-api-1.7.2.tgz#3df30b95720b53c24e59948b49532b662444f54d"
   integrity sha512-ibPK3iA+vaY1eEjESkQkM0BbCqFOaZMiXRTtdB0u7b4djtY6JnsjvPdUHVMg6xQt3B8fpTTWHI9A+ADjM9frzg==

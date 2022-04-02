@@ -42,6 +42,7 @@
   "dependencies": {
     "@emotion/react": "^11.8.2",
     "@emotion/styled": "^11.8.1",
+    "@fukukoussjouhou/pynode": "^0.5.2",
     "@mui/icons-material": "^5.5.1",
     "@mui/material": "^5.5.2",
     "cross-env": "^7.0.3",
