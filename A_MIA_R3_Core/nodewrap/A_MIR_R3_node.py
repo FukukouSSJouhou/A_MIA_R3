@@ -38,13 +38,9 @@ class A_MIR_R3_node2(object):
         #self.Loggingobj.debugout("senddatakun {}".format(senddt))
         self.fpselected=fpselected
         self.selectimgended=False
-        self.imagelistsendcallback(senddt)
-        while True:
-            if self.selectimgended:
-                break
-            else:
-                self.nopsleep()
-
+        #self.imagelistsendcallback(senddt)
+        imageindex=self.imagelistsendandwaitCallback(senddt)
+        await self.fpselected.execute(self.load_img_list_origcv[imageindex - 1])
 
     async def recieve_selectimg(self,imageindex):
         self.Loggingobj.blueout("Called recieve selectimg")
@@ -74,6 +70,7 @@ class A_MIR_R3_node2(object):
         self.Loggingobj = MIALogger(self.logout_color, self.jslog)
         self.filenamekun=""
         self.imagelistsendcallback=None
+        self.imagelistsendandwaitCallback=None
         self.selectimgended=False
         self.selectimgendedEvent= asyncio.Event()
         self.fpselected=None
@@ -108,4 +105,8 @@ class A_MIR_R3_node2(object):
     def Setimagelistsendcallback(self,cb):
         self.Loggingobj.blueout("Set Callback")
         self.imagelistsendcallback=cb
+        return "aaaaaa"
+    def SetimagelistsendandwaitCallback(self,cb):
+        self.Loggingobj.blueout("Set Callbackv2")
+        self.imagelistsendandwaitCallback=cb
         return "aaaaaa"

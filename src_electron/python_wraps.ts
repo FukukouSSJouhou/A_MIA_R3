@@ -9,14 +9,9 @@ class A_MIA_R3_PythonWraps{
     loggerobj=(strkun:string)=>{
         console.log(strkun);
     }
-    nopkun22=async()=>{
-        console.log("wait");
-        process.nextTick()
-        wait(1000);
-    }
     constructor(){
         this.pyclasskun=pynode.pyimport("A_MIA_R3_Core.nodewrap.A_MIR_R3_node")
-        this.pyinstance=this.pyclasskun.get("A_MIR_R3_node2").call(this.loggerobj,this.nopkun22);
+        this.pyinstance=this.pyclasskun.get("A_MIR_R3_node2").call(this.loggerobj);
     }
     public setFilename(filename:string):string{
         return this.pyinstance.get("setFilename").call(filename);
