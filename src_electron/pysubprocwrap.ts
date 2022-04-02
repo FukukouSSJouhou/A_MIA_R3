@@ -41,6 +41,7 @@ export default class pysubprocwrap{
             command:2,
             data:indexkun
         }
+        console.log(sendobj)
         this.childproc.send(sendobj);
 
     }

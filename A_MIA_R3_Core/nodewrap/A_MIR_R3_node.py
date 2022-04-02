@@ -37,17 +37,23 @@ class A_MIR_R3_node2(object):
         senddt={"data":load_img_list_base64}
         #self.Loggingobj.debugout("senddatakun {}".format(senddt))
         self.fpselected=fpselected
+        self.selectimgended=False
         self.imagelistsendcallback(senddt)
-        await self.selectimgendedEvent.wait()
+        while True:
+            if self.selectimgended:
+                break
+            else:
+                self.nopsleep()
+
 
     async def recieve_selectimg(self,imageindex):
         self.Loggingobj.blueout("Called recieve selectimg")
         if imageindex == 0:
-            self.selectimgendedEvent.set()
+            self.selectimgended=True
             return
         else:
             await self.fpselected.execute(self.load_img_list_origcv[imageindex-1])
-            self.selectimgendedEvent.set()
+            self.selectimgended=True
     def logout_color(self,colorcode, txt):
         """
         色付きログ出力を行うコードだよ
@@ -60,8 +66,9 @@ class A_MIR_R3_node2(object):
         g = int(colorcode[3:5], 16)
         b = int(colorcode[5:7], 16)
         self.jslog("\033[38;2;{};{};{}m{}\033[0m".format(r, g, b, txt))
-    def __init__(self,jslog):
+    def __init__(self,jslog,nopsleep):
         self.jslog=jslog
+        self.nopsleep=nopsleep
         self.logout_color("#FF00FF","Python Class init..")
         # Create logger Object
         self.Loggingobj = MIALogger(self.logout_color, self.jslog)

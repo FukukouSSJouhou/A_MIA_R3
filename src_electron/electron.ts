@@ -78,6 +78,7 @@ const createWindow=()=> {
     });*/
 
     ipcMain.handle("setselectimg",async(event:IpcMainInvokeEvent,indexkun:number)=>{
+        console.log("called ",indexkun);
         classtest.setselectimg(indexkun);
     });
     ipcMain.handle("run",async(event:IpcMainInvokeEvent)=>{
