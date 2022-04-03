@@ -13,6 +13,8 @@ export interface IMIA_ELECTRON_API{
     Setimagelistsendcallback:(callback:(datakun:string)=>void)=>void;
     setselectimg:(indexkun:number)=>Promise<void>;
     run:()=>Promise<void>;
+    getNextImageBase64:()=>Promise<string>;
+    create_syoriobj:()=>Promise<void>;
 }
 export interface IOPENVDIALOG_STATUS{
     status?:Boolean;

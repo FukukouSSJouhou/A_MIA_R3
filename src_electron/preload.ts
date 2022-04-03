@@ -16,6 +16,10 @@ contextBridge.exposeInMainWorld(
         setselectimg:async(indexkun:number):Promise<void>=>
             await ipcRenderer.invoke("setselectimg",indexkun),
         run:async():Promise<void>=>
-            await ipcRenderer.invoke("run")
+            await ipcRenderer.invoke("run"),
+        getNextImageBase64:async():Promise<string>=>
+            await ipcRenderer.invoke("getNextImageBase64"),
+        create_syoriobj:async():Promise<void>=>
+            await ipcRenderer.invoke("create_syoriobj")
     }
 )
