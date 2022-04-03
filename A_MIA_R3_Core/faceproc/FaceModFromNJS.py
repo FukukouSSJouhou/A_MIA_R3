@@ -21,4 +21,23 @@ class FaceModFromNJS:
         self.facepoint = []
         cascade_path = './FACE/models/haarcascade_frontalface_default.xml'
         self.cascade = cv2.CascadeClassifier(cascade_path)
+    def getNextB64Lists(self):
+        if self.current_fps > self.total_frames:
+            return ["END"]
+        else:
+            self.capture.set(cv2.CAP_PROP_POS_FRAMES, self.current_fps)
+            ret, frame = self.capture.read()
 
+            if (ret == False):
+                self.current_fps += self.pertime
+                return [""]
+            gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+            front_face_list = self.cascade.detectMultiScale(gray)
+            self.Loggingobj.debugout("{} {}".format(self.current_fps, front_face_list))
+            if len(front_face_list) == 0:
+                self.current_fps += self.pertime
+                return [""]
+            else:
+                # self.select_target_img_window(frame)
+                # self.callbackobj.execute(frame, self.front_face_list, self.fpfsselectedkun)
+                
