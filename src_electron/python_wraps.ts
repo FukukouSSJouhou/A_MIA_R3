@@ -24,5 +24,8 @@ class A_MIA_R3_PythonWraps{
     public async getNextImageBase64():Promise<string>{
         return this.pyinstance.get("getNextImageBase64").call();
     }
+    public async create_syoriobj():Promise<void>{
+        return this.pyinstance.get("create_syoriobj").call();
+    }
 }
 export default A_MIA_R3_PythonWraps;
