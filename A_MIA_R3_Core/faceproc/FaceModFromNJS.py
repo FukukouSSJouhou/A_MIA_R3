@@ -1,3 +1,5 @@
+import base64
+
 import av
 import cv2
 
@@ -5,6 +7,34 @@ from A_MIA_R3_Core.Loggingkun.Loggerkun import MIALogger
 
 
 class FaceModFromNJS:
+    def ImageCutter(self, frame, front_face_list):
+        """
+        検出された画像をカットしてBase64に変換して返すッピ!
+        :param frame: frameッピ!
+        :param front_face_list: 検出された画像の座標リストッピ!
+        :return: Base64
+        """
+
+        i = 0
+        for (x, y, w, h) in front_face_list:
+            i += 1
+
+        frame2s = frame.copy()
+
+        load_img_list_base64 = []
+        self.load_img_list_origcv = []
+        j = 0
+        load_img_list_base64.append("")
+        for (x, y, w, h) in front_face_list:
+
+            img = frame2s[y: y + h, x: x + w].copy()
+            self.load_img_list_origcv.append(img.copy())
+            imgkundest=cv2.resize(img,dsize=(100,100))
+            ret,dstdata=cv2.imencode(".jpg",imgkundest)
+            load_img_list_base64.append(base64.b64encode(dstdata))
+            j += 1
+        #senddt={"data":load_img_list_base64}
+        return load_img_list_base64
     def __init__(self,Loggingobj:MIALogger,filename:str,pertime:int):
         self.Loggingobj=Loggingobj
         self.filename=filename
@@ -40,4 +70,4 @@ class FaceModFromNJS:
             else:
                 # self.select_target_img_window(frame)
                 # self.callbackobj.execute(frame, self.front_face_list, self.fpfsselectedkun)
-                
+                return self.ImageCutter(frame,front_face_list)
