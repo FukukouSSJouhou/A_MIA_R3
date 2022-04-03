@@ -21,5 +21,8 @@ class A_MIA_R3_PythonWraps{
     public async setselectimg(indexkun:number):Promise<void>{
         //this.pyinstance.get("recieve_selectimg").call(indexkun);
     }
+    public async getNextImageBase64():Promise<string>{
+        return this.pyinstance.get("getNextImageBase64").call();
+    }
 }
 export default A_MIA_R3_PythonWraps;

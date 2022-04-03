@@ -1,7 +1,9 @@
 import base64
+import json
 
 import cv2
 
+from A_MIA_R3_Core.FaceProcessFromNJS import FaceProcessFromNJS
 from A_MIA_R3_Core.Face_Process import Face_Process
 from A_MIA_R3_Core.Loggingkun.Loggerkun import MIALogger
 from A_MIA_R3_Core.faceproc.FPCallbackFaceSelector import FPCallbackFaceSelected, FPCallbackFaceSelector
@@ -31,6 +33,7 @@ class A_MIR_R3_node2(object):
         self.selectimgended=False
         self.fpselected=None
         self.load_img_list_origcv = []
+        self.FPobj=None
     def setFilename(self,filename):
         self.filenamekun=filename
         self.Loggingobj.successout("set Filename:{}".format(filename))
@@ -41,6 +44,10 @@ class A_MIR_R3_node2(object):
         self.Loggingobj.successout("<< A_MIA_R3 Core System>>")
     def create_syoriobj(self):
         self.Loggingobj.normalout("Creating Proc Obj....")
-        
-    def getNextImages(self):
-        return 1
+
+        self.FPobj=FaceProcessFromNJS(self.Loggingobj,self.filenamekun,29)
+        self.FPobj.openFile()
+    def getNextImageBase64(self):
+        lsobjkun=self.FPobj.getNextSomeFrameB64()
+        senddt = {"data": lsobjkun}
+        return json.dumps(senddt)
