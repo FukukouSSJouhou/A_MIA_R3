@@ -6,7 +6,7 @@ class A_MIA_R3_PythonWraps{
         console.log(strkun);
     }
     constructor(){
-        this.pyclasskun=pynode.pyimport("A_MIA_R3_Core.nodewrap.A_MIR_R3_node")
+        this.pyclasskun=pynode.pyimport("A_MIA_R3_Core.nodewrap.A_MIR_R3_nodev2")
         this.pyinstance=this.pyclasskun.get("A_MIR_R3_node2").call(this.loggerobj);
     }
     public async setFilename(filename:string):Promise<string>{
@@ -16,10 +16,10 @@ class A_MIA_R3_PythonWraps{
         return this.pyinstance.get("run").call();
     }
     public async Setimagelistsendcallback(callback:(datakun:string)=>void):Promise<void>{
-        this.pyinstance.get("Setimagelistsendcallback").call(callback);
+        //this.pyinstance.get("Setimagelistsendcallback").call(callback);
     }
     public async setselectimg(indexkun:number):Promise<void>{
-        this.pyinstance.get("recieve_selectimg").call(indexkun);
+        //this.pyinstance.get("recieve_selectimg").call(indexkun);
     }
 }
 export default A_MIA_R3_PythonWraps;
