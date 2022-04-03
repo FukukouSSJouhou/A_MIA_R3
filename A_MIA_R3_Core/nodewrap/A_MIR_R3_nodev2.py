@@ -39,3 +39,8 @@ class A_MIR_R3_node2(object):
         self.Loggingobj.successout("Run!!")
         self.Loggingobj.blueout(self.filenamekun)
         self.Loggingobj.successout("<< A_MIA_R3 Core System>>")
+    def create_syoriobj(self):
+        self.Loggingobj.normalout("Creating Proc Obj....")
+        
+    def getNextImages(self):
+        return 1
