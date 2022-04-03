@@ -26,7 +26,6 @@ class FaceModFromNJS:
         j = 0
         load_img_list_base64.append("")
         for (x, y, w, h) in front_face_list:
-
             img = frame2s[y: y + h, x: x + w].copy()
             self.load_img_list_origcv.append(img.copy())
             imgkundest=cv2.resize(img,dsize=(100,100))
@@ -70,4 +69,6 @@ class FaceModFromNJS:
             else:
                 # self.select_target_img_window(frame)
                 # self.callbackobj.execute(frame, self.front_face_list, self.fpfsselectedkun)
+
+                self.Loggingobj.debugout("Before image cutter")
                 return self.ImageCutter(frame,front_face_list)

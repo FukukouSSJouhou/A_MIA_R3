@@ -48,6 +48,7 @@ class A_MIR_R3_node2(object):
         self.FPobj=FaceProcessFromNJS(self.Loggingobj,self.filenamekun,29)
         self.FPobj.openFile()
     def getNextImageBase64(self):
+        self.Loggingobj.blueout("test called")
         lsobjkun=self.FPobj.getNextSomeFrameB64()
         senddt = {"data": lsobjkun}
         return json.dumps(senddt)
