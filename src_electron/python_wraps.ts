@@ -21,7 +21,7 @@ class A_MIA_R3_PythonWraps{
     public async setselectimg(indexkun:number):Promise<void>{
         //this.pyinstance.get("recieve_selectimg").call(indexkun);
     }
-    public async getNextImageBase64():Promise<string>{
+    public getNextImageBase64():string{
         return this.pyinstance.get("getNextImageBase64").call();
     }
     public async create_syoriobj():Promise<void>{

@@ -84,7 +84,7 @@ const createWindow=()=> {
         await classtest.create_syoriobj();
     });
     ipcMain.handle("getNextImageBase64",async(event:IpcMainInvokeEvent)=>{
-        return await classtest.getNextImageBase64();
+        return classtest.getNextImageBase64();
     });
     setInterval(()=>{
         const date = new Date();
