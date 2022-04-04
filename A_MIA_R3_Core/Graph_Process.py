@@ -2,7 +2,6 @@ import os
 
 from A_MIA_R3_Core.Graphproc import Graphmod
 from A_MIA_R3_Core.Loggingkun.Loggerkun import MIALogger
-s
 
 class Graph_Process:
     def __path_cutext2(self,pathkun):
