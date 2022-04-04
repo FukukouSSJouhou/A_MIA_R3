@@ -1,7 +1,7 @@
 import { Alert, Box, Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Grid, Paper, Snackbar, Step, StepLabel, Stepper, Typography } from '@mui/material';
 import React, * as react from 'react';
 
-const steps = ['Select File Name', 'Select target face', 'Wait for generating img..'];
+const steps = ['Select File Name', 'Select target face', 'Wait for generating img..','generated image'];
 export default function IndexPage(): React.ReactElement {
   const [vfilename, setvfilename] = React.useState<string>(null!);
   const [activeStep, setActiveStep] = React.useState(0);
@@ -13,6 +13,7 @@ export default function IndexPage(): React.ReactElement {
   const [canselect,setcanselect]=React.useState(false);
   const [openSnackbar, setOpenSnackbar] = React.useState(false);
   const [selectedIndex,setselectedIndex]=React.useState(0);
+  const [graphimagepath,setgraphimagepath]=React.useState("");
   const handlefilenotfoundialogopen=()=>{
     setfilenotfoundialogopen(true);
   }
@@ -51,9 +52,11 @@ export default function IndexPage(): React.ReactElement {
     }else{
       window.mia_electron_api.setselectimg(index).then(()=>{
         console.log("finished??")
-        setAllimageselected(true);
-        window.mia_electron_api.startTensorProc(vfilename,29).then(()=>{
-          console.log("f???");
+        window.mia_electron_api.startTensorProc(vfilename,29).then((resultvar)=>{
+          //console.log("f???");
+          setgraphimagepath(resultvar);
+          setAllimageselected(true);
+
         });
       });
     }
@@ -120,6 +123,16 @@ const handleClose=(event?:React.SyntheticEvent|Event,reason?:string)=>{
       case 1:
           if(!allimageselected){
             return;
+          }else{
+            
+            let newSkipped = skipped;
+            if (isStepSkipped(activeStep)) {
+              newSkipped = new Set(newSkipped.values());
+              newSkipped.delete(activeStep);
+            }
+
+            setActiveStep((prevActiveStep) => prevActiveStep + 1);
+            setSkipped(newSkipped);
           }
     }
     console.log(activeStep);
@@ -205,6 +218,13 @@ const handleClose=(event?:React.SyntheticEvent|Event,reason?:string)=>{
     ); 
     }
   }
+  const ThirdPage=()=>{
+    return(
+      <>
+      <img src={graphimagepath} />
+      </>
+    );
+  }
   const naibuyouso = () => {
     switch (activeStep) {
       case 0:
@@ -221,6 +241,8 @@ const handleClose=(event?:React.SyntheticEvent|Event,reason?:string)=>{
         );
       case 1:
         return (<SecondPage />);
+      case 2:
+        return (<ThirdPage />);
       default:
         return "Default!";
     }
