@@ -30,7 +30,7 @@ class FaceModFromNJS:
             self.load_img_list_origcv.append(img.copy())
             imgkundest=cv2.resize(img,dsize=(100,100))
             ret,dstdata=cv2.imencode(".jpg",imgkundest)
-            load_img_list_base64.append(base64.b64encode(dstdata))
+            load_img_list_base64.append("data:image/jpeg;base64,{}".format(base64.b64encode(dstdata).decode("ascii")))
             j += 1
         #senddt={"data":load_img_list_base64}
         return load_img_list_base64
