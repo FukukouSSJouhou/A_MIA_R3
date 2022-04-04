@@ -115,3 +115,26 @@ class A_MIR_R3_node_tensor2(object):
             if similarface is not None:
                 self.detect_emotion(similarface)
             counterfps += self.splitframe
+    def detect_emotion(self, imgobj):
+        """
+        実際に感情分析をするッピ!
+
+        :param imgobj: 類似度が一番高い画像が入るッピ!
+        :return: 何も返しませんよ
+        """
+
+        if imgobj is not None:
+            img_array = image.img_to_array(cv2.resize(imgobj, (48, 48)))
+            pImg = np.delete(img_array, 1, axis=2)
+            pImg = np.delete(pImg, 1, axis=2)
+            pImg = np.expand_dims(pImg, 0) / 255
+            prediction = self.emotions_XCEPTION.predict(pImg)[0]
+
+            emos = []
+            self.Loggingobj.debugout("{}".format(prediction))
+            for predict_i in range(len(prediction)):
+                emos.append(prediction[predict_i])
+            self.timeemos.append(emos)
+        else:
+            emos = [0, 0, 0, 0, 0]
+            self.timeemos.append(emos)
