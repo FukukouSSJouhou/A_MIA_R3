@@ -4,3 +4,7 @@ export default interface  TENSORPYTHONPROCINTERFACE{
     filename:string;
     frameper:number;
 }
+export interface TENSORPYTHON_RESULT_PROCINTERFACE{
+    mode:number;
+    data:any;
+}
