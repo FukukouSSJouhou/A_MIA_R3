@@ -1,9 +1,11 @@
 import path from "path";
-import { ipcMain ,dialog,BrowserWindow,app, IpcMainInvokeEvent } from "electron";
+import { ipcMain ,dialog,BrowserWindow,app, IpcMainInvokeEvent, Menu } from "electron";
 import fs from "fs";
 import pynode from '@fukukoussjouhou/pynode';
 import A_MIA_R3_PythonWraps from "./python_wraps";
 import TensorPythonMainProc from "./tensorpythonmainproc";
+import openAboutWisndow from 'electron-about-window';
+const isosx = (process.platform === 'darwin'); 
 
 if (process.env.NODE_ENV === 'development') {
   const execPath:string =
@@ -15,9 +17,85 @@ if (process.env.NODE_ENV === 'development') {
     electron: path.resolve(__dirname, execPath),
   });
 }
-
 let mainWindow:BrowserWindow;
+let NameSubMenu : Electron.MenuItemConstructorOptions[] = [];
+let EditSubMenu:Electron.MenuItemConstructorOptions[]=[];
 
+if(isosx){
+    
+  NameSubMenu = [
+    {
+      label: app.name,
+      submenu: [
+        { role: 'about' },
+        { type: 'separator' },
+        { role: 'services' },
+        { type: 'separator' },
+        { role: 'hide' },
+        { role: 'hideOthers' },
+        { role: 'unhide' },
+        { type: 'separator' },
+        { role: 'quit' }
+      ]
+    }
+  ];
+}
+EditSubMenu=isosx?[
+
+    { role: 'pasteAndMatchStyle' },
+    { role: 'delete' },
+    { role: 'selectAll' },
+    { type: 'separator' },
+    {
+      label: 'Speech',
+      submenu: [
+        { role: 'startSpeaking' },
+        { role: 'stopSpeaking' }
+      ]
+    }
+]:[
+
+    { role: 'delete' },
+    { type: 'separator' },
+    { role: 'selectAll' }
+];
+let menu=Menu.buildFromTemplate([
+    ...NameSubMenu,
+    {
+        label:"File",
+        submenu:[
+            isosx?{role:"close"}:{role:"quit"}
+        ]
+    },
+    
+  {
+    label: 'Edit',
+    submenu: [
+      { role: 'undo' },
+      { role: 'redo' },
+      { type: 'separator' },
+      { role: 'cut' },
+      { role: 'copy' },
+      { role: 'paste' },
+      ...EditSubMenu
+    ]
+  },
+  // { role: 'viewMenu' }
+  {
+    label: 'View',
+    submenu: [
+      { role: 'reload' },
+      { role: 'forceReload' },
+      { role: 'toggleDevTools' },
+      { type: 'separator' },
+      { role: 'resetZoom' },
+      { role: 'zoomIn' },
+      { role: 'zoomOut' },
+      { type: 'separator' },
+      { role: 'togglefullscreen' }
+    ]
+  },
+]);
 pynode.startInterpreter();
 pynode.appendSysPath('./');
 pynode.appendSysPath('./venv/Lib/site-packages');
