@@ -124,7 +124,8 @@ class A_MIR_R3_node_tensor2(object):
         self.Loggingobj.successout("Success! Generated graph...")
         # img=Image.fromarray(imgkun)
         imgcv = cv2.cvtColor(imgkun, cv2.COLOR_RGB2BGR)
-
+        ret, dstdata = cv2.imencode(".jpg", imgcv)
+        return "data:image/jpeg;base64,{}".format(base64.b64encode(dstdata).decode("ascii"))
     def detect_emotion(self, imgobj):
         """
         実際に感情分析をするッピ!
