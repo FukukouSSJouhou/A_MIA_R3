@@ -3,7 +3,6 @@ import os
 from A_MIA_R3_Core.Graphproc import Graphmod
 from A_MIA_R3_Core.Loggingkun.Loggerkun import MIALogger
 
-
 class Graph_Process:
     def __path_cutext2(self,pathkun):
         pathkun22, extkun = os.path.splitext(os.path.basename(pathkun))

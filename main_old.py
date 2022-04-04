@@ -122,7 +122,7 @@ def logout_color(colorcode,txt):
     g = int(colorcode[3:5], 16)
     b = int(colorcode[5:7], 16)
     print("\033[38;2;{};{};{}m{}\033[0m".format(r, g, b, txt))
-def main():
+async def main():
     """
     メインコードだよ
 

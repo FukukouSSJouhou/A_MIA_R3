@@ -1,0 +1,12 @@
+{
+    "extends": ".",
+    "compilerOptions": {
+        "lib": [],
+        "module": "CommonJS",
+        "outDir": "./build",
+    },  
+    "include": [
+        "src_electron/*.ts",
+        "src_electron/@types/*"
+    ]
+}

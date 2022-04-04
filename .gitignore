@@ -8,7 +8,7 @@ _audio/
 FACE/temp_img/
 docs/_build/
 FACE/facepointmemo/
-
+node_modules/
 FACE/emomemo/
 
 MakeGraph/graphs/
@@ -20,3 +20,9 @@ SENTENCE/emomemo/
 SENTENCE/texts/
 
 SENTENCE/times/
+
+build/
+
+dist/
+**/.DS_Store
+venv/
