@@ -5,6 +5,7 @@ import pynode from '@fukukoussjouhou/pynode';
 import A_MIA_R3_PythonWraps from "./python_wraps";
 import TensorPythonMainProc from "./tensorpythonmainproc";
 import openAboutWisndow from 'electron-about-window';
+import openAboutWindow from "electron-about-window";
 const isosx = (process.platform === 'darwin'); 
 
 if (process.env.NODE_ENV === 'development') {
@@ -115,7 +116,26 @@ let menu=Menu.buildFromTemplate([
       ...WindowSubMenu
     ]
   },
+  {
+    label: 'Help',
+    submenu: [
+      {label: 'About',
+      click:()=>{
+        openAboutWindow(
+            {
+                icon_path:
+                    process.env.NODE_ENV === 'development'
+                        ? path.join(__dirname, "../public/icon.png")
+                        :path.join(__dirname, "../build/icon.png")
+    
+            }
+        )
+      }
+    }
+    ]
+  },
 ]);
+Menu.setApplicationMenu(menu);
 pynode.startInterpreter();
 pynode.appendSysPath('./');
 pynode.appendSysPath('./venv/Lib/site-packages');
