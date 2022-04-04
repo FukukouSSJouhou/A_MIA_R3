@@ -29,7 +29,9 @@ class A_MIA_R3_PythonWraps{
         return this.pyinstance.get("create_syoriobj").call();
     }
     public getselectedimg(indexkun:number):string{
-        return this.pyinstance.get("getselectedimg").call(indexkun);
+        let result_valuekun:string= this.pyinstance.get("getselectedimg").call(indexkun);
+        this.pyinstance.get("closeObj").call();
+        return result_valuekun;
     }
 }
 export default A_MIA_R3_PythonWraps;
