@@ -51,3 +51,6 @@ class A_MIR_R3_node2(object):
     def setselectimg(self,indexkun):
         self.target_imgkun =self.FPobj.getTargetImage(indexkun)
         self.Loggingobj.successout("selected image!!")
+    def getselectedimg(self,indexkun):
+        self.Loggingobj.normalout("get base64 targetimg")
+        return self.FPobj.getTargetImageBase64(indexkun)

@@ -16,3 +16,5 @@ class FaceProcessFromNJS:
         return self.FPkun.getNextB64Lists()
     def getTargetImage(self,indexkun):
         return self.FPkun.getTargetImage(indexkun)
+    def getTargetImageBase64(self,indexkun):
+        return self.FPkun.getTargetImageBase64(indexkun)
