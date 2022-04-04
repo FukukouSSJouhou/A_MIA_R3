@@ -28,6 +28,10 @@ const common:Configuration={
                 test: /\.css$/,
                 use: ['style-loader', 'css-loader']
             },
+            {
+              test: /\.node$/,
+              loader: "node-loader",
+            },
         ]
     },
     watch: isDev,
