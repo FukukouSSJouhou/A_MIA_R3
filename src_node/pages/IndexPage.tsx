@@ -19,6 +19,7 @@ export default function IndexPage(): React.ReactElement {
   const callbacksetimagekun=(datakun:string)=>{
     const message = JSON.parse(datakun);
     setImageList(message.data);
+    setcanselect(true);
   }
   const handlefilenotfoundialogclose=()=>{
     setfilenotfoundialogopen(false);
@@ -82,6 +83,12 @@ const handleClose=(event?:React.SyntheticEvent|Event,reason?:string)=>{
                 setActiveStep((prevActiveStep) => prevActiveStep + 1);
                 setSkipped(newSkipped);
                 window.mia_electron_api.run();
+                window.mia_electron_api.create_syoriobj().then(()=>{
+                  window.mia_electron_api.getNextImageBase64().then((b64kun)=>{
+                    console.log(b64kun);
+                    callbacksetimagekun(b64kun);
+                  });
+                });
               });
             } else {
               //しないなら
