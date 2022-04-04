@@ -47,6 +47,7 @@
     "@mui/icons-material": "^5.5.1",
     "@mui/material": "^5.5.2",
     "cross-env": "^7.0.3",
+    "electron-about-window": "^1.15.2",
     "electron-is-dev": "^2.0.0",
     "electron-reload": "^2.0.0-alpha.1",
     "npm-run-all": "^4.1.5",
