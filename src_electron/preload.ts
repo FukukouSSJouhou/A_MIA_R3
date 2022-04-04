@@ -21,7 +21,7 @@ contextBridge.exposeInMainWorld(
             await ipcRenderer.invoke("getNextImageBase64"),
         create_syoriobj:async():Promise<void>=>
             await ipcRenderer.invoke("create_syoriobj"),
-        startTensorProc:async(filename:string,frameper:number):Promise<void>=>
+        startTensorProc:async(filename:string,frameper:number):Promise<string>=>
             await ipcRenderer.invoke("startTensorProc",filename,frameper)
     }
 )

@@ -92,7 +92,7 @@ const createWindow=()=> {
         return classtest.getNextImageBase64();
     });
     ipcMain.handle("startTensorProc",async(event:IpcMainInvokeEvent,filename:string,pertime:number)=>{
-        return tensormainproc.start(target_imagekunb64,filename,pertime);
+        return await tensormainproc.start(target_imagekunb64,filename,pertime);
     });
     setInterval(()=>{
         const date = new Date();

@@ -15,7 +15,7 @@ export interface IMIA_ELECTRON_API{
     run:()=>Promise<void>;
     getNextImageBase64:()=>Promise<string>;
     create_syoriobj:()=>Promise<void>;
-    startTensorProc:(filename:string,perframe:number)=>Promise<void>;
+    startTensorProc:(filename:string,perframe:number)=>Promise<string>;
 }
 export interface IOPENVDIALOG_STATUS{
     status?:Boolean;

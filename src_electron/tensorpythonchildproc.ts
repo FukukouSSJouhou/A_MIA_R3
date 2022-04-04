@@ -10,6 +10,7 @@ const loggerobj=(strkun:string)=>{
         process.send(sendmsg);
     }
 }
+console.log( process.cwd());
 pynode.startInterpreter();
 pynode.appendSysPath('./');
 pynode.appendSysPath('./venv/Lib/site-packages');
@@ -20,4 +21,11 @@ process.on("message",(message:TENSORPYTHONPROCINTERFACE)=>{
     let filename=message.filename;
     let perframe=message.frameper;
     let msgkun=pyinstance.get("processkun").call(base64target,filename,perframe);
+    let sendmsg2:TENSORPYTHON_RESULT_PROCINTERFACE={
+        mode:0,
+        data:msgkun
+    };
+    if(process.send){
+        process.send(sendmsg2);
+    }
 });
