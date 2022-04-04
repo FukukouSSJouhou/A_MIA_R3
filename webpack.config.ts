@@ -9,7 +9,7 @@ const common:Configuration={
     mode: isDev ? 'development' : 'production',
 
     resolve: {
-        extensions: ['.js', '.jsx','.json', '.ts', '.tsx']
+        extensions: ['.js', '.jsx','.json', '.ts', '.tsx','.node']
     },
     
     output: {
@@ -27,6 +27,10 @@ const common:Configuration={
             {
                 test: /\.css$/,
                 use: ['style-loader', 'css-loader']
+            },
+            {
+              test: /\.node$/,
+              loader: "node-loader",
             },
         ]
     },

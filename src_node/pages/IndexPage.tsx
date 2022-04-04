@@ -1,26 +1,28 @@
 import { Alert, Box, Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Grid, Paper, Snackbar, Step, StepLabel, Stepper, Typography } from '@mui/material';
 import React, * as react from 'react';
 
-const steps = ['Select File Name', 'Select target face', 'Wait for generating img..'];
+const steps = ['Select File Name', 'Select target face', 'Wait for generating img..', 'generated image', 'NONE'];
 export default function IndexPage(): React.ReactElement {
   const [vfilename, setvfilename] = React.useState<string>(null!);
   const [activeStep, setActiveStep] = React.useState(0);
   const [skipped, setSkipped] = React.useState(new Set<number>());
-  const [allimageselected,setAllimageselected]=React.useState(false);
-  const [filenotfoundialogopen,setfilenotfoundialogopen]=React.useState(false);
-  
-  const [image_list,setImageList]=React.useState<Array<string>>([]);
-  const [canselect,setcanselect]=React.useState(false);
+  const [allimageselected, setAllimageselected] = React.useState(false);
+  const [filenotfoundialogopen, setfilenotfoundialogopen] = React.useState(false);
+
+  const [image_list, setImageList] = React.useState<Array<string>>([]);
+  const [canselect, setcanselect] = React.useState(false);
   const [openSnackbar, setOpenSnackbar] = React.useState(false);
-  const [selectedIndex,setselectedIndex]=React.useState(0);
-  const handlefilenotfoundialogopen=()=>{
+  const [selectedIndex, setselectedIndex] = React.useState(0);
+  const [graphimagepath, setgraphimagepath] = React.useState("");
+  const handlefilenotfoundialogopen = () => {
     setfilenotfoundialogopen(true);
   }
-  const callbacksetimagekun=(datakun:string)=>{
+  const callbacksetimagekun = (datakun: string) => {
     const message = JSON.parse(datakun);
     setImageList(message.data);
+    setcanselect(true);
   }
-  const handlefilenotfoundialogclose=()=>{
+  const handlefilenotfoundialogclose = () => {
     setfilenotfoundialogopen(false);
   }
   const isStepOptional = (step: number) => {
@@ -31,23 +33,59 @@ export default function IndexPage(): React.ReactElement {
     return skipped.has(step);
   };
   React.useEffect(
-    ()=>{
+    () => {
       window.mia_electron_api.Setimagelistsendcallback(callbacksetimagekun);
     }
-  ,[])
-  
-  const clicked_btkun=(index:number)=>{
+    , [])
+
+  const clicked_btkun = (index: number) => {
     setselectedIndex(index);
     setOpenSnackbar(true);
-    window.mia_electron_api.setselectimg(index)
     setcanselect(false);
-}
-const handleClose=(event?:React.SyntheticEvent|Event,reason?:string)=>{
-    if(reason==="clickaway"){
-        return;
+    if (index == 0) {
+      window.mia_electron_api.getNextImageBase64().then((b64kun) => {
+        console.log(b64kun);
+        const message = JSON.parse(b64kun);
+        setImageList(message.data);
+        setcanselect(true);
+      });
+    } else {
+      let newSkipped = skipped;
+      if (isStepSkipped(activeStep)) {
+        newSkipped = new Set(newSkipped.values());
+        newSkipped.delete(activeStep);
+      }
+
+      setActiveStep((prevActiveStep) => prevActiveStep + 1);
+      setSkipped(newSkipped);
+      window.mia_electron_api.setselectimg(index).then(() => {
+        console.log("finished??")
+        window.mia_electron_api.startTensorProc(vfilename, 29).then((resultvar) => {
+          //console.log("f???");
+          setgraphimagepath(resultvar);
+          //setAllimageselected(true);
+
+          let newSkipped = skipped;
+          if (isStepSkipped(activeStep)) {
+            newSkipped = new Set(newSkipped.values());
+            newSkipped.delete(activeStep);
+          }
+
+          setActiveStep((prevActiveStep) => prevActiveStep + 1);
+          setSkipped(newSkipped);
+
+        });
+      });
+    }
+    //window.mia_electron_api.setselectimg(index)
+
+  }
+  const handleClose = (event?: React.SyntheticEvent | Event, reason?: string) => {
+    if (reason === "clickaway") {
+      return;
     }
     setOpenSnackbar(false);
-}
+  }
   const button_clicked = () => {
     //console.log("clicked");
     window.mia_electron_api.openVideoFileDialog("Open File").then(
@@ -71,17 +109,25 @@ const handleClose=(event?:React.SyntheticEvent|Event,reason?:string)=>{
             //チェック完了後に呼び出される
             if (result) {
               //存在するなら
-              window.mia_electron_api.set_filename(vfilename).then((resultkun334)=>{
+              window.mia_electron_api.set_filename(vfilename).then((resultkun334) => {
                 console.log(resultkun334);
                 let newSkipped = skipped;
                 if (isStepSkipped(activeStep)) {
                   newSkipped = new Set(newSkipped.values());
                   newSkipped.delete(activeStep);
                 }
-  
+
                 setActiveStep((prevActiveStep) => prevActiveStep + 1);
                 setSkipped(newSkipped);
                 window.mia_electron_api.run();
+                window.mia_electron_api.create_syoriobj().then(() => {
+                  window.mia_electron_api.getNextImageBase64().then((b64kun) => {
+                    console.log(b64kun);
+                    const message = JSON.parse(b64kun);
+                    setImageList(message.data);
+                    setcanselect(true);
+                  });
+                });
               });
             } else {
               //しないなら
@@ -92,9 +138,36 @@ const handleClose=(event?:React.SyntheticEvent|Event,reason?:string)=>{
           );
         return;
       case 1:
-          if(!allimageselected){
-            return;
+        if (!allimageselected) {
+          return;
+        } else {
+
+          let newSkipped = skipped;
+          if (isStepSkipped(activeStep)) {
+            newSkipped = new Set(newSkipped.values());
+            newSkipped.delete(activeStep);
           }
+
+          setActiveStep((prevActiveStep) => prevActiveStep + 1);
+          setSkipped(newSkipped);
+        }
+        return;
+      case 2:
+        if (!allimageselected) {
+          return;
+        } else {
+
+          let newSkipped = skipped;
+          if (isStepSkipped(activeStep)) {
+            newSkipped = new Set(newSkipped.values());
+            newSkipped.delete(activeStep);
+          }
+
+          setActiveStep((prevActiveStep) => prevActiveStep + 1);
+          setSkipped(newSkipped);
+        }
+        return;
+
     }
     console.log(activeStep);
     let newSkipped = skipped;
@@ -129,43 +202,74 @@ const handleClose=(event?:React.SyntheticEvent|Event,reason?:string)=>{
   const handleReset = () => {
     setActiveStep(0);
   };
-  const SecondPage=()=>{
-    if(canselect){
-      
+  const SecondPage = () => {
+    if (canselect) {
+
       return (
         <>
-            <Grid container rowSpacing={1} columnSpacing={{ xs: 2, sm: 2, md: 3 }}>
-                {image_list.map((image_url: string, index: number) => {
-                    return (
-                        <Grid item xs={3}>
-                            <Button onClick={()=>{clicked_btkun(index)}}>
-                                <Paper elevation={3} >
-                                    <img src={image_url} alt="" />
-                                </Paper></Button>
-                        </Grid>
-                    );
-                }
-                )}
-            </Grid>
-      <Snackbar open={openSnackbar} autoHideDuration={6000} onClose={handleClose}>
-        <Alert onClose={handleClose} severity="success" sx={{ width: '100%' }}>
-          Selected {selectedIndex}!
-        </Alert>
-      </Snackbar>
+          <Grid container rowSpacing={1} columnSpacing={{ xs: 2, sm: 2, md: 3 }}>
+            {image_list.map((image_url: string, index: number) => {
+              if (index == 0) {
+
+                return (
+                  <Grid item xs={3}>
+                    <Button onClick={() => { clicked_btkun(index) }}>
+                      <Paper elevation={3} >
+                        <img src="noimage.png" alt="" />
+                      </Paper></Button>
+                  </Grid>
+                );
+              } else {
+                return (
+                  <Grid item xs={3}>
+                    <Button onClick={() => { clicked_btkun(index) }}>
+                      <Paper elevation={3} >
+                        <img src={image_url} alt="" />
+                      </Paper></Button>
+                  </Grid>
+                );
+              }
+            }
+            )}
+          </Grid>
+          <Snackbar open={openSnackbar} autoHideDuration={6000} onClose={handleClose}>
+            <Alert onClose={handleClose} severity="success" sx={{ width: '100%' }}>
+              Selected {selectedIndex}!
+            </Alert>
+          </Snackbar>
         </>
-    );
-    }else{
+      );
+    } else {
+      return (
+        <>
+          Waiting...
+          <Snackbar open={openSnackbar} autoHideDuration={6000} onClose={handleClose}>
+            <Alert onClose={handleClose} severity="success" sx={{ width: '100%' }}>
+              Selected {selectedIndex}!
+            </Alert>
+          </Snackbar>
+        </>
+      );
+    }
+  }
+  const ThirdPage = () => {
     return (
       <>
-      Waiting...
-    <Snackbar open={openSnackbar} autoHideDuration={6000} onClose={handleClose}>
-      <Alert onClose={handleClose} severity="success" sx={{ width: '100%' }}>
-        Selected {selectedIndex}!
-      </Alert>
-    </Snackbar>
+        Waiting...
+        <Snackbar open={openSnackbar} autoHideDuration={6000} onClose={handleClose}>
+          <Alert onClose={handleClose} severity="success" sx={{ width: '100%' }}>
+            Selected {selectedIndex}!
+          </Alert>
+        </Snackbar>
       </>
-    ); 
-    }
+    );
+  }
+  const ForthPage = () => {
+    return (
+      <>
+        <img src={graphimagepath} />
+      </>
+    );
   }
   const naibuyouso = () => {
     switch (activeStep) {
@@ -183,42 +287,46 @@ const handleClose=(event?:React.SyntheticEvent|Event,reason?:string)=>{
         );
       case 1:
         return (<SecondPage />);
+      case 2:
+        return (<ThirdPage />);
+      case 3:
+        return (<ForthPage />);
       default:
         return "Default!";
     }
   }
-  const DialogAlertkun=(openkun:boolean,handleClose:any,filenamekun:string)=>{
-    return(
-      
-    <div>
-    <Dialog
-      open={openkun}
-      onClose={handleClose}
-      aria-labelledby="alert-dialog-title"
-      aria-describedby="alert-dialog-description"
-    >
-      <DialogTitle id="alert-dialog-title">
-        {"Error !"}
-      </DialogTitle>
-      <DialogContent>
-        <DialogContentText id="alert-dialog-description">
-        The video file {filenamekun}is not exist.
-        </DialogContentText>
-      </DialogContent>
-      <DialogActions>
-        <Button onClick={handleClose} autoFocus>
-          OK
-        </Button>
-      </DialogActions>
-    </Dialog>
-  </div>
+  const DialogAlertkun = (openkun: boolean, handleClose: any, filenamekun: string) => {
+    return (
+
+      <div>
+        <Dialog
+          open={openkun}
+          onClose={handleClose}
+          aria-labelledby="alert-dialog-title"
+          aria-describedby="alert-dialog-description"
+        >
+          <DialogTitle id="alert-dialog-title">
+            {"Error !"}
+          </DialogTitle>
+          <DialogContent>
+            <DialogContentText id="alert-dialog-description">
+              The video file {filenamekun}is not exist.
+            </DialogContentText>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={handleClose} autoFocus>
+              OK
+            </Button>
+          </DialogActions>
+        </Dialog>
+      </div>
     );
   }
   return (
     <>
       <h1>Hello Work!</h1>
       <br />
-      {DialogAlertkun(filenotfoundialogopen,handlefilenotfoundialogclose,vfilename)}
+      {DialogAlertkun(filenotfoundialogopen, handlefilenotfoundialogclose, vfilename)}
       <Box sx={{ width: '100%' }}>
         <Stepper activeStep={activeStep}>
           {steps.map((label, index) => {

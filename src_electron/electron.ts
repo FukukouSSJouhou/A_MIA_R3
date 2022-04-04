@@ -3,6 +3,7 @@ import { ipcMain ,dialog,BrowserWindow,app, IpcMainInvokeEvent } from "electron"
 import fs from "fs";
 import pynode from '@fukukoussjouhou/pynode';
 import A_MIA_R3_PythonWraps from "./python_wraps";
+import TensorPythonMainProc from "./tensorpythonmainproc";
 
 if (process.env.NODE_ENV === 'development') {
   const execPath:string =
@@ -21,6 +22,8 @@ pynode.startInterpreter();
 pynode.appendSysPath('./');
 pynode.appendSysPath('./venv/Lib/site-packages');
 let classtest=new A_MIA_R3_PythonWraps();
+let target_imagekunb64:string="";
+let tensormainproc=new TensorPythonMainProc();
 const createWindow=()=> {
     mainWindow = new BrowserWindow(
         {
@@ -75,10 +78,21 @@ const createWindow=()=> {
         classtest.Setimagelistsendcallback(callback);
     });
     ipcMain.handle("setselectimg",async(event:IpcMainInvokeEvent,indexkun:number)=>{
-        classtest.setselectimg(indexkun);
+        //classtest.setselectimg(indexkun);
+        target_imagekunb64=classtest.getselectedimg(indexkun);
+
     });
     ipcMain.handle("run",async(event:IpcMainInvokeEvent)=>{
         classtest.run();
+    });
+    ipcMain.handle("create_syoriobj",async(event:IpcMainInvokeEvent)=>{
+        await classtest.create_syoriobj();
+    });
+    ipcMain.handle("getNextImageBase64",async(event:IpcMainInvokeEvent)=>{
+        return classtest.getNextImageBase64();
+    });
+    ipcMain.handle("startTensorProc",async(event:IpcMainInvokeEvent,filename:string,pertime:number)=>{
+        return await tensormainproc.start(target_imagekunb64,filename,pertime);
     });
     setInterval(()=>{
         const date = new Date();
