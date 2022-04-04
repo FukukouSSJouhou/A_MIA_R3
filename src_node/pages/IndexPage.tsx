@@ -40,7 +40,8 @@ export default function IndexPage(): React.ReactElement {
   const clicked_btkun=(index:number)=>{
     setselectedIndex(index);
     setOpenSnackbar(true);
-    window.mia_electron_api.setselectimg(index)
+    //window.mia_electron_api.setselectimg(index)
+
     setcanselect(false);
 }
 const handleClose=(event?:React.SyntheticEvent|Event,reason?:string)=>{
@@ -86,7 +87,9 @@ const handleClose=(event?:React.SyntheticEvent|Event,reason?:string)=>{
                 window.mia_electron_api.create_syoriobj().then(()=>{
                   window.mia_electron_api.getNextImageBase64().then((b64kun)=>{
                     console.log(b64kun);
-                    callbacksetimagekun(b64kun);
+                    const message = JSON.parse(b64kun);
+                    setImageList(message.data);
+                    setcanselect(true);
                   });
                 });
               });
@@ -143,6 +146,17 @@ const handleClose=(event?:React.SyntheticEvent|Event,reason?:string)=>{
         <>
             <Grid container rowSpacing={1} columnSpacing={{ xs: 2, sm: 2, md: 3 }}>
                 {image_list.map((image_url: string, index: number) => {
+                    if(index == 0){
+                      
+                    return (
+                      <Grid item xs={3}>
+                          <Button onClick={()=>{clicked_btkun(index)}}>
+                              <Paper elevation={3} >
+                                  <img src="noimage.png" alt="" />
+                              </Paper></Button>
+                      </Grid>
+                  );
+                    }else{
                     return (
                         <Grid item xs={3}>
                             <Button onClick={()=>{clicked_btkun(index)}}>
@@ -151,6 +165,7 @@ const handleClose=(event?:React.SyntheticEvent|Event,reason?:string)=>{
                                 </Paper></Button>
                         </Grid>
                     );
+                    }
                 }
                 )}
             </Grid>
