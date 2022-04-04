@@ -3,6 +3,8 @@ import os
 
 from PIL import Image
 import io
+
+from A_MIA_R3_Core.Graph_Process import Graph_Process
 from A_MIA_R3_Core.Loggingkun.Loggerkun import MIALogger
 
 
@@ -115,6 +117,14 @@ class A_MIR_R3_node_tensor2(object):
             if similarface is not None:
                 self.detect_emotion(similarface)
             counterfps += self.splitframe
+        timeemoskun=self.timeemos.copy()
+        gp = Graph_Process(self.filename, self.Loggingobj)
+        imgkun = gp.process(timeemoskun)
+
+        self.Loggingobj.successout("Success! Generated graph...")
+        # img=Image.fromarray(imgkun)
+        imgcv = cv2.cvtColor(imgkun, cv2.COLOR_RGB2BGR)
+
     def detect_emotion(self, imgobj):
         """
         実際に感情分析をするッピ!
