@@ -1,5 +1,8 @@
+import base64
 import os
 
+from PIL import Image
+import io
 from A_MIA_R3_Core.Loggingkun.Loggerkun import MIALogger
 
 
@@ -28,7 +31,37 @@ class A_MIR_R3_node_tensor2(object):
         g = int(colorcode[3:5], 16)
         b = int(colorcode[5:7], 16)
         self.jslog("\033[38;2;{};{};{}m{}\033[0m".format(r, g, b, txt))
+    def similarity(self, images):
+        """
+        入力された画像とターゲットの類似度を計算して最大のものを返すっピ!
+
+        :param images: 検出された画像たち
+        :return: 類似度が最も高い画像
+        """
+        # BFMatcherオブジェクトの生成
+        bf = cv2.BFMatcher(cv2.NORM_HAMMING)
+        # 特徴点を検出
+        detector = cv2.AKAZE_create()
+        # detector = cv2.ORB_create()
+        (target_kp, target_des) = detector.detectAndCompute(self.targetimage, None)
+
+        similarity_list = []
+        for comparing_img in images:
+            try:
+                (comparing_kp, comparing_des) = detector.detectAndCompute(comparing_img, None)
+                matches = bf.match(target_des, comparing_des)
+                dist = [m.distance for m in matches]
+                ret_simi = sum(dist) / len(dist)
+            except cv2.error:
+                # cv2がエラーを吐いた場合の処理
+                ret_simi = 100000
+            self.Loggingobj.debugout(ret_simi)
+            similarity_list.append(ret_simi)
+        if not similarity_list:
+            return None
+        return images[similarity_list.index(min(similarity_list))]
     def __init__(self,jslog):
+        self.front_face_list = []
         self.jslog = jslog
         self.logout_color("#FF00FF", "Python Class for Tensorflow init..")
         self.Loggingobj = MIALogger(self.logout_color, self.jslog)
@@ -45,8 +78,12 @@ class A_MIR_R3_node_tensor2(object):
         if not os.path.exists('./FACE/emomemo/'):
             os.makedirs('./FACE/emomemo/')
     def processkun(self,targetbase64:str,filename:str,perfps:int):
-
+        self.filename=filename
+        self.targetimage= cv2.resize(cv2.cvtColor(np.array(Image.open(io.BytesIO(base64.b64decode(targetbase64)))), cv2.COLOR_BGR2GRAY),
+                                          (200, 200))
         capture = cv2.VideoCapture(self.filename)
+        self.frames=int(capture.get(cv2.CAP_PROP_FRAME_COUNT))
+        self.splitframe=perfps
         fps = capture.get(cv2.CAP_PROP_FPS)
         counterfps = 1
         self.facepoint = []
