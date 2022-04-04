@@ -54,3 +54,5 @@ class A_MIR_R3_node2(object):
     def getselectedimg(self,indexkun):
         self.Loggingobj.normalout("get base64 targetimg")
         return self.FPobj.getTargetImageBase64(indexkun)
+    def closeObj(self):
+        self.FPobj.closeObj()

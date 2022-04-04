@@ -44,3 +44,37 @@ class A_MIR_R3_node_tensor2(object):
 
         if not os.path.exists('./FACE/emomemo/'):
             os.makedirs('./FACE/emomemo/')
+    def processkun(self,targetbase64:str,filename:str,perfps:int):
+
+        capture = cv2.VideoCapture(self.filename)
+        fps = capture.get(cv2.CAP_PROP_FPS)
+        counterfps = 1
+        self.facepoint = []
+        # LOAD CASCADE
+        cascade_path = './FACE/models/haarcascade_frontalface_default.xml'
+        cascade = cv2.CascadeClassifier(cascade_path)
+        self.hantei = 0
+        while counterfps <= self.frames:
+            capture.set(cv2.CAP_PROP_POS_FRAMES, counterfps)
+            ret, frame = capture.read()
+            if (ret == False):
+                counterfps += self.splitframe
+                continue
+            gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+            self.front_face_list = cascade.detectMultiScale(gray)
+            self.Loggingobj.debugout("{} {}".format(counterfps, self.front_face_list))
+            faces_list_orig = []
+            faces_list_cut = []
+
+            for (x, y, w, h) in self.front_face_list:
+                faces_list_orig.append(frame[y: y + h, x: x + w].copy())
+            for facekun in faces_list_orig:
+                faces_list_cut.append(
+                    cv2.resize(cv2.cvtColor(cv2.cvtColor(facekun, cv2.COLOR_BGR2GRAY), cv2.COLOR_BGR2RGB), (200, 200)))
+            # for facekun2 in faces_list_cut:
+            #    plt.imshow(facekun2)
+            #    plt.show()
+            similarface = self.similarity(faces_list_cut)
+            if similarface is not None:
+                self.detect_emotion(similarface)
+            counterfps += self.splitframe

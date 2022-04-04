@@ -18,3 +18,5 @@ class FaceProcessFromNJS:
         return self.FPkun.getTargetImage(indexkun)
     def getTargetImageBase64(self,indexkun):
         return self.FPkun.getTargetImageBase64(indexkun)
+    def closeObj(self):
+        self.FPkun.closeObj()
