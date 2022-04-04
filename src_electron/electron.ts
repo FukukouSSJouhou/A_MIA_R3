@@ -20,6 +20,7 @@ if (process.env.NODE_ENV === 'development') {
 let mainWindow:BrowserWindow;
 let NameSubMenu : Electron.MenuItemConstructorOptions[] = [];
 let EditSubMenu:Electron.MenuItemConstructorOptions[]=[];
+let WindowSubMenu:Electron.MenuItemConstructorOptions[]=[];
 
 if(isosx){
     
@@ -59,6 +60,16 @@ EditSubMenu=isosx?[
     { type: 'separator' },
     { role: 'selectAll' }
 ];
+WindowSubMenu=isosx?[
+
+    { type: 'separator' },
+    { role: 'front' },
+    { type: 'separator' },
+    { role: 'window' }
+]:[
+
+    { role: 'close' }
+];
 let menu=Menu.buildFromTemplate([
     ...NameSubMenu,
     {
@@ -93,6 +104,15 @@ let menu=Menu.buildFromTemplate([
       { role: 'zoomOut' },
       { type: 'separator' },
       { role: 'togglefullscreen' }
+    ]
+  },
+  // { role: 'windowMenu' }
+  {
+    label: 'Window',
+    submenu: [
+      { role: 'minimize' },
+      { role: 'zoom' },
+      ...WindowSubMenu
     ]
   },
 ]);
