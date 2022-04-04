@@ -52,7 +52,9 @@ export default function IndexPage(): React.ReactElement {
       window.mia_electron_api.setselectimg(index).then(()=>{
         console.log("finished??")
         setAllimageselected(true);
-        
+        window.mia_electron_api.startTensorProc(vfilename,29).then(()=>{
+          console.log("f???");
+        });
       });
     }
     //window.mia_electron_api.setselectimg(index)
