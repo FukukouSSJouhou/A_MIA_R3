@@ -1,12 +1,7 @@
-import base64
 import json
 
-import cv2
-
 from A_MIA_R3_Core.FaceProcessFromNJS import FaceProcessFromNJS
-from A_MIA_R3_Core.Face_Process import Face_Process
 from A_MIA_R3_Core.Loggingkun.Loggerkun import MIALogger
-from A_MIA_R3_Core.faceproc.FPCallbackFaceSelector import FPCallbackFaceSelected, FPCallbackFaceSelector
 
 
 class A_MIR_R3_node2(object):

@@ -1,6 +1,3 @@
-import av
-
-import A_MIA_R3_Core
 from A_MIA_R3_Core.Loggingkun.Loggerkun import MIALogger
 from A_MIA_R3_Core.faceproc.FaceModFromNJS import FaceModFromNJS
 
