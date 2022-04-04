@@ -17,3 +17,5 @@ class FaceProcessFromNJS:
         self.FPkun.openFileObj()
     def getNextSomeFrameB64(self):
         return self.FPkun.getNextB64Lists()
+    def getTargetImage(self,indexkun):
+        return self.FPkun.getTargetImage(indexkun)

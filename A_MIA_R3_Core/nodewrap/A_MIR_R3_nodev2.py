@@ -34,6 +34,7 @@ class A_MIR_R3_node2(object):
         self.fpselected=None
         self.load_img_list_origcv = []
         self.FPobj=None
+        self.target_imgkun=None
     def setFilename(self,filename):
         self.filenamekun=filename
         self.Loggingobj.successout("set Filename:{}".format(filename))
@@ -52,3 +53,6 @@ class A_MIR_R3_node2(object):
         lsobjkun=self.FPobj.getNextSomeFrameB64()
         senddt = {"data": lsobjkun}
         return json.dumps(senddt)
+    def setselectimg(self,indexkun):
+        self.target_imgkun =self.FPobj.getTargetImage(indexkun)
+        self.Loggingobj.successout("selected image!!")

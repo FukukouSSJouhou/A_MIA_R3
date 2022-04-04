@@ -42,6 +42,8 @@ class FaceModFromNJS:
 
         self.total_frames = 0
         self.current_fps = 1
+    def getTargetImage(self,indexkun):
+        return self.load_img_list_origcv[indexkun-1].copy()
     def openFileObj(self):
         container = av.open(self.filename)
         self.total_frames= container.streams.video[0].frames
