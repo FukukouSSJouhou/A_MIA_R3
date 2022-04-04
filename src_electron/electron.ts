@@ -21,6 +21,7 @@ pynode.startInterpreter();
 pynode.appendSysPath('./');
 pynode.appendSysPath('./venv/Lib/site-packages');
 let classtest=new A_MIA_R3_PythonWraps();
+let target_imagekunb64:string="";
 const createWindow=()=> {
     mainWindow = new BrowserWindow(
         {
@@ -75,7 +76,9 @@ const createWindow=()=> {
         classtest.Setimagelistsendcallback(callback);
     });
     ipcMain.handle("setselectimg",async(event:IpcMainInvokeEvent,indexkun:number)=>{
-        classtest.setselectimg(indexkun);
+        //classtest.setselectimg(indexkun);
+        target_imagekunb64=classtest.getselectedimg(indexkun);
+        
     });
     ipcMain.handle("run",async(event:IpcMainInvokeEvent)=>{
         classtest.run();

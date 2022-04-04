@@ -28,5 +28,8 @@ class A_MIA_R3_PythonWraps{
     public async create_syoriobj():Promise<void>{
         return this.pyinstance.get("create_syoriobj").call();
     }
+    public getselectedimg(indexkun:number):string{
+        return this.pyinstance.get("getselectedimg").call(indexkun);
+    }
 }
 export default A_MIA_R3_PythonWraps;

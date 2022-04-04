@@ -52,7 +52,7 @@ export default function IndexPage(): React.ReactElement {
       window.mia_electron_api.setselectimg(index).then(()=>{
         console.log("finished??")
         setAllimageselected(true);
-
+        
       });
     }
     //window.mia_electron_api.setselectimg(index)
