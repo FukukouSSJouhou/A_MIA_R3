@@ -71,4 +71,6 @@ class FaceModFromNJS:
                 # self.callbackobj.execute(frame, self.front_face_list, self.fpfsselectedkun)
 
                 self.Loggingobj.debugout("Before image cutter")
+
+                self.current_fps += self.pertime
                 return self.ImageCutter(frame,front_face_list)
