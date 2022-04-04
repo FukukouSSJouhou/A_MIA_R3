@@ -1,11 +1,13 @@
-import * as childProcess from "child_process";
-class TensorPythonMainProc {
+import path from "path";
+import {Worker} from "worker_threads";
+export default class TensorPythonMainProc {
 
-    childProckun: childProcess.ChildProcess = childProcess.fork("./tensorpythonchildproc")
+    childworker:Worker=new Worker(path.join(__dirname,"tensorpythonchildproc"));
     constructor() {
-        this.childProckun.on("message", (message) => {
-            console.log("graph base64");
-            console.log(message);
+        
+        this.childworker.on("message", (message:string) => {
+                console.log("graph base64");
+                console.log(message);
         });
     }
     public start(base64target:string,filename:string,frameper:number){
@@ -14,6 +16,6 @@ class TensorPythonMainProc {
             filename:filename,
             frameper:frameper
         }
-        this.childProckun.send(senddtobject);
+        this.childworker.postMessage(senddtobject);
     }
 }
