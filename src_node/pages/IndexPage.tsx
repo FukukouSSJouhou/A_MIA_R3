@@ -40,9 +40,17 @@ export default function IndexPage(): React.ReactElement {
   const clicked_btkun=(index:number)=>{
     setselectedIndex(index);
     setOpenSnackbar(true);
+    setcanselect(false);
+    if(index ==0){
+      window.mia_electron_api.getNextImageBase64().then((b64kun)=>{
+        console.log(b64kun);
+        const message = JSON.parse(b64kun);
+        setImageList(message.data);
+        setcanselect(true);
+      });
+    }
     //window.mia_electron_api.setselectimg(index)
 
-    setcanselect(false);
 }
 const handleClose=(event?:React.SyntheticEvent|Event,reason?:string)=>{
     if(reason==="clickaway"){
