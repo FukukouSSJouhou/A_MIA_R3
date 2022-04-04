@@ -132,7 +132,6 @@ async def main():
     Loggingobj=MIALogger(logout_color,print)
     filenamekun="koizumi_7_30.mp4"
     Loggingobj.successout("<< A_MIA_R3 Core System>>")
-    Web 
     Loggingobj.debugout("Creating callback object")
     callbackobj_func=mainold_selectwin()
     callbackobj=FPCallbackFaceSelector(callbackobj_func.select_target_img_window)

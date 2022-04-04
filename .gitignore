@@ -20,3 +20,9 @@ SENTENCE/emomemo/
 SENTENCE/texts/
 
 SENTENCE/times/
+
+build/
+
+dist/
+**/.DS_Store
+venv/
