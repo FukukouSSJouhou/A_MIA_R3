@@ -136,6 +136,10 @@ let menu=Menu.buildFromTemplate([
   },
 ]);
 Menu.setApplicationMenu(menu);
+
+if (process.platform === 'linux') {
+  pynode.dlOpen('libpython3.10.so')
+}
 pynode.startInterpreter();
 pynode.appendSysPath('./');
 pynode.appendSysPath('./venv/Lib/site-packages');
