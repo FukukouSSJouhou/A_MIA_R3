@@ -8,6 +8,7 @@ import openAboutWisndow from 'electron-about-window';
 import openAboutWindow from "electron-about-window";
 import IimageCVSelector from "./IimageCVSelector";
 import ITensorProcesskun from "./ITensorProcesskun";
+import imageselector_websocket from "./imageselector_websocket";
 const isosx = (process.platform === 'darwin');
 const isNoPynode=(process.platform==="linux");
 if (process.env.NODE_ENV === 'development') {
@@ -142,6 +143,7 @@ Menu.setApplicationMenu(menu);
 
 let classtest: IimageCVSelector;
 if (isNoPynode) {
+  classtest=new imageselector_websocket();
 } else {
   pynode.startInterpreter();
   pynode.appendSysPath('./');

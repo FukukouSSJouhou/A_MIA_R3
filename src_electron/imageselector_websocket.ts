@@ -1,7 +1,17 @@
 import IimageCVSelector from "./IimageCVSelector";
-
+import path from "path";
+import {client as WebSocketClient} from "websocket";
 class imageselector_websocket implements IimageCVSelector{
     constructor(){
+        let pythonpath:string;
+        let wspath:string;
+        if(process.platform === "linux"){
+            pythonpath="./venv/bin/python";
+            wspath="ws+unix:/" + path.resolve("./ws_selector");
+        }else{
+            pythonpath="./venv/Scripts/python";
+            wspath="ws://localhost:1919/";
+        }
 
     }
     public getNextImageBase64(): string {
@@ -24,4 +34,4 @@ class imageselector_websocket implements IimageCVSelector{
     }
 
 }
-export default imageselector_websocket
+export default imageselector_websocket;
