@@ -5,8 +5,9 @@ import { TENSORPYTHON_RESULT_PROCINTERFACE } from "./tensorpythonproc_interface"
 
 export default class TensorPythonMainProc implements ITensorProcesskun{
 
-    childProckun: childProcess.ChildProcess = childProcess.fork(path.join(__dirname,"tensorpythonchildproc"))
+    childProckun: childProcess.ChildProcess;
     constructor() {
+        this.childProckun=childProcess.fork(path.join(__dirname,"tensorpythonchildproc"))
     }
     public start(base64target:string,filename:string,frameper:number):Promise<string>{
         return new Promise<string>((resolve)=>{
