@@ -1,5 +1,6 @@
 import pynode from '@fukukoussjouhou/pynode';
-class A_MIA_R3_PythonWraps{
+import IimageCVSelector from './IimageCVSelector';
+class A_MIA_R3_PythonWraps implements IimageCVSelector{
     pyinstance:any;
     pyclasskun:any;
     loggerobj=(strkun:string)=>{
