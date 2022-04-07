@@ -9,7 +9,7 @@ import openAboutWindow from "electron-about-window";
 import IimageCVSelector from "./IimageCVSelector";
 import ITensorProcesskun from "./ITensorProcesskun";
 const isosx = (process.platform === 'darwin');
-
+const isNoPynode=(process.platform==="linux");
 if (process.env.NODE_ENV === 'development') {
   const execPath: string =
     process.platform === 'win32'
@@ -141,7 +141,7 @@ let menu = Menu.buildFromTemplate([
 Menu.setApplicationMenu(menu);
 
 let classtest: IimageCVSelector;
-if (process.platform === 'linux') {
+if (isNoPynode) {
 } else {
   pynode.startInterpreter();
   pynode.appendSysPath('./');
@@ -152,7 +152,7 @@ if (process.platform === 'linux') {
 let target_imagekunb64: string = "";
 let tensormainproc:ITensorProcesskun;
 
-if (process.platform === 'linux') {
+if (isNoPynode) {
 } else {
   tensormainproc = new TensorPythonMainProc();
 }
