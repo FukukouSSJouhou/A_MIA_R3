@@ -1,8 +1,9 @@
 import * as childProcess from "child_process";
 import path from "path";
+import ITensorProcesskun from "./ITensorProcesskun";
 import { TENSORPYTHON_RESULT_PROCINTERFACE } from "./tensorpythonproc_interface";
 
-export default class TensorPythonMainProc {
+export default class TensorPythonMainProc implements ITensorProcesskun{
 
     childProckun: childProcess.ChildProcess = childProcess.fork(path.join(__dirname,"tensorpythonchildproc"))
     constructor() {
