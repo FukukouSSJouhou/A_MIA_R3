@@ -7,6 +7,7 @@ import TensorPythonMainProc from "./tensorpythonmainproc";
 import openAboutWisndow from 'electron-about-window';
 import openAboutWindow from "electron-about-window";
 import IimageCVSelector from "./IimageCVSelector";
+import ITensorProcesskun from "./ITensorProcesskun";
 const isosx = (process.platform === 'darwin');
 
 if (process.env.NODE_ENV === 'development') {
@@ -149,7 +150,12 @@ if (process.platform === 'linux') {
   classtest = new A_MIA_R3_PythonWraps();
 }
 let target_imagekunb64: string = "";
-let tensormainproc = new TensorPythonMainProc();
+let tensormainproc:ITensorProcesskun;
+
+if (process.platform === 'linux') {
+} else {
+  tensormainproc = new TensorPythonMainProc();
+}
 const createWindow = () => {
   mainWindow = new BrowserWindow(
     {
