@@ -1,5 +1,6 @@
 import pynode from '@fukukoussjouhou/pynode';
-class A_MIA_R3_PythonWraps{
+import IimageCVSelector from './IimageCVSelector';
+class A_MIA_R3_PythonWraps implements IimageCVSelector{
     pyinstance:any;
     pyclasskun:any;
     loggerobj=(strkun:string)=>{
@@ -14,9 +15,6 @@ class A_MIA_R3_PythonWraps{
     }
     public async run():Promise<number>{
         return this.pyinstance.get("run").call();
-    }
-    public async Setimagelistsendcallback(callback:(datakun:string)=>void):Promise<void>{
-        //this.pyinstance.get("Setimagelistsendcallback").call(callback);
     }
     public async setselectimg(indexkun:number):Promise<void>{
         //this.pyinstance.get("recieve_selectimg").call(indexkun);
